@@ -1,0 +1,16 @@
+{
+  "name": "Dọc Bờ — cẩm nang phượt",
+  "short_name": "Dọc Bờ",
+  "description": "Bản đồ 431 điểm cảnh đẹp, quán ăn và chỗ nghỉ dọc Việt Nam cho dân phượt.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b4f5c",
+  "theme_color": "#0b4f5c",
+  "lang": "vi",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

@@ -12,6 +12,11 @@
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
 <link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dọc Bờ">
 <link rel="stylesheet" href="lib/leaflet.css">
 <link rel="stylesheet" href="lib/MarkerCluster.css">
 <link rel="stylesheet" href="lib/MarkerCluster.Default.css">
@@ -548,6 +553,14 @@ window.addEventListener('popstate',()=>{
 });
 
 render();
+</script>
+<script>
+  // PWA: cài lên màn hình chính + mở nhanh khi sóng yếu
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});
+    });
+  }
 </script>
 </body>
 </html>

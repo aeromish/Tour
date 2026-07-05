@@ -2,565 +2,329 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0b4f5c">
-<title>Dọc Bờ — cẩm nang phượt</title>
-<meta name="description" content="Dọc Bờ — cẩm nang phượt Việt Nam: bản đồ và danh sách điểm cảnh đẹp, quán ăn, chỗ nghỉ từ Đông Bắc, Tây Bắc tới miền Trung.">
-<meta property="og:title" content="Dọc Bờ — cẩm nang phượt">
-<meta property="og:description" content="Bản đồ điểm đến, quán ăn và chỗ nghỉ dọc Việt Nam cho dân phượt.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dọc Bờ — cẩm nang phượt dọc Việt Nam</title>
+<meta name="description" content="431 điểm cảnh đẹp, quán ngon và chỗ ngủ, dọc từ Hà Giang xuống Vũng Tàu. Web app miễn phí cho dân phượt xe máy — mở là chạy, không cài, không tài khoản.">
+<meta property="og:title" content="Dọc Bờ — cẩm nang phượt dọc Việt Nam">
+<meta property="og:description" content="431 điểm dọc dài đất nước, ngay trong túi. Mở là chạy, không cài, không tài khoản.">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
-<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
-<link rel="apple-touch-icon" href="assets/icon-192.png">
-<link rel="manifest" href="manifest.json">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Dọc Bờ">
-<link rel="stylesheet" href="lib/leaflet.css">
-<link rel="stylesheet" href="lib/MarkerCluster.css">
-<link rel="stylesheet" href="lib/MarkerCluster.Default.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --sea:#0b4f5c;          /* xanh biển sâu */
-    --sea-2:#0e7c86;        /* teal cảnh đẹp */
-    --sun:#e8a33d;          /* vàng cát/nắng */
-    --coral:#e5643c;        /* cam san hô - ăn uống */
-    --moss:#4e8c5a;         /* xanh rêu - lưu trú */
-    --ink:#13262b;          /* chữ đậm */
-    --ink-soft:#4d6168;     /* chữ phụ */
-    --paper:#f4f7f7;        /* nền mát, đọc tốt ngoài nắng */
-    --card:#ffffff;
-    --line:#dfe7e7;
-    --shadow:0 2px 14px rgba(11,79,92,.10);
+    --sea:#0b4f5c; --sea-deep:#072e37; --teal:#0e7c86;
+    --coral:#e5643c; --sun:#e8a33d; --moss:#4e8c5a;
+    --paper:#f4f7f7; --ink:#13262b; --ink-soft:#4d6168;
+    --card:#ffffff; --line:#dfe7e7;
+    --wrap:1120px;
+    --shadow:0 10px 40px rgba(8,46,55,.12);
+    --shadow-sm:0 2px 14px rgba(8,46,55,.08);
   }
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-  html,body{height:100%}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
   body{
     font-family:'Be Vietnam Pro',system-ui,sans-serif;
-    background:var(--paper);color:var(--ink);
-    display:flex;flex-direction:column;height:100dvh;overflow:hidden;
+    color:var(--ink);background:var(--paper);line-height:1.6;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
   }
+  h1,h2,h3,.brand{font-family:'Bricolage Grotesque','Be Vietnam Pro',sans-serif;letter-spacing:-.02em;line-height:1.05}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+  .eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
 
-  /* ---------- Header ---------- */
-  header{
-    background:var(--sea);color:#fff;
-    padding:14px 16px 14px 16px;
-    padding-top:max(14px,env(safe-area-inset-top));
-    flex-shrink:0;
-  }
-  .brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-  .brand h1{
-    font-family:'Bricolage Grotesque','Be Vietnam Pro',sans-serif;
-    font-weight:800;font-size:26px;letter-spacing:-.02em;line-height:1;
-  }
-  .brand .tag{font-size:12.5px;color:#a9d2d6;font-weight:500}
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;gap:9px;font-family:inherit;font-weight:700;
+    font-size:15px;padding:14px 24px;border-radius:14px;border:2px solid transparent;cursor:pointer;
+    transition:transform .2s ease,background .2s ease,box-shadow .2s ease;min-height:50px}
+  .btn svg{width:19px;height:19px;flex:0 0 auto}
+  .btn-primary{background:var(--coral);color:#fff;box-shadow:0 6px 20px rgba(229,100,60,.32)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(229,100,60,.42)}
+  .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}
+  .btn-ghost:hover{background:rgba(255,255,255,.1)}
+  .btn-dark{background:var(--sea);color:#fff}
+  .btn-dark:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+  .btn:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
 
-  /* ---------- Dải điểm dừng theo vùng (signature) ---------- */
-  .ribbon-wrap{position:relative;margin-top:12px}
-  .ribbon{
-    display:flex;gap:0;overflow-x:auto;
-    scrollbar-width:none;-ms-overflow-style:none;position:relative;
-  }
-  .ribbon::-webkit-scrollbar{display:none}
-  .ribbon::before{
-    content:"";position:absolute;top:13px;left:0;right:0;height:2px;
-    background:rgba(169,210,214,.35);
-  }
-  /* gợi ý còn nội dung khi vuốt ngang */
-  .ribbon-wrap::after{
-    content:"";position:absolute;top:0;bottom:0;right:0;width:34px;pointer-events:none;
-    background:linear-gradient(to right,rgba(11,79,92,0),var(--sea));
-  }
-  .stop{
-    position:relative;flex:0 0 auto;padding:0 14px;text-align:center;
-    background:none;border:0;color:#a9d2d6;cursor:pointer;font-family:inherit;
-  }
-  .stop .dot{
-    width:12px;height:12px;border-radius:50%;background:#2b6d78;
-    border:2px solid var(--sea);margin:7px auto 6px;transition:.18s;
-  }
-  .stop .lbl{font-size:12px;font-weight:600;white-space:nowrap}
-  .stop.on .dot{background:var(--sun);transform:scale(1.25)}
-  .stop.on .lbl{color:#fff}
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(11,79,92,.92);backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,.08)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  nav .brand{color:#fff;font-weight:800;font-size:22px;display:flex;align-items:center;gap:9px}
+  nav .brand .mk{width:22px;height:22px;color:var(--sun)}
+  nav .navcta{padding:10px 18px;font-size:14px;min-height:44px}
 
-  /* ---------- Ô tìm kiếm ---------- */
-  .searchbar{padding:12px 16px 2px;background:var(--paper);flex-shrink:0}
-  .searchbar .box{
-    display:flex;align-items:center;gap:9px;background:var(--card);
-    border:1.5px solid var(--line);border-radius:13px;padding:11px 13px;
-  }
-  .searchbar .box:focus-within{border-color:var(--sea-2);box-shadow:0 0 0 3px rgba(14,124,134,.12)}
-  .searchbar .ic{color:var(--ink-soft);font-size:15px;line-height:1}
-  .searchbar input{
-    flex:1;border:0;outline:0;background:none;font-family:inherit;
-    font-size:14.5px;color:var(--ink);min-width:0;
-  }
-  .searchbar input::placeholder{color:var(--ink-soft)}
-  .searchbar .clr{
-    background:none;border:0;color:var(--ink-soft);cursor:pointer;display:none;
-    width:40px;height:40px;place-items:center;padding:0;flex:0 0 auto;
-  }
-  .searchbar .clr.show{display:grid}
+  /* hero */
+  .hero{background:linear-gradient(160deg,var(--sea) 0%,var(--sea-deep) 100%);color:#fff;
+    position:relative;overflow:hidden;padding:64px 0 96px}
+  .hero::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(600px 300px at 78% 18%,rgba(14,124,134,.55),transparent 70%)}
+  .hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero .eyebrow{color:#8fd0d6}
+  .hero h1{font-size:clamp(2.4rem,5.6vw,4rem);font-weight:800;margin:16px 0 18px}
+  .hero h1 .u{color:var(--sun)}
+  .hero p.lede{font-size:clamp(1.02rem,1.6vw,1.2rem);color:#cfe3e5;max-width:30em;margin-bottom:30px}
+  .hero .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .hero .note{margin-top:20px;font-size:13.5px;color:#9fc4c8;display:flex;align-items:center;gap:8px}
+  .hero .note svg{width:16px;height:16px;color:var(--moss)}
+  /* sóng biển ngăn hero với phần dưới */
+  .hero .wave{position:absolute;left:0;right:0;bottom:-1px;z-index:1;line-height:0}
+  .hero .wave svg{display:block;width:100%;height:70px}
 
-  /* ---------- Bộ lọc loại ---------- */
-  .types{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;flex-shrink:0;
-    scrollbar-width:none;background:var(--paper)}
-  .types::-webkit-scrollbar{display:none}
-  .chip{
-    flex:0 0 auto;border:1.5px solid var(--line);background:var(--card);
-    color:var(--ink-soft);border-radius:999px;padding:8px 14px;font-size:13.5px;
-    font-weight:600;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:6px;
-    transition:.15s;
+  /* phone mockup (signature: show the real app) */
+  .phone-wrap{justify-self:center}
+  .phone{width:270px;height:552px;border-radius:38px;background:#0a2a31;
+    border:9px solid #0a2226;box-shadow:0 30px 70px rgba(0,0,0,.4);position:relative;overflow:hidden;
+    animation:float 6s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .phone .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:118px;height:24px;
+    background:#0a2226;border-radius:0 0 16px 16px;z-index:5}
+  .scr{position:absolute;inset:0;display:flex;flex-direction:column;background:#cfe0e2}
+  .scr .bar{background:var(--sea);color:#fff;padding:26px 16px 12px}
+  .scr .bar b{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800}
+  .scr .bar .rib{display:flex;gap:14px;margin-top:9px;font-size:9.5px;color:#9fc4c8;font-weight:600}
+  .scr .bar .rib span:first-child{color:#fff}
+  .scr .map{flex:1;position:relative;background:radial-gradient(circle at 30% 40%,#d6e6e6,#c2d8da)}
+  .scr .pin{position:absolute;width:26px;height:26px;transform:translate(-50%,-100%);
+    animation:drop .6s cubic-bezier(.2,.9,.3,1.4) both}
+  .scr .pin.p2{animation-delay:.15s} .scr .pin.p3{animation-delay:.3s}
+  @keyframes drop{0%{opacity:0;transform:translate(-50%,-160%)}100%{opacity:1;transform:translate(-50%,-100%)}}
+  .scr .pin i{display:block;width:26px;height:26px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);
+    border:2.5px solid #fff;box-shadow:0 3px 6px rgba(0,0,0,.3);display:grid;place-items:center;color:#fff}
+  .scr .pin svg{width:14px;height:14px;transform:rotate(45deg)}
+  .scr .sheet{background:var(--paper);border-radius:16px 16px 0 0;padding:9px 12px 14px;
+    box-shadow:0 -6px 20px rgba(8,46,55,.12)}
+  .scr .sheet .grip{width:34px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 9px}
+  .scr .sheet .cnt{font-size:9.5px;color:var(--ink-soft);font-weight:700;margin-bottom:7px}
+  .scr .minic{background:#fff;border-radius:11px;border-left:3px solid var(--teal);padding:9px 11px;box-shadow:var(--shadow-sm)}
+  .scr .minic b{font-family:'Bricolage Grotesque',sans-serif;font-size:12.5px;display:block}
+  .scr .minic small{font-size:9.5px;color:var(--ink-soft)}
+  .scr .minic .bd{display:flex;gap:5px;margin-top:8px}
+  .scr .minic .bd span{flex:1;text-align:center;font-size:9px;font-weight:700;padding:6px 0;border-radius:7px}
+  .scr .minic .bd .a{background:var(--teal);color:#fff}
+  .scr .minic .bd .b{background:#fff;border:1.4px solid var(--teal);color:var(--teal)}
+
+  /* stats */
+  .stats{background:var(--card);border-bottom:1px solid var(--line)}
+  .stats .wrap{display:flex;flex-wrap:wrap;justify-content:space-around;gap:18px;padding:32px 22px}
+  .stat{text-align:center;flex:1;min-width:120px}
+  .stat .n{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2rem,5vw,2.8rem);font-weight:800;color:var(--sea);line-height:1}
+  .stat .l{font-size:13px;color:var(--ink-soft);font-weight:600;margin-top:6px}
+
+  /* section shell */
+  section.blk{padding:80px 0}
+  .head{max-width:38em;margin-bottom:40px}
+  .head h2{font-size:clamp(1.7rem,4vw,2.5rem);font-weight:800;margin:12px 0 12px}
+  .head p{color:var(--ink-soft);font-size:1.05rem}
+
+  /* features */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .feat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;
+    transition:transform .2s ease,box-shadow .2s ease}
+  .feat:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .feat .ic{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;margin-bottom:16px}
+  .feat .ic svg{width:24px;height:24px;color:#fff}
+  .feat h3{font-size:1.22rem;font-weight:700;margin-bottom:8px}
+  .feat p{color:var(--ink-soft);font-size:.98rem}
+  .i-teal{background:var(--teal)} .i-coral{background:var(--coral)}
+  .i-sun{background:var(--sun)} .i-moss{background:var(--moss)}
+
+  /* journey signature */
+  .journey{background:var(--sea);color:#fff}
+  .journey .head h2{color:#fff}
+  .journey .head p{color:#b6d3d6}
+  .route{position:relative;margin-top:26px}
+  .route::before{content:"";position:absolute;left:14px;top:8px;bottom:8px;width:2px;
+    background:linear-gradient(var(--sun),var(--teal),var(--coral))}
+  .leg{position:relative;padding:0 0 26px 44px}
+  .leg:last-child{padding-bottom:0}
+  .leg .dot{position:absolute;left:6px;top:4px;width:18px;height:18px;border-radius:50%;
+    background:var(--sun);border:3px solid var(--sea);box-shadow:0 0 0 2px var(--sun)}
+  .leg h3{font-size:1.15rem;font-weight:700}
+  .leg p{color:#b6d3d6;font-size:.95rem;margin-top:3px}
+
+  /* final cta */
+  .final{text-align:center;padding:86px 0}
+  .final h2{font-size:clamp(1.9rem,4.5vw,2.8rem);font-weight:800;margin-bottom:14px}
+  .final p{color:var(--ink-soft);font-size:1.1rem;margin-bottom:28px}
+
+  /* footer */
+  footer{background:var(--sea-deep);color:#9fc4c8;padding:40px 0;font-size:13.5px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center}
+  footer .brand{color:#fff;font-weight:800;font-size:18px}
+  footer a:hover{color:#fff;text-decoration:underline}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* responsive */
+  @media (max-width:860px){
+    .hero{padding:44px 0 76px}
+    .hero .wrap{grid-template-columns:1fr;gap:40px}
+    .hero .copy{order:1} .phone-wrap{order:2}
+    .grid{grid-template-columns:1fr}
+    section.blk{padding:60px 0}
   }
-  .chip .sw{width:9px;height:9px;border-radius:50%}
-  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-
-  /* ---------- Sân khấu: bản đồ nền + tấm trượt ---------- */
-  .stage{flex:1;position:relative;overflow:hidden}
-  #map{position:absolute;inset:0;width:100%;height:100%;background:#cfe0e2}
-  .map-btns{position:absolute;right:12px;top:12px;z-index:600;
-    display:flex;flex-direction:column;gap:10px}
-  .mbtn{
-    width:48px;height:48px;border-radius:14px;border:0;cursor:pointer;
-    box-shadow:var(--shadow);font-size:20px;display:grid;place-items:center;
-    background:var(--card);color:var(--sea);
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+    .reveal{opacity:1;transform:none}
+    .phone{animation:none}
+    .scr .pin{animation:none;opacity:1}
   }
-
-  /* ---------- Tấm trượt (bottom sheet) ---------- */
-  .sheet{position:absolute;left:0;right:0;bottom:0;height:92%;z-index:650;
-    background:var(--paper);border-radius:20px 20px 0 0;
-    box-shadow:0 -8px 30px rgba(11,47,53,.18);
-    display:flex;flex-direction:column;
-    transform:translateY(var(--sy,52%));transition:transform .28s ease}
-  .sheet.full{--sy:4%}
-  .handle{flex-shrink:0;padding:9px 0 5px;cursor:grab;touch-action:none}
-  .handle::before{content:"";display:block;width:42px;height:5px;border-radius:3px;
-    background:var(--line);margin:0 auto}
-  .handle:active{cursor:grabbing}
-
-  /* ---------- Danh sách ---------- */
-  .list{flex:1;overflow-y:auto;padding:6px 12px calc(24px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
-  .count{font-size:12.5px;color:var(--ink-soft);padding:8px 4px 4px;font-weight:600}
-  @keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .card{
-    animation:cardIn .3s ease both;
-    background:var(--card);border:1px solid var(--line);border-radius:16px;
-    padding:14px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;
-    border-left:5px solid var(--sea-2);
-  }
-  .card .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-  .card h2{font-size:16.5px;font-weight:700;line-height:1.25}
-  .card .prov{font-size:12px;color:var(--ink-soft);margin-top:2px;font-weight:500}
-  .badge{flex:0 0 auto;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;
-    color:#fff;white-space:nowrap;letter-spacing:.01em}
-  .card .note{font-size:13px;color:var(--ink-soft);margin-top:8px;line-height:1.5}
-  .acts{display:flex;gap:8px;margin-top:12px}
-  .act{
-    flex:1;text-align:center;text-decoration:none;font-weight:600;font-size:13.5px;
-    padding:11px;border-radius:11px;font-family:inherit;border:0;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;gap:6px;
-  }
-  .act.dir{background:var(--sea);color:#fff}
-  .act.call{background:#fff;color:var(--moss);border:1.5px solid var(--moss)}
-  .act.viewmap{flex:0 0 auto;background:#fff;color:var(--sea);border:1.5px solid var(--sea)}
-  .act:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
-
-  /* ---------- Trạng thái rỗng ---------- */
-  .empty{text-align:center;color:var(--ink-soft);padding:40px 24px;font-size:14px;line-height:1.6}
-  .empty .big{font-size:30px;display:block;margin-bottom:10px}
-  .empty button{
-    margin-top:16px;background:var(--sea);color:#fff;border:0;border-radius:11px;
-    padding:11px 20px;font-family:inherit;font-weight:600;font-size:13.5px;cursor:pointer;
-  }
-
-  /* toast */
-  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);
-    background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-size:13.5px;
-    z-index:1200;opacity:0;transition:.25s;pointer-events:none;max-width:88%;text-align:center}
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-  input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
-  .pin{width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);
-    border:2.5px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35);
-    display:flex;align-items:center;justify-content:center}
-  .pin{color:#fff}
-  .pin span{transform:rotate(45deg);line-height:0}
-  .ico{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:0 0 auto}
-  .act .ico{width:17px;height:17px}
-  .prov .ico{width:13px;height:13px;vertical-align:-0.12em;opacity:.7}
-  .nearbar .ico{width:14px;height:14px;vertical-align:-0.15em}
-  .ic .ico{width:19px;height:19px;color:#8aa0a2}
-  .clr .ico{width:14px;height:14px}
-  .mbtn .ico{width:23px;height:23px}
-  .empty .big .ico{width:42px;height:42px}
-  .pin span .ico{width:15px;height:15px}
-  .nearbar{display:block;width:100%;margin:0 0 8px;padding:8px 12px;border-radius:10px;
-    border:1.5px solid var(--sea);background:rgba(14,124,134,.08);color:var(--sea);
-    font-family:inherit;font-weight:600;font-size:12.5px;cursor:pointer;text-align:left}
-  .marker-cluster-small,.marker-cluster-medium,.marker-cluster-large{background:rgba(14,124,134,.30)}
-  /* --- a11y & touch (rà soát skill) --- */
-  .stop,.chip,.act{min-height:44px}
-  .stop,.chip,.act,.mbtn,.searchbar .clr,.handle{touch-action:manipulation}
-  .stop:focus-visible,.chip:focus-visible,.searchbar .clr:focus-visible,
-  .mbtn:focus-visible,.handle:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:10px}
-  .marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{
-    background:var(--sea-2);color:#fff;font-family:'Be Vietnam Pro';font-weight:700}
-  .leaflet-popup-content{font-family:'Be Vietnam Pro';font-size:14px;font-weight:600;margin:10px 12px}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="brand">
-    <h1>Dọc Bờ</h1>
-    <span class="tag">Bắc · Trung · Nam — cẩm nang phượt dọc Việt Nam</span>
+<nav>
+  <div class="wrap">
+    <div class="brand">
+      <svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      Dọc Bờ
+    </div>
+    <a class="btn btn-primary navcta" href="app/index.html">Mở bản đồ</a>
   </div>
-  <div class="ribbon-wrap"><div class="ribbon" id="ribbon"></div></div>
-</header>
+</nav>
 
-<div class="stage">
-  <div id="map"></div>
-  <div class="map-btns">
-    <button class="mbtn" id="locate" title="Vị trí của tôi" aria-label="Về vị trí của tôi"><svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" x2="5" y1="12" y2="12"/><line x1="19" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="5"/><line x1="12" x2="12" y1="19" y2="22"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/></svg></button>
-  </div>
-  <section class="sheet" id="sheet">
-    <div class="handle" id="handle" role="button" tabindex="0" aria-label="Kéo hoặc bấm để mở rộng danh sách"></div>
-    <div class="searchbar">
-      <div class="box">
-        <span class="ic"><svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
-        <input id="q" type="search" inputmode="search" autocomplete="off"
-               aria-label="Tìm điểm đến" placeholder="Tìm điểm, món ăn, tỉnh…">
-        <button class="clr" id="qclr" aria-label="Xoá tìm kiếm"><svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+<header class="hero">
+  <div class="wrap">
+    <div class="copy">
+      <span class="eyebrow">Cẩm nang phượt · Bắc · Trung · Nam</span>
+      <h1>Đi dọc bờ.<br><span class="u">Dừng đúng chỗ.</span></h1>
+      <p class="lede">431 điểm cảnh đẹp, quán ngon và chỗ ngủ — dọc từ địa đầu Hà Giang xuống tới biển Vũng Tàu. Mở trên điện thoại là chạy: không cài đặt, không tài khoản, không quảng cáo.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="app/index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          Mở bản đồ
+        </a>
+        <a class="btn btn-ghost" href="#features">Xem có gì</a>
+      </div>
+      <p class="note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        Mở là chạy ngay trên trình duyệt — không phải tải gì cả.
+      </p>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone" role="img" aria-label="Ảnh minh hoạ ứng dụng Dọc Bờ: bản đồ với các điểm và thẻ thông tin">
+        <div class="notch"></div>
+        <div class="scr">
+          <div class="bar">
+            <b>Dọc Bờ</b>
+            <div class="rib"><span>Tất cả</span><span>Nha Trang</span><span>Ninh Thuận</span><span>Vũng Tàu</span></div>
+          </div>
+          <div class="map">
+            <div class="pin p1" style="left:38%;top:34%"><i style="background:#0e7c86"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg></i></div>
+            <div class="pin p2" style="left:63%;top:48%"><i style="background:#e5643c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></i></div>
+            <div class="pin p3" style="left:47%;top:62%"><i style="background:#4e8c5a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg></i></div>
+          </div>
+          <div class="sheet">
+            <div class="grip"></div>
+            <div class="cnt">431 điểm · Nha Trang</div>
+            <div class="minic">
+              <b>Tháp Bà Ponagar</b>
+              <small>Nha Trang · cách ~0,7 km</small>
+              <div class="bd"><span class="b">Bản đồ</span><span class="a">Chỉ đường</span></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="types" id="types"></div>
-    <div class="list" id="list"></div>
-  </section>
+  </div>
+  <div class="wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path fill="#ffffff" d="M0,40 C240,72 480,72 720,44 C960,16 1200,16 1440,40 L1440,70 L0,70 Z"/></svg>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat reveal"><div class="n">431</div><div class="l">điểm đến</div></div>
+    <div class="stat reveal"><div class="n">21</div><div class="l">tỉnh &amp; thành</div></div>
+    <div class="stat reveal"><div class="n">3</div><div class="l">miền Bắc–Trung–Nam</div></div>
+    <div class="stat reveal"><div class="n">0đ</div><div class="l">miễn phí hoàn toàn</div></div>
+  </div>
 </div>
 
-<div class="toast" id="toast"></div>
-
-<script src="lib/leaflet.js"></script>
-<script src="lib/leaflet.markercluster.js"></script>
-<script src="data.js"></script>
-<script>
-/* Dữ liệu TYPE, PROVINCES, PLACES được nạp từ data.js */
-
-/* ---------- State ---------- */
-let activeProv = null;   // null = tất cả vùng
-let activeType = 'all';
-let activeQuery = '';
-let markers = [];
-let meMarker = null;
-let cluster = null;
-let userPos = null;     // [lat,lng] vị trí người dùng
-let nearMode = false;   // sắp danh sách theo khoảng cách
-
-const HOME_VIEW = [[18.6,105.8], 5];   // tâm + zoom mặc định (bao cả nước)
-
-/* ---------- Map ---------- */
-let map=null;
-try{
-  if(typeof L==='undefined') throw new Error('Leaflet chưa tải');
-  map = L.map('map',{zoomControl:false}).setView(HOME_VIEW[0],HOME_VIEW[1]);
-  L.control.zoom({position:'topleft'}).addTo(map);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    maxZoom:19, attribution:'© OpenStreetMap'
-  }).addTo(map);
-  if(typeof L.markerClusterGroup==='function'){
-    cluster=L.markerClusterGroup({maxClusterRadius:48,showCoverageOnHover:false,
-      spiderfyOnMaxZoom:true,chunkedLoading:true});
-    map.addLayer(cluster);
-  }
-}catch(e){
-  const mw=document.querySelector('.map-wrap');
-  if(mw) mw.innerHTML='<div style="padding:18px;font-size:13.5px;color:var(--ink-soft);'+
-    'background:#fff;border-bottom:1px solid var(--line)"><svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14"/><path d="M15 6v14"/></svg> Chưa tải được bản đồ '+
-    '(kiểm tra mạng). Danh sách điểm bên dưới vẫn dùng bình thường.</div>';
-}
-
-const TYPE_ICON={view:`<svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>`,food:`<svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>`,stay:`<svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>`};
-function pin(t){
-  const color=(TYPE[t]||{}).color||'#0e7c86';
-  return L.divIcon({
-    className:'',
-    html:`<div class="pin" style="background:${color}"><span>${TYPE_ICON[t]||''}</span></div>`,
-    iconSize:[28,28], iconAnchor:[14,26], popupAnchor:[0,-24]
-  });
-}
-function haversine(a,b){
-  const R=6371,dLat=(b[0]-a[0])*Math.PI/180,dLng=(b[1]-a[1])*Math.PI/180;
-  const s=Math.sin(dLat/2)**2+Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.sin(dLng/2)**2;
-  return 2*R*Math.asin(Math.sqrt(s));
-}
-const fmtKm=d=>d<10?d.toFixed(1)+' km':Math.round(d)+' km';
-
-const provName=k=>PROVINCES.find(x=>x.key===k).name;
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-/* ---------- Dải vùng: 'Tất cả' + các tỉnh ---------- */
-const ribbon = document.getElementById('ribbon');
-[{key:'',name:'Tất cả'}, ...PROVINCES].forEach(pv=>{
-  const b=document.createElement('button');
-  b.className='stop'; b.dataset.k=pv.key;
-  b.innerHTML=`<div class="dot"></div><div class="lbl">${pv.name}</div>`;
-  b.onclick=()=>{
-    activeProv = pv.key==='' ? null : (activeProv===pv.key ? null : pv.key);
-    if(activeQuery) setQuery('');           // chọn vùng thì thoát tìm kiếm
-    focusProvince();
-    setSheet('peek');
-    render();
-  };
-  ribbon.appendChild(b);
-});
-
-/* ---------- Bộ lọc loại ---------- */
-const typesEl=document.getElementById('types');
-const allTypes=[['all','Tất cả',null],...Object.entries(TYPE).map(([k,v])=>[k,v.label,v.color])];
-allTypes.forEach(([k,lbl,color])=>{
-  const c=document.createElement('button');
-  c.className='chip'+(k==='all'?' on':''); c.dataset.k=k;
-  c.innerHTML=(color?`<span class="sw" style="background:${color}"></span>`:'')+lbl;
-  c.onclick=()=>{activeType=k; render();};
-  typesEl.appendChild(c);
-});
-
-/* ---------- Tìm kiếm ---------- */
-const qEl=document.getElementById('q');
-const qClr=document.getElementById('qclr');
-function setQuery(v){
-  qEl.value=v;
-  activeQuery=v.trim().toLowerCase();
-  qClr.classList.toggle('show', !!v);
-}
-let qDebounce;
-qEl.addEventListener('input',()=>{
-  qClr.classList.toggle('show', !!qEl.value);   // nút xoá hiện ngay
-  clearTimeout(qDebounce);
-  qDebounce=setTimeout(()=>{
-    activeQuery=qEl.value.trim().toLowerCase();
-    if(activeQuery) activeProv=null;            // tìm kiếm là tìm toàn quốc
-    render();
-  },150);
-});
-qClr.onclick=()=>{ setQuery(''); render(); qEl.focus(); };
-
-/* ---------- Lấy danh sách theo bộ lọc ---------- */
-function filtered(){
-  return PLACES.filter(p=>{
-    if(activeType!=='all' && p.t!==activeType) return false;
-    if(activeQuery){
-      const hay=(p.n+' '+(p.note||'')+' '+provName(p.p)).toLowerCase();
-      return hay.includes(activeQuery);
-    }
-    if(activeProv && p.p!==activeProv) return false;
-    return true;
-  });
-}
-
-/* ---------- Bản đồ: ngắm vừa khít vùng đang chọn ---------- */
-function focusProvince(){
-  if(!map) return;
-  if(!activeProv){ map.flyTo(HOME_VIEW[0],HOME_VIEW[1],{duration:.7}); return; }
-  const pts=PLACES.filter(p=>p.p===activeProv && p.ll).map(p=>p.ll);
-  if(pts.length>=2){
-    map.flyToBounds(pts,{padding:[44,44],maxZoom:12,duration:.7});
-  }else{
-    map.flyTo(pts[0]||PROVINCES.find(x=>x.key===activeProv).c, 10,{duration:.7});
-  }
-}
-
-/* ---------- Render ---------- */
-const listEl=document.getElementById('list');
-function flyToPlace(p){
-  if(!(p.ll && map)) return;
-  const mk=markers.find(m=>m._place===p);
-  setSheet('peek');
-  if(cluster && mk){ cluster.zoomToShowLayer(mk,()=>mk.openPopup()); }
-  else { map.flyTo(p.ll,12,{duration:.7}); if(mk) mk.openPopup(); }
-  setTimeout(()=>{ const st=sheet.parentElement.clientHeight; map.panBy([0, st*0.20]); },380);
-}
-function mapsHref(pl){
-  return pl.map || 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(pl.n+' Việt Nam');
-}
-function render(){
-  if(isDeep()) armBack();
-  document.querySelectorAll('.stop').forEach(s=>
-    s.classList.toggle('on',(s.dataset.k||'')===(activeProv||'')));
-  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.dataset.k===activeType));
-
-  const items=filtered();
-  if(nearMode && userPos){
-    items.forEach(p=>p._d = p.ll ? haversine(userPos,p.ll) : Infinity);
-    items.sort((a,b)=>a._d-b._d);
-  }
-
-  // markers
-  if(map){
-    if(cluster) cluster.clearLayers(); else markers.forEach(m=>map.removeLayer(m));
-    markers=[];
-    items.filter(p=>p.ll).forEach(p=>{
-      const dkm=(nearMode&&userPos)?` · cách ~${fmtKm(haversine(userPos,p.ll))}`:'';
-      const m=L.marker(p.ll,{icon:pin(p.t)}).bindPopup(
-        `<b>${esc(p.n)}</b><br><span style="color:${TYPE[p.t].color}">${TYPE[p.t].label}</span>${dkm}`);
-      m._place=p; markers.push(m);
-      if(cluster) cluster.addLayer(m); else m.addTo(map);
-    });
-  }
-
-  // trạng thái rỗng
-  if(items.length===0){
-    listEl.innerHTML=`<div class="empty"><span class="big"><svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
-      Chưa có điểm nào khớp bộ lọc.<br>Thử bỏ bớt bộ lọc hoặc đổi từ khoá.
-      <br><button id="reset">Xoá bộ lọc</button></div>`;
-    document.getElementById('reset').onclick=()=>{
-      activeProv=null; activeType='all'; setQuery('');
-      focusProvince(); render();
-    };
-    return;
-  }
-
-  // dòng đếm
-  let label=`${items.length} điểm`;
-  if(activeQuery) label=`${items.length} kết quả cho “${esc(activeQuery)}”`;
-  else{
-    if(activeProv) label+=` · ${provName(activeProv)}`;
-    if(activeType!=='all') label+=` · ${TYPE[activeType].label}`;
-  }
-  const nearBar=(nearMode&&userPos)?
-    `<button id="nearoff" class="nearbar"><svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Đang sắp theo khoảng cách từ bạn · Tắt</button>`:'';
-  listEl.innerHTML=`<div class="count">${label}</div>${nearBar}`+
-    `<div class="cardhost" id="cardhost"></div><div id="sentinel" aria-hidden="true" style="height:1px"></div>`;
-  listEl.scrollTop=0;
-  const noff=document.getElementById('nearoff');
-  if(noff) noff.onclick=()=>{ nearMode=false; render(); };
-  _vitems=items; _vcount=0; renderMore();
-  if(_io) _io.disconnect();
-  _io=new IntersectionObserver(es=>{ if(es[0].isIntersecting) renderMore(); },{root:listEl,rootMargin:'400px'});
-  const _sen=document.getElementById('sentinel'); if(_sen) _io.observe(_sen);
-}
-
-/* ---------- Danh sách ảo hoá: dựng theo lô khi cuộn ---------- */
-let _vitems=[], _vcount=0, _io=null; const BATCH=24;
-function renderMore(){
-  const host=document.getElementById('cardhost'); if(!host) return;
-  const end=Math.min(_vcount+BATCH,_vitems.length);
-  for(let i=_vcount,j=0;i<end;i++,j++) host.appendChild(buildCard(_vitems[i],j));
-  _vcount=end;
-  if(_vcount>=_vitems.length){ const s=document.getElementById('sentinel'); if(s) s.style.display='none'; if(_io) _io.disconnect(); }
-}
-function buildCard(p,j){
-    const card=document.createElement('div');
-    card.className='card'; card.style.borderLeftColor=TYPE[p.t].color;
-    card.style.animationDelay=(Math.min(j,12)*0.025)+'s';
-    card.innerHTML=`
-      <div class="top">
-        <div>
-          <h2>${esc(p.n)}</h2>
-          <div class="prov"><svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> ${provName(p.p)}${(nearMode&&userPos&&p.ll)?` · <b style="color:var(--sea)">cách ~${fmtKm(p._d)}</b>`:''}</div>
-        </div>
-        <span class="badge" style="background:${TYPE[p.t].color}">${TYPE[p.t].label}</span>
+<section class="blk" id="features">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">Có gì trong túi</span>
+      <h2>Mở ra là thấy ngay quanh mình có gì đáng dừng</h2>
+      <p>Không tài khoản, không rối rắm. Đúng thứ dân phượt cần lúc tấp xe vào lề.</p>
+    </div>
+    <div class="grid">
+      <div class="feat reveal">
+        <div class="ic i-teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14"/><path d="M15 6v14"/></svg></div>
+        <h3>Bản đồ phân loại</h3>
+        <p>431 điểm chia ba màu — teal cho cảnh đẹp, cam cho quán ăn, lục cho chỗ nghỉ. Liếc bản đồ là biết chỗ nào ngắm, chỗ nào lấp bụng.</p>
       </div>
-      ${p.note?`<div class="note">${esc(p.note)}</div>`:''}
-      <div class="acts">
-        ${p.ll&&map?`<button type="button" class="act viewmap" aria-label="Xem ${esc(p.n)} trên bản đồ"><svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Bản đồ</button>`:''}
-        <a class="act dir" href="${mapsHref(p)}" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg> Chỉ đường</a>
-        ${p.tel?`<a class="act call" href="tel:${p.tel}"><svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.9.36 1.78.7 2.6a2 2 0 0 1-.45 2.11L8.09 9.9a16 16 0 0 0 6 6l1.47-1.27a2 2 0 0 1 2.11-.45c.82.34 1.7.57 2.6.7A2 2 0 0 1 22 16.92z"/></svg> ${esc(p.tel)}</a>`:''}
-      </div>`;
-    card.querySelector('.acts').addEventListener('click',e=>e.stopPropagation());
-    const vm=card.querySelector('.viewmap');
-    if(vm) vm.onclick=e=>{ e.stopPropagation(); flyToPlace(p); };
-    card.onclick=()=>{
-      if(p.ll && map) flyToPlace(p);
-      else if(!map) toast('Bản đồ chưa sẵn sàng — bấm Chỉ đường để mở Maps.');
-      else toast('Điểm này chưa gắn toạ độ — bấm Chỉ đường để mở Maps.');
-    };
-    return card;
-}
+      <div class="feat reveal">
+        <div class="ic i-coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="2" x2="5" y1="12" y2="12"/><line x1="19" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="5"/><line x1="12" x2="12" y1="19" y2="22"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3>Gần tôi</h3>
+        <p>Một nút thôi: app đọc vị trí rồi xếp mọi điểm theo khoảng cách thật. Quán gần nhất, cảnh gần nhất nhảy thẳng lên đầu.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="ic i-sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+        <h3>Tìm &amp; lọc tức thì</h3>
+        <p>Gõ tên món, tên điểm hay tên tỉnh — kết quả hiện ngay khi tay còn đang gõ. Lọc theo loại hoặc theo vùng chỉ trong một chạm.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="ic i-moss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div>
+        <h3>Chỉ đường &amp; gọi</h3>
+        <p>Mỗi thẻ mở thẳng Google Maps để dẫn đường, gọi quán ngay nếu có số. Hết cảnh chép tay toạ độ giữa đường.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-/* ---------- Vị trí của tôi ---------- */
-document.getElementById('locate').onclick=()=>{
-  if(!map){toast('Bản đồ chưa sẵn sàng.');return;}
-  if(!navigator.geolocation){toast('Thiết bị không hỗ trợ định vị.');return;}
-  toast('Đang lấy vị trí…');
-  navigator.geolocation.getCurrentPosition(
-    pos=>{
-      const ll=[pos.coords.latitude,pos.coords.longitude];
-      userPos=ll;
-      if(meMarker) map.removeLayer(meMarker);
-      meMarker=L.circleMarker(ll,{radius:9,color:'#fff',weight:3,
-        fillColor:'#1b7be0',fillOpacity:1}).addTo(map).bindPopup('Bạn ở đây');
-      nearMode=true; activeProv=null;
-      render(); setSheet('peek');
-      map.flyTo(ll,11,{duration:.8}); meMarker.openPopup();
-      toast('Đã sắp các điểm theo khoảng cách từ bạn.');
-    },
-    ()=>toast('Chưa bật được định vị. Trên bản chạy thật (HTTPS) sẽ hỏi quyền và chạy ngon.'),
-    {enableHighAccuracy:true,timeout:8000}
-  );
-};
+<section class="blk journey">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow" style="color:var(--sun)">Phủ dọc đất nước</span>
+      <h2>Một mạch từ địa đầu tới biển Nam</h2>
+      <p>Đi theo cung đường quen của dân phượt, gom điểm đều tay qua từng vùng.</p>
+    </div>
+    <div class="route">
+      <div class="leg reveal"><span class="dot"></span><h3>Đông Bắc</h3><p>Hà Giang · Cao Bằng · Lạng Sơn · Tuyên Quang — cao nguyên đá, thác Bản Giốc, đèo Mã Pí Lèng.</p></div>
+      <div class="leg reveal"><span class="dot"></span><h3>Tây Bắc</h3><p>Điện Biên · Sơn La · Hòa Bình — Mộc Châu, Tà Xùa, lòng hồ sông Đà.</p></div>
+      <div class="leg reveal"><span class="dot"></span><h3>Duyên hải Bắc Bộ</h3><p>Quảng Ninh · Hải Phòng — vịnh Hạ Long, food tour đất Cảng.</p></div>
+      <div class="leg reveal"><span class="dot"></span><h3>Miền Trung</h3><p>Hà Tĩnh → Phú Yên — biển vắng, di sản Huế – Hội An, gành đá Phú Yên.</p></div>
+      <div class="leg reveal"><span class="dot"></span><h3>Ven biển Nam</h3><p>Nha Trang · Ninh Thuận · Bình Thuận · Vũng Tàu — vịnh Vĩnh Hy, đồi cát Mũi Né, biển Vũng Tàu.</p></div>
+    </div>
+  </div>
+</section>
 
-/* ---------- Tấm trượt ---------- */
-const sheet=document.getElementById('sheet');
-const handle=document.getElementById('handle');
-function setSheet(state){ sheet.classList.toggle('full', state==='full'); if(state==='full') armBack(); }
-(function(){
-  let dragging=false,startY=0,startTy=0,stageH=0,moved=false;
-  const curTy=()=>{ const m=getComputedStyle(sheet).transform;
-    const t=(m&&m!=='none')?m.match(/matrix.*\((.+)\)/):null;
-    return t?(parseFloat(t[1].split(', ')[5])||0):0; };
-  const toggle=()=> setSheet(sheet.classList.contains('full')?'peek':'full');
-  function down(e){ dragging=true; moved=false; startY=e.clientY;
-    stageH=sheet.parentElement.clientHeight; startTy=curTy();
-    sheet.style.transition='none'; try{handle.setPointerCapture(e.pointerId);}catch(_){ } }
-  function move(e){ if(!dragging) return;
-    const dy=e.clientY-startY; if(Math.abs(dy)>6) moved=true;
-    const ty=Math.max(stageH*0.04, Math.min(stageH*0.52, startTy+dy));
-    sheet.style.transform='translateY('+ty+'px)'; }
-  function up(){ if(!dragging) return; dragging=false;
-    const ty=curTy(); sheet.style.transition=''; sheet.style.transform='';
-    if(!moved) toggle(); else setSheet(ty<stageH*0.28?'full':'peek'); }
-  handle.addEventListener('pointerdown',down);
-  handle.addEventListener('pointermove',move);
-  handle.addEventListener('pointerup',up);
-  handle.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();} });
-})();
+<section class="final" id="open">
+  <div class="wrap reveal">
+    <h2>Sẵn sàng lên đường?</h2>
+    <p>Mở bản đồ, tìm điểm quanh bạn, rồi nổ máy.</p>
+    <a class="btn btn-dark" href="app/index.html" style="font-size:16px;padding:16px 30px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      Mở bản đồ Dọc Bờ
+    </a>
+  </div>
+</section>
 
-/* ---------- Toast ---------- */
-let tT;
-function toast(msg){
-  const el=document.getElementById('toast');
-  el.textContent=msg; el.classList.add('show');
-  clearTimeout(tT); tT=setTimeout(()=>el.classList.remove('show'),3000);
-}
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="brand">Dọc Bờ</div>
+      <div style="margin-top:6px">Cẩm nang phượt dọc Việt Nam · miễn phí, không quảng cáo.</div>
+    </div>
+    <div>Dữ liệu bản đồ © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a></div>
+  </div>
+</footer>
 
-/* ---------- Nút Back của điện thoại: lùi một cấp thay vì thoát ---------- */
-let _armed=false;
-function isDeep(){ return !!(activeProv || (activeType && activeType!=='all') || activeQuery || nearMode); }
-function armBack(){ if(!_armed){ try{ history.pushState({t:1},''); _armed=true; }catch(_){ } } }
-window.addEventListener('popstate',()=>{
-  _armed=false;
-  if(sheet.classList.contains('full')){ setSheet('peek'); if(isDeep()) armBack(); return; }
-  if(activeQuery){ setQuery(''); render(); return; }
-  if(activeType && activeType!=='all'){ activeType='all'; render(); return; }
-  if(activeProv){ activeProv=null; render(); return; }
-  if(nearMode){ nearMode=false; render(); return; }
-});
-
-render();
-</script>
 <script>
-  // PWA: cài lên màn hình chính + mở nhanh khi sóng yếu
-  if('serviceWorker' in navigator){
-    window.addEventListener('load', function(){
-      navigator.serviceWorker.register('sw.js').catch(function(){});
-    });
-  }
+  (function(){
+    var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var els = document.querySelectorAll('.reveal');
+    if(rm || !('IntersectionObserver' in window)){ els.forEach(function(e){e.classList.add('in');}); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, {threshold:0.14, rootMargin:'0px 0px -40px 0px'});
+    els.forEach(function(e){ io.observe(e); });
+  })();
 </script>
 </body>
 </html>
