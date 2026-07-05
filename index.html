@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dọc Bờ — cẩm nang phượt dọc Việt Nam</title>
+<meta name="description" content="431 điểm cảnh đẹp, quán ngon và chỗ ngủ, dọc từ Hà Giang xuống Vũng Tàu. Web app miễn phí cho dân phượt xe máy — mở là chạy, không cài, không tài khoản.">
+<meta property="og:title" content="Dọc Bờ — cẩm nang phượt dọc Việt Nam">
+<meta property="og:description" content="431 điểm dọc dài đất nước, ngay trong túi. Mở là chạy, không cài, không tài khoản.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sea:#0b4f5c; --sea-deep:#072e37; --teal:#0e7c86;
+    --coral:#e5643c; --sun:#e8a33d; --moss:#4e8c5a;
+    --paper:#f4f7f7; --ink:#13262b; --ink-soft:#4d6168;
+    --card:#ffffff; --line:#dfe7e7;
+    --wrap:1120px;
+    --shadow:0 10px 40px rgba(8,46,55,.12);
+    --shadow-sm:0 2px 14px rgba(8,46,55,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Be Vietnam Pro',system-ui,sans-serif;
+    color:var(--ink);background:var(--paper);line-height:1.6;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  h1,h2,h3,.brand{font-family:'Bricolage Grotesque','Be Vietnam Pro',sans-serif;letter-spacing:-.02em;line-height:1.05}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+  .eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;gap:9px;font-family:inherit;font-weight:700;
+    font-size:15px;padding:14px 24px;border-radius:14px;border:2px solid transparent;cursor:pointer;
+    transition:transform .2s ease,background .2s ease,box-shadow .2s ease;min-height:50px}
+  .btn svg{width:19px;height:19px;flex:0 0 auto}
+  .btn-primary{background:var(--coral);color:#fff;box-shadow:0 6px 20px rgba(229,100,60,.32)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(229,100,60,.42)}
+  .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}
+  .btn-ghost:hover{background:rgba(255,255,255,.1)}
+  .btn-dark{background:var(--sea);color:#fff}
+  .btn-dark:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+  .btn:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(11,79,92,.92);backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,.08)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  nav .brand{color:#fff;font-weight:800;font-size:22px;display:flex;align-items:center;gap:9px}
+  nav .brand .mk{width:22px;height:22px;color:var(--sun)}
+  nav .navcta{padding:10px 18px;font-size:14px;min-height:44px}
+
+  /* hero */
+  .hero{background:linear-gradient(160deg,var(--sea) 0%,var(--sea-deep) 100%);color:#fff;
+    position:relative;overflow:hidden;padding:64px 0 96px}
+  .hero::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background:radial-gradient(600px 300px at 78% 18%,rgba(14,124,134,.55),transparent 70%)}
+  .hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero .eyebrow{color:#8fd0d6}
+  .hero h1{font-size:clamp(2.4rem,5.6vw,4rem);font-weight:800;margin:16px 0 18px}
+  .hero h1 .u{color:var(--sun)}
+  .hero p.lede{font-size:clamp(1.02rem,1.6vw,1.2rem);color:#cfe3e5;max-width:30em;margin-bottom:30px}
+  .hero .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .hero .note{margin-top:20px;font-size:13.5px;color:#9fc4c8;display:flex;align-items:center;gap:8px}
+  .hero .note svg{width:16px;height:16px;color:var(--moss)}
+  /* sóng biển ngăn hero với phần dưới */
+  .hero .wave{position:absolute;left:0;right:0;bottom:-1px;z-index:1;line-height:0}
+  .hero .wave svg{display:block;width:100%;height:70px}
+
+  /* phone mockup (signature: show the real app) */
+  .phone-wrap{justify-self:center}
+  .phone{width:270px;height:552px;border-radius:38px;background:#0a2a31;
+    border:9px solid #0a2226;box-shadow:0 30px 70px rgba(0,0,0,.4);position:relative;overflow:hidden;
+    animation:float 6s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .phone .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:118px;height:24px;
+    background:#0a2226;border-radius:0 0 16px 16px;z-index:5}
+  .scr{position:absolute;inset:0;display:flex;flex-direction:column;background:#cfe0e2}
+  .scr .bar{background:var(--sea);color:#fff;padding:26px 16px 12px}
+  .scr .bar b{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800}
+  .scr .bar .rib{display:flex;gap:14px;margin-top:9px;font-size:9.5px;color:#9fc4c8;font-weight:600}
+  .scr .bar .rib span:first-child{color:#fff}
+  .scr .map{flex:1;position:relative;background:radial-gradient(circle at 30% 40%,#d6e6e6,#c2d8da)}
+  .scr .pin{position:absolute;width:26px;height:26px;transform:translate(-50%,-100%);
+    animation:drop .6s cubic-bezier(.2,.9,.3,1.4) both}
+  .scr .pin.p2{animation-delay:.15s} .scr .pin.p3{animation-delay:.3s}
+  @keyframes drop{0%{opacity:0;transform:translate(-50%,-160%)}100%{opacity:1;transform:translate(-50%,-100%)}}
+  .scr .pin i{display:block;width:26px;height:26px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);
+    border:2.5px solid #fff;box-shadow:0 3px 6px rgba(0,0,0,.3);display:grid;place-items:center;color:#fff}
+  .scr .pin svg{width:14px;height:14px;transform:rotate(45deg)}
+  .scr .sheet{background:var(--paper);border-radius:16px 16px 0 0;padding:9px 12px 14px;
+    box-shadow:0 -6px 20px rgba(8,46,55,.12)}
+  .scr .sheet .grip{width:34px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 9px}
+  .scr .sheet .cnt{font-size:9.5px;color:var(--ink-soft);font-weight:700;margin-bottom:7px}
+  .scr .minic{background:#fff;border-radius:11px;border-left:3px solid var(--teal);padding:9px 11px;box-shadow:var(--shadow-sm)}
+  .scr .minic b{font-family:'Bricolage Grotesque',sans-serif;font-size:12.5px;display:block}
+  .scr .minic small{font-size:9.5px;color:var(--ink-soft)}
+  .scr .minic .bd{display:flex;gap:5px;margin-top:8px}
+  .scr .minic .bd span{flex:1;text-align:center;font-size:9px;font-weight:700;padding:6px 0;border-radius:7px}
+  .scr .minic .bd .a{background:var(--teal);color:#fff}
+  .scr .minic .bd .b{background:#fff;border:1.4px solid var(--teal);color:var(--teal)}
+
+  /* stats */
+  .stats{background:var(--card);border-bottom:1px solid var(--line)}
+  .stats .wrap{display:flex;flex-wrap:wrap;justify-content:space-around;gap:18px;padding:32px 22px}
+  .stat{text-align:center;flex:1;min-width:120px}
+  .stat .n{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(2rem,5vw,2.8rem);font-weight:800;color:var(--sea);line-height:1}
+  .stat .l{font-size:13px;color:var(--ink-soft);font-weight:600;margin-top:6px}
+
+  /* section shell */
+  section.blk{padding:80px 0}
+  .head{max-width:38em;margin-bottom:40px}
+  .head h2{font-size:clamp(1.7rem,4vw,2.5rem);font-weight:800;margin:12px 0 12px}
+  .head p{color:var(--ink-soft);font-size:1.05rem}
+
+  /* features */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .feat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;
+    transition:transform .2s ease,box-shadow .2s ease}
+  .feat:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .feat .ic{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;margin-bottom:16px}
+  .feat .ic svg{width:24px;height:24px;color:#fff}
+  .feat h3{font-size:1.22rem;font-weight:700;margin-bottom:8px}
+  .feat p{color:var(--ink-soft);font-size:.98rem}
+  .i-teal{background:var(--teal)} .i-coral{background:var(--coral)}
+  .i-sun{background:var(--sun)} .i-moss{background:var(--moss)}
+
+  /* journey signature */
+  .journey{background:var(--sea);color:#fff}
+  .journey .head h2{color:#fff}
+  .journey .head p{color:#b6d3d6}
+  .route{position:relative;margin-top:26px}
+  .route::before{content:"";position:absolute;left:14px;top:8px;bottom:8px;width:2px;
+    background:linear-gradient(var(--sun),var(--teal),var(--coral))}
+  .leg{position:relative;padding:0 0 26px 44px}
+  .leg:last-child{padding-bottom:0}
+  .leg .dot{position:absolute;left:6px;top:4px;width:18px;height:18px;border-radius:50%;
+    background:var(--sun);border:3px solid var(--sea);box-shadow:0 0 0 2px var(--sun)}
+  .leg h3{font-size:1.15rem;font-weight:700}
+  .leg p{color:#b6d3d6;font-size:.95rem;margin-top:3px}
+
+  /* final cta */
+  .final{text-align:center;padding:86px 0}
+  .final h2{font-size:clamp(1.9rem,4.5vw,2.8rem);font-weight:800;margin-bottom:14px}
+  .final p{color:var(--ink-soft);font-size:1.1rem;margin-bottom:28px}
+
+  /* footer */
+  footer{background:var(--sea-deep);color:#9fc4c8;padding:40px 0;font-size:13.5px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center}
+  footer .brand{color:#fff;font-weight:800;font-size:18px}
+  footer a:hover{color:#fff;text-decoration:underline}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* responsive */
+  @media (max-width:860px){
+    .hero{padding:44px 0 76px}
+    .hero .wrap{grid-template-columns:1fr;gap:40px}
+    .hero .copy{order:1} .phone-wrap{order:2}
+    .grid{grid-template-columns:1fr}
+    section.blk{padding:60px 0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+    .reveal{opacity:1;transform:none}
+    .phone{animation:none}
+    .scr .pin{animation:none;opacity:1}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">
+      <svg class="mk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      Dọc Bờ
+    </div>
+    <a class="btn btn-primary navcta" href="app/index.html">Mở bản đồ</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="copy">
+      <span class="eyebrow">Cẩm nang phượt · Bắc · Trung · Nam</span>
+      <h1>Đi dọc bờ.<br><span class="u">Dừng đúng chỗ.</span></h1>
+      <p class="lede">431 điểm cảnh đẹp, quán ngon và chỗ ngủ — dọc từ địa đầu Hà Giang xuống tới biển Vũng Tàu. Mở trên điện thoại là chạy: không cài đặt, không tài khoản, không quảng cáo.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="app/index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          Mở bản đồ
+        </a>
+        <a class="btn btn-ghost" href="#features">Xem có gì</a>
+      </div>
+      <p class="note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        Mở là chạy ngay trên trình duyệt — không phải tải gì cả.
+      </p>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone" role="img" aria-label="Ảnh minh hoạ ứng dụng Dọc Bờ: bản đồ với các điểm và thẻ thông tin">
+        <div class="notch"></div>
+        <div class="scr">
+          <div class="bar">
+            <b>Dọc Bờ</b>
+            <div class="rib"><span>Tất cả</span><span>Nha Trang</span><span>Ninh Thuận</span><span>Vũng Tàu</span></div>
+          </div>
+          <div class="map">
+            <div class="pin p1" style="left:38%;top:34%"><i style="background:#0e7c86"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg></i></div>
+            <div class="pin p2" style="left:63%;top:48%"><i style="background:#e5643c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></i></div>
+            <div class="pin p3" style="left:47%;top:62%"><i style="background:#4e8c5a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg></i></div>
+          </div>
+          <div class="sheet">
+            <div class="grip"></div>
+            <div class="cnt">431 điểm · Nha Trang</div>
+            <div class="minic">
+              <b>Tháp Bà Ponagar</b>
+              <small>Nha Trang · cách ~0,7 km</small>
+              <div class="bd"><span class="b">Bản đồ</span><span class="a">Chỉ đường</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path fill="#ffffff" d="M0,40 C240,72 480,72 720,44 C960,16 1200,16 1440,40 L1440,70 L0,70 Z"/></svg>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat reveal"><div class="n">431</div><div class="l">điểm đến</div></div>
+    <div class="stat reveal"><div class="n">21</div><div class="l">tỉnh &amp; thành</div></div>
+    <div class="stat reveal"><div class="n">3</div><div class="l">miền Bắc–Trung–Nam</div></div>
+    <div class="stat reveal"><div class="n">0đ</div><div class="l">miễn phí hoàn toàn</div></div>
+  </div>
+</div>
+
+<section class="blk" id="features">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">Có gì trong túi</span>
+      <h2>Mở ra là thấy ngay quanh mình có gì đáng dừng</h2>
+      <p>Không tài khoản, không rối rắm. Đúng thứ dân phượt cần lúc tấp xe vào lề.</p>
+    </div>
+    <div class="grid">
+      <div class="feat reveal">
+        <div class="ic i-teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14"/><path d="M15 6v14"/></svg></div>
+        <h3>Bản đồ phân loại</h3>
+        <p>431 điểm chia ba màu — teal cho cảnh đẹp, cam cho quán ăn, lục cho chỗ nghỉ. Liếc bản đồ là biết chỗ nào ngắm, chỗ nào lấp bụng.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="ic i-coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="2" x2="5" y1="12" y2="12"/><line x1="19" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="5"/><line x1="12" x2="12" y1="19" y2="22"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3>Gần tôi</h3>
+        <p>Một nút thôi: app đọc vị trí rồi xếp mọi điểm theo khoảng cách thật. Quán gần nhất, cảnh gần nhất nhảy thẳng lên đầu.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="ic i-sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+        <h3>Tìm &amp; lọc tức thì</h3>
+        <p>Gõ tên món, tên điểm hay tên tỉnh — kết quả hiện ngay khi tay còn đang gõ. Lọc theo loại hoặc theo vùng chỉ trong một chạm.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="ic i-moss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div>
+        <h3>Chỉ đường &amp; gọi</h3>
+        <p>Mỗi thẻ mở thẳng Google Maps để dẫn đường, gọi quán ngay nếu có số. Hết cảnh chép tay toạ độ giữa đường.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="blk journey">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow" style="color:var(--sun)">Phủ dọc đất nước</span>
+      <h2>Một mạch từ địa đầu tới biển Nam</h2>
+      <p>Đi theo cung đường quen của dân phượt, gom điểm đều tay qua từng vùng.</p>
+    </div>
+    <div class="route">
+      <div class="leg reveal"><span class="dot"></span><h3>Đông Bắc</h3><p>Hà Giang · Cao Bằng · Lạng Sơn · Tuyên Quang — cao nguyên đá, thác Bản Giốc, đèo Mã Pí Lèng.</p></div>
+      <div class="leg reveal"><span class="dot"></span><h3>Tây Bắc</h3><p>Điện Biên · Sơn La · Hòa Bình — Mộc Châu, Tà Xùa, lòng hồ sông Đà.</p></div>
+      <div class="leg reveal"><span class="dot"></span><h3>Duyên hải Bắc Bộ</h3><p>Quảng Ninh · Hải Phòng — vịnh Hạ Long, food tour đất Cảng.</p></div>
+      <div class="leg reveal"><span class="dot"></span><h3>Miền Trung</h3><p>Hà Tĩnh → Phú Yên — biển vắng, di sản Huế – Hội An, gành đá Phú Yên.</p></div>
+      <div class="leg reveal"><span class="dot"></span><h3>Ven biển Nam</h3><p>Nha Trang · Ninh Thuận · Bình Thuận · Vũng Tàu — vịnh Vĩnh Hy, đồi cát Mũi Né, biển Vũng Tàu.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="final" id="open">
+  <div class="wrap reveal">
+    <h2>Sẵn sàng lên đường?</h2>
+    <p>Mở bản đồ, tìm điểm quanh bạn, rồi nổ máy.</p>
+    <a class="btn btn-dark" href="app/index.html" style="font-size:16px;padding:16px 30px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      Mở bản đồ Dọc Bờ
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="brand">Dọc Bờ</div>
+      <div style="margin-top:6px">Cẩm nang phượt dọc Việt Nam · miễn phí, không quảng cáo.</div>
+    </div>
+    <div>Dữ liệu bản đồ © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a></div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var els = document.querySelectorAll('.reveal');
+    if(rm || !('IntersectionObserver' in window)){ els.forEach(function(e){e.classList.add('in');}); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, {threshold:0.14, rootMargin:'0px 0px -40px 0px'});
+    els.forEach(function(e){ io.observe(e); });
+  })();
+</script>
+</body>
+</html>
