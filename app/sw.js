@@ -1,8 +1,10 @@
-/* Dọc Bờ — service worker nhẹ.
-   Mục tiêu: mở nhanh + trụ được khi sóng chập chờn.
-   Cache "vỏ app" (HTML/JS/CSS/data/icon). KHÔNG cache tile bản đồ (OSM) — tile luôn lấy từ mạng. */
+/* Dọc Bờ — service worker.
+   - index.html, data.js, manifest, trang gốc: stale-while-revalidate
+     (trả cache ngay cho nhanh/offline, đồng thời tải bản mới về cho lần sau).
+   - Thư viện & icon tĩnh (lib/, assets/): cache-first.
+   - Tile bản đồ (OSM) và mọi thứ khác origin: luôn lấy từ mạng, không cache. */
 
-const CACHE = 'docbo-v1';
+const CACHE = 'docbo-v2';
 const SHELL = [
   './',
   './index.html',
@@ -17,12 +19,14 @@ const SHELL = [
   './assets/icon-512.png'
 ];
 
+// File hay đổi -> luôn ngầm cập nhật
+function isFresh(url){
+  const p = url.pathname;
+  return p.endsWith('/') || p.endsWith('/index.html') || p.endsWith('/data.js') || p.endsWith('/manifest.json');
+}
+
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE)
-      .then(c => c.addAll(SHELL))
-      .then(() => self.skipWaiting())
-  );
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e => {
@@ -37,21 +41,31 @@ self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return; // tile OSM + fonts: qua mạng
 
-  // Tile bản đồ (OpenStreetMap) và mọi thứ khác origin: để trình duyệt tự lấy từ mạng.
-  if (url.origin !== self.location.origin) return;
-
-  // Tài nguyên cùng origin (vỏ app): ưu tiên cache, thiếu thì lấy mạng rồi cache thêm.
-  e.respondWith(
-    caches.match(req).then(hit => {
-      if (hit) return hit;
-      return fetch(req).then(res => {
+  if (isFresh(url)) {
+    // stale-while-revalidate
+    e.respondWith(
+      caches.open(CACHE).then(cache =>
+        cache.match(req).then(cached => {
+          const net = fetch(req).then(res => {
+            if (res && res.status === 200) cache.put(req, res.clone());
+            return res;
+          }).catch(() => cached);
+          return cached || net;
+        })
+      )
+    );
+  } else {
+    // cache-first cho tài nguyên tĩnh
+    e.respondWith(
+      caches.match(req).then(hit => hit || fetch(req).then(res => {
         if (res && res.status === 200 && res.type === 'basic') {
           const copy = res.clone();
           caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
         }
         return res;
-      }).catch(() => caches.match('./index.html'));
-    })
-  );
+      }).catch(() => caches.match('./index.html')))
+    );
+  }
 });

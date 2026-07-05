@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Thay YOUR-SITE bằng tên miền Netlify thật của bạn.
+Sitemap: https://YOUR-SITE.netlify.app/sitemap.xml
