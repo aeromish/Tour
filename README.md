@@ -68,7 +68,7 @@ Khi đã chạy trên HTTPS, nút "Vị trí của tôi" sẽ xin quyền địn
 - Toạ độ các điểm hiện là **ước lượng** cho những mốc lớn — nên thay bằng toạ độ thật khi rảnh.
 - **Tính năng:** bản đồ toàn màn + danh sách kéo lên/xuống (bottom-sheet); nút **Gần tôi** (◎) sắp các điểm theo khoảng cách thực; marker có màu + biểu tượng theo loại (🏞️ cảnh đẹp · 🍜 ăn uống · 🛏️ lưu trú); tìm kiếm, lọc loại, lọc theo tỉnh.
 
-Hiện có 431 điểm trải 21 tỉnh/thành: Đông Bắc (Hà Giang, Cao Bằng, Lạng Sơn, Tuyên Quang), Tây Bắc (Điện Biên, Sơn La, Hòa Bình), duyên hải Bắc Bộ (Quảng Ninh, Hải Phòng), miền Trung (Hà Tĩnh → Phú Yên) và ven biển phía Nam (Nha Trang, Ninh Thuận, Bình Thuận, Vũng Tàu).
+Hiện có 464 điểm trải 23 tỉnh/thành: Đông Bắc (Hà Giang, Cao Bằng, Lạng Sơn, Tuyên Quang), Tây Bắc (Điện Biên, Sơn La, Hòa Bình), duyên hải Bắc Bộ (Quảng Ninh, Hải Phòng), miền Trung (Hà Tĩnh → Phú Yên) và ven biển phía Nam (Nha Trang, Ninh Thuận, Bình Thuận, Vũng Tàu).
 - Nút "Chỉ đường" mở Google Maps; nếu điểm chưa có link `map` thì nó tự tìm theo tên.
 
 ## Điền toạ độ tự động cho điểm còn thiếu (tuỳ chọn)
