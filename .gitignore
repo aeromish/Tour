@@ -1,0 +1,5 @@
+# Rác sinh khi chạy script geocode ở máy
+app/tools/__pycache__/
+app/.geocode_cache.json
+app/.resolve_cache.json
+.DS_Store
