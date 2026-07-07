@@ -6,7 +6,7 @@
 <title>Dọc Bờ · Quản trị</title>
 <meta name="robots" content="noindex">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
   :root{
     --sea:#0b4f5c; --teal:#0e7c86; --coral:#e5643c; --moss:#4e8c5a; --sun:#e8a33d;
@@ -85,13 +85,36 @@
 </style>
 </head>
 <body>
-<div id="root"></div>
+<div id="root"><div style="padding:40px;text-align:center;color:#4d6168;font-family:sans-serif">Đang tải giao diện quản trị…</div></div>
 
-<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<script>
+  // Tự chẩn đoán: nếu sau 4s giao diện chưa dựng, báo rõ thiếu gì (thay vì trắng câm)
+  setTimeout(function(){
+    var root=document.getElementById('root');
+    if(root && root.children.length && root.getAttribute('data-app')==='1') return;
+    var miss=[];
+    if(!window.React) miss.push('React');
+    if(!window.ReactDOM) miss.push('ReactDOM');
+    if(!window.supabase) miss.push('Supabase');
+    if(!window.L) miss.push('Leaflet');
+    if(!window.Babel) miss.push('Babel');
+    if(root && root.getAttribute('data-app')!=='1'){
+      root.innerHTML='<div style="max-width:520px;margin:60px auto;padding:26px;'
+        +'font-family:sans-serif;background:#fff;border-radius:14px;box-shadow:0 10px 40px rgba(8,46,55,.12)">'
+        +'<h3 style="margin:0 0 10px;color:#0b4f5c">Chưa tải được giao diện</h3>'
+        +(miss.length
+           ? '<p>Không nạp được: <b>'+miss.join(', ')+'</b>.</p>'
+             +'<p>Nhiều khả năng trình duyệt/mạng đang chặn CDN. Thử: tắt chặn quảng cáo của Cốc Cốc cho trang này (biểu tượng khiên trên thanh địa chỉ → tắt), hoặc mở bằng <b>Chrome</b>.</p>'
+           : '<p>Thư viện đã tải nhưng giao diện chưa dựng. Mở Console (F12) và gửi dòng lỗi màu đỏ cho người hỗ trợ.</p>')
+        +'</div>';
+    }
+  },4000);
+</script>
 
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef } = React;
@@ -402,7 +425,9 @@ function App() {
   return session ? <Dashboard session={session}/> : <Login/>;
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+const _rootEl=document.getElementById('root');
+_rootEl.setAttribute('data-app','1');
+ReactDOM.createRoot(_rootEl).render(<App/>);
 </script>
 </body>
 </html>
