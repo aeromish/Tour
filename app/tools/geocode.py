@@ -40,7 +40,7 @@ UA = "doc-bo-geocoder/1.0 (lien he qua Netlify site cua ban)"
 CACHE = ".geocode_cache.json"
 
 def load_places(text):
-    m = re.search(r"const PLACES = (\[.*\n\]);", text, re.S)
+    m = re.search(r"(?:const|var) PLACES = (\[.*\n\]);", text, re.S)
     if not m:
         sys.exit("Không tìm thấy mảng PLACES trong data.js (file có đúng định dạng không?).")
     return json.loads(m.group(1)), m.start(1), m.end(1)
@@ -143,7 +143,7 @@ def main():
 
     out = write_places(text, s, e, places)
     # kiểm tra lại JSON hợp lệ trước khi ghi đè
-    json.loads(re.search(r"const PLACES = (\[.*\n\]);", out, re.S).group(1))
+    json.loads(re.search(r"(?:const|var) PLACES = (\[.*\n\]);", out, re.S).group(1))
     open(args.data, "w", encoding="utf-8").write(out)
 
     print(f"\nXong. Điền thêm {filled} toạ độ · {missed} điểm không tìm thấy.")

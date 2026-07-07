@@ -7,13 +7,13 @@
    dựa vào link Maps thật nên nút "Chỉ đường" vẫn mở đúng chỗ dù không có ll.
    ============================================================ */
 
-const TYPE = {
+var TYPE = {
   view:  {label:'Cảnh đẹp', color:'#0e7c86'},
   food:  {label:'Ăn uống',  color:'#e5643c'},
   stay:  {label:'Lưu trú',  color:'#4e8c5a'},
 };
 
-const PROVINCES = [
+var PROVINCES = [
   {key:'hg', name:'Hà Giang',      c:[23.00,105.15]},
   {key:'cb', name:'Cao Bằng',      c:[22.75,106.40]},
   {key:'ls', name:'Lạng Sơn',      c:[21.85,106.76]},
@@ -39,7 +39,7 @@ const PROVINCES = [
   {key:'vt', name:'Vũng Tàu',      c:[10.4113,107.1362]},
 ];
 
-const PLACES = [
+var PLACES = [
  {
   "n": "Cột cờ Lũng Cú",
   "t": "view",

@@ -5,11 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0b4f5c">
 <title>Dọc Bờ — cẩm nang phượt</title>
-<meta name="description" content="Dọc Bờ — cẩm nang phượt Việt Nam: bản đồ và danh sách điểm cảnh đẹp, quán ăn, chỗ nghỉ từ Đông Bắc, Tây Bắc tới miền Trung.">
+<meta name="description" content="Bản đồ 464 điểm cảnh đẹp, quán ăn và chỗ nghỉ dọc Việt Nam (Bắc–Trung–Nam) cho dân phượt xe máy. Miễn phí, cài được lên màn hình, chạy cả khi mất sóng.">
 <meta property="og:title" content="Dọc Bờ — cẩm nang phượt">
 <meta property="og:description" content="Bản đồ điểm đến, quán ăn và chỗ nghỉ dọc Việt Nam cho dân phượt.">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
+<meta property="og:site_name" content="Dọc Bờ">
+<meta property="og:url" content="https://lentour.pages.dev/app/">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:image" content="https://lentour.pages.dev/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lentour.pages.dev/og-image.png">
+<link rel="canonical" href="https://lentour.pages.dev/app/">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
 <link rel="apple-touch-icon" href="assets/icon-192.png">
 <link rel="manifest" href="manifest.json">
@@ -249,6 +257,7 @@
 
 <script src="lib/leaflet.js"></script>
 <script src="lib/leaflet.markercluster.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="data.js"></script>
 <script>
 /* Dữ liệu TYPE, PROVINCES, PLACES được nạp từ data.js */
@@ -302,12 +311,14 @@ function haversine(a,b){
 }
 const fmtKm=d=>d<10?d.toFixed(1)+' km':Math.round(d)+' km';
 
-const provName=k=>PROVINCES.find(x=>x.key===k).name;
+const provName=k=>{const p=PROVINCES.find(x=>x.key===k);return p?p.name:k;};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 /* ---------- Dải vùng: 'Tất cả' + các tỉnh ---------- */
 const ribbon = document.getElementById('ribbon');
-[{key:'',name:'Tất cả'}, ...PROVINCES].forEach(pv=>{
+function buildRibbon(){
+ ribbon.innerHTML='';
+ [{key:'',name:'Tất cả'}, ...PROVINCES].forEach(pv=>{
   const b=document.createElement('button');
   b.className='stop'; b.dataset.k=pv.key;
   b.innerHTML=`<div class="dot"></div><div class="lbl">${pv.name}</div>`;
@@ -319,18 +330,22 @@ const ribbon = document.getElementById('ribbon');
     render();
   };
   ribbon.appendChild(b);
-});
+ });
+}
 
 /* ---------- Bộ lọc loại ---------- */
 const typesEl=document.getElementById('types');
-const allTypes=[['all','Tất cả',null],...Object.entries(TYPE).map(([k,v])=>[k,v.label,v.color])];
-allTypes.forEach(([k,lbl,color])=>{
+function buildTypes(){
+ typesEl.innerHTML='';
+ const allTypes=[['all','Tất cả',null],...Object.entries(TYPE).map(([k,v])=>[k,v.label,v.color])];
+ allTypes.forEach(([k,lbl,color])=>{
   const c=document.createElement('button');
   c.className='chip'+(k==='all'?' on':''); c.dataset.k=k;
   c.innerHTML=(color?`<span class="sw" style="background:${color}"></span>`:'')+lbl;
   c.onclick=()=>{activeType=k; render();};
   typesEl.appendChild(c);
-});
+ });
+}
 
 /* ---------- Tìm kiếm ---------- */
 const qEl=document.getElementById('q');
@@ -554,7 +569,46 @@ window.addEventListener('popstate',()=>{
   if(nearMode){ nearMode=false; render(); return; }
 });
 
-render();
+/* ---------- Nguồn dữ liệu: Supabase (động) + data.js (dự phòng offline) ---------- */
+const SB_URL='https://musbrsfduxvihlmomvvu.supabase.co';
+const SB_KEY='sb_publishable_AqpgPIy5OFrbp7o8Ix09-Q_8_0fGFOB';
+function sortByProvince(){
+  const ord={}; PROVINCES.forEach((p,i)=>ord[p.key]=i);
+  PLACES.sort((a,b)=>(ord[a.p]??99)-(ord[b.p]??99) || String(a.n).localeCompare(b.n,'vi'));
+}
+function paintAll(){ buildRibbon(); buildTypes(); render(); }
+
+// 1) Có cache gần nhất -> vẽ ngay (mở nhanh, đúng bản mới nhất kể cả khi offline)
+try{
+  const c=JSON.parse(localStorage.getItem('docbo_cache')||'null');
+  if(c && Array.isArray(c.PLACES) && c.PLACES.length){ PLACES=c.PLACES; PROVINCES=c.PROVINCES; TYPE=c.TYPE; }
+}catch(_){}
+sortByProvince();
+paintAll();  // vẽ từ cache hoặc từ data.js (dự phòng)
+
+// 2) Có mạng -> tải bản mới nhất từ Supabase rồi cập nhật
+async function loadFromSupabase(){
+  if(!window.supabase) return;
+  try{
+    const sb=supabase.createClient(SB_URL, SB_KEY);
+    const [pl,pv,tp]=await Promise.all([
+      sb.from('places').select('name,type,province,lat,lng,note,tel,map_url').eq('status','published'),
+      sb.from('provinces').select('key,name,center_lat,center_lng,sort_order').order('sort_order'),
+      sb.from('types').select('key,label,color'),
+    ]);
+    if(pl.error||pv.error||tp.error) return;
+    if(!pl.data || !pl.data.length) return;
+    PLACES = pl.data.map(r=>({ n:r.name, t:r.type, p:r.province,
+      ll:(r.lat!=null && r.lng!=null)?[r.lat,r.lng]:undefined,
+      note:r.note||undefined, tel:r.tel||undefined, map:r.map_url||undefined }));
+    PROVINCES = pv.data.map(r=>({ key:r.key, name:r.name, c:[r.center_lat, r.center_lng] }));
+    const T={}; tp.data.forEach(r=>T[r.key]={label:r.label, color:r.color}); TYPE=T;
+    sortByProvince();
+    try{ localStorage.setItem('docbo_cache', JSON.stringify({PLACES,PROVINCES,TYPE})); }catch(_){}
+    paintAll();
+  }catch(_){ /* offline -> giữ bản dự phòng */ }
+}
+loadFromSupabase();
 </script>
 <script>
   // PWA: cài lên màn hình chính + mở nhanh khi sóng yếu

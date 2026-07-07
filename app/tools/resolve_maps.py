@@ -32,7 +32,7 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 CACHE = ".resolve_cache.json"
 
 def load_places(text):
-    m = re.search(r"const PLACES = (\[.*\n\]);", text, re.S)
+    m = re.search(r"(?:const|var) PLACES = (\[.*\n\]);", text, re.S)
     if not m:
         sys.exit("Không tìm thấy mảng PLACES trong data.js.")
     return json.loads(m.group(1)), m.start(1), m.end(1)
@@ -113,7 +113,7 @@ def main():
             print(f"[{i}/{len(todo)}] · {p['n']} (không rút được toạ độ)")
 
     out = write_places(text, s, e, places)
-    json.loads(re.search(r"const PLACES = (\[.*\n\]);", out, re.S).group(1))  # kiểm tra hợp lệ
+    json.loads(re.search(r"(?:const|var) PLACES = (\[.*\n\]);", out, re.S).group(1))  # kiểm tra hợp lệ
     open(args.data, "w", encoding="utf-8").write(out)
     print(f"\nXong. Điền thêm {filled} toạ độ · {missed} không rút được.")
     print(f"Đã cập nhật {args.data}. Mở lại web để xem bản đồ dày marker hơn.")
