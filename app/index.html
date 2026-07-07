@@ -30,25 +30,25 @@
 <link rel="stylesheet" href="lib/MarkerCluster.Default.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@8..144,400..700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --sea:#0b4f5c;          /* xanh biển sâu */
-    --sea-2:#0e7c86;        /* teal cảnh đẹp */
-    --sun:#e8a33d;          /* vàng cát/nắng */
-    --coral:#e5643c;        /* cam san hô - ăn uống */
-    --moss:#4e8c5a;         /* xanh rêu - lưu trú */
-    --ink:#13262b;          /* chữ đậm */
-    --ink-soft:#4d6168;     /* chữ phụ */
-    --paper:#f4f7f7;        /* nền mát, đọc tốt ngoài nắng */
+    --sea:#2c3768;          /* chàm - header/thương hiệu */
+    --sea-2:#2c3768;         /* chàm - cảnh đẹp + accent */
+    --sun:#e0a12e;           /* hổ phách - lưu trú */
+    --coral:#f2685c;         /* san hô - ăn uống */
+    --moss:#e0a12e;          /* hổ phách - lưu trú */
+    --ink:#1a2246;           /* chữ đậm (chàm đen) */
+    --ink-soft:#5b6285;      /* chữ phụ */
+    --paper:#ffffff;         /* nền trắng sạch */
     --card:#ffffff;
-    --line:#dfe7e7;
-    --shadow:0 2px 14px rgba(11,79,92,.10);
+    --line:#e6e8f0;
+    --shadow:0 2px 14px rgba(26,34,70,.10);
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html,body{height:100%}
   body{
-    font-family:'Be Vietnam Pro',system-ui,sans-serif;
+    font-family:'Google Sans Flex',system-ui,sans-serif;
     background:var(--paper);color:var(--ink);
     display:flex;flex-direction:column;height:100dvh;overflow:hidden;
   }
@@ -63,7 +63,7 @@
   .brand{display:flex;align-items:center;justify-content:space-between;gap:10px}
   .brand-txt{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;min-width:0}
   .brand h1{
-    font-family:'Bricolage Grotesque','Be Vietnam Pro',sans-serif;
+    font-family:'Google Sans Flex',system-ui,sans-serif;
     font-weight:800;font-size:26px;letter-spacing:-.02em;line-height:1;
   }
   .brand .tag{font-size:12.5px;color:#a9d2d6;font-weight:500}
@@ -162,7 +162,7 @@
   .fbbtn.hdr:hover{background:rgba(255,255,255,.2)}
   .fb-overlay{position:fixed;inset:0;background:rgba(8,30,36,.55);display:grid;place-items:center;z-index:2000;padding:16px}
   .fb-modal{background:#fff;border-radius:16px;padding:22px;width:100%;max-width:380px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow)}
-  .fb-modal h3{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;color:var(--sea);margin-bottom:12px}
+  .fb-modal h3{font-family:'Google Sans Flex',sans-serif;font-size:18px;color:var(--sea);margin-bottom:12px}
   .fb-modal label{display:block;font-size:12px;font-weight:700;color:var(--ink-soft);margin:10px 0 4px}
   .fb-modal input,.fb-modal select,.fb-modal textarea{width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:9px;font-family:inherit;font-size:14px}
   .fb-foot{display:flex;gap:10px;margin-top:18px}
@@ -234,8 +234,8 @@
   .stop:focus-visible,.chip:focus-visible,.searchbar .clr:focus-visible,
   .mbtn:focus-visible,.handle:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:10px}
   .marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{
-    background:var(--sea-2);color:#fff;font-family:'Be Vietnam Pro';font-weight:700}
-  .leaflet-popup-content{font-family:'Be Vietnam Pro';font-size:14px;font-weight:600;margin:10px 12px}
+    background:var(--sea-2);color:#fff;font-family:'Google Sans Flex';font-weight:700}
+  .leaflet-popup-content{font-family:'Google Sans Flex';font-size:14px;font-weight:600;margin:10px 12px}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>

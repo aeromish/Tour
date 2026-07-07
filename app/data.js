@@ -8,9 +8,9 @@
    ============================================================ */
 
 var TYPE = {
-  view:  {label:'Cảnh đẹp', color:'#0e7c86'},
-  food:  {label:'Ăn uống',  color:'#e5643c'},
-  stay:  {label:'Lưu trú',  color:'#4e8c5a'},
+  view:  {label:'Cảnh đẹp', color:'#2c3768'},
+  food:  {label:'Ăn uống',  color:'#f2685c'},
+  stay:  {label:'Lưu trú',  color:'#e0a12e'},
 };
 
 var PROVINCES = [
