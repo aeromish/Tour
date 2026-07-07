@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dọc Bờ · Quản trị</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  :root{
+    --sea:#0b4f5c; --teal:#0e7c86; --coral:#e5643c; --moss:#4e8c5a; --sun:#e8a33d;
+    --paper:#f4f7f7; --ink:#13262b; --ink-soft:#4d6168; --card:#fff; --line:#dfe7e7;
+    --shadow:0 10px 40px rgba(8,46,55,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Be Vietnam Pro',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
+  h1,h2,h3,.brand{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-.02em}
+  button{font-family:inherit;cursor:pointer}
+  input,select,textarea{font-family:inherit;font-size:14px}
+  .btn{display:inline-flex;align-items:center;gap:7px;border:0;border-radius:10px;padding:10px 16px;font-weight:700;font-size:14px;transition:transform .15s,box-shadow .15s,background .15s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-primary{background:var(--coral);color:#fff}
+  .btn-sea{background:var(--sea);color:#fff}
+  .btn-ghost{background:#fff;color:var(--sea);border:1.5px solid var(--line)}
+  .btn-danger{background:#fff;color:#c0392b;border:1.5px solid #e6c3bd}
+  .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--ink-soft);margin-bottom:5px}
+  .field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;background:#fff}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--teal);border-color:var(--teal)}
+  .row{display:flex;gap:12px}
+  .row>*{flex:1}
+
+  /* login */
+  .login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;
+    background:linear-gradient(160deg,var(--sea),#072e37)}
+  .login-card{background:#fff;border-radius:20px;padding:34px;width:100%;max-width:390px;box-shadow:var(--shadow)}
+  .login-card .brand{font-size:26px;font-weight:800;color:var(--sea);display:flex;align-items:center;gap:9px;margin-bottom:4px}
+  .login-card .brand svg{width:24px;height:24px;color:var(--sun)}
+  .login-card .sub{color:var(--ink-soft);font-size:14px;margin-bottom:22px}
+  .err{background:#fdecea;color:#c0392b;border:1px solid #f0c9c3;border-radius:9px;padding:10px 12px;font-size:13px;margin-bottom:14px}
+
+  /* shell */
+  .topbar{background:var(--sea);color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+  .topbar .brand{font-size:20px;font-weight:800;display:flex;align-items:center;gap:9px}
+  .topbar .brand svg{width:20px;height:20px;color:var(--sun)}
+  .topbar .who{display:flex;align-items:center;gap:12px;font-size:13px;color:#cfe3e5}
+  .wrap{max-width:1200px;margin:0 auto;padding:22px 20px 60px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+  .toolbar .search{flex:1;min-width:180px}
+  .toolbar input,.toolbar select{padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;background:#fff}
+  .count{color:var(--ink-soft);font-size:13px;font-weight:600;margin-bottom:8px}
+
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:middle}
+  th{background:#eef4f4;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft)}
+  tr:last-child td{border-bottom:0}
+  tr:hover td{background:#fafcfc}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700}
+  .pill.pub{background:#e3f2ea;color:#2f7a4f}
+  .pill.draft{background:#fdf0dd;color:#a86a12}
+  .tbl-actions{display:flex;gap:6px;justify-content:flex-end}
+  .icon-btn{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;font-size:12.5px;font-weight:700;color:var(--sea)}
+  .icon-btn.del{color:#c0392b;border-color:#e6c3bd}
+  .muted{color:var(--ink-soft)}
+
+  /* modal */
+  .overlay{position:fixed;inset:0;background:rgba(8,30,36,.55);display:grid;place-items:center;padding:16px;z-index:50}
+  .modal{background:var(--paper);border-radius:18px;width:100%;max-width:900px;max-height:92vh;overflow:auto;box-shadow:var(--shadow)}
+  .modal-head{position:sticky;top:0;background:var(--paper);padding:18px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;z-index:2}
+  .modal-head h2{font-size:19px}
+  .modal-body{padding:22px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .modal-foot{position:sticky;bottom:0;background:var(--paper);padding:16px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px}
+  #picker{height:300px;border-radius:12px;border:1.5px solid var(--line);overflow:hidden}
+  .pin-div{background:var(--teal);width:22px;height:22px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:2.5px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+  .imgs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .imgs .thumb{position:relative;width:64px;height:64px;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+  .imgs .thumb img{width:100%;height:100%;object-fit:cover}
+  .imgs .thumb button{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);color:#fff;border:0;border-radius:6px;width:18px;height:18px;font-size:11px;line-height:1}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--sea);color:#fff;padding:11px 18px;border-radius:10px;font-size:14px;font-weight:600;z-index:99;box-shadow:var(--shadow)}
+  .loading{padding:40px;text-align:center;color:var(--ink-soft)}
+  @media (max-width:720px){ .modal-body{grid-template-columns:1fr} th.hide,td.hide{display:none} }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+// ====== CẤU HÌNH ======  (publishable key — công khai được, RLS bảo vệ ghi)
+const SB_URL = 'https://musbrsfduxvihlmomvvu.supabase.co';
+const SB_KEY = 'sb_publishable_AqpgPIy5OFrbp7o8Ix09-Q_8_0fGFOB';
+const STORAGE_BUCKET = 'places';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+const PinLogo = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+);
+
+function Toast({msg}) { return msg ? <div className="toast">{msg}</div> : null; }
+
+// ---------------- ĐĂNG NHẬP ----------------
+function Login() {
+  const [email,setEmail]=useState(''); const [pw,setPw]=useState('');
+  const [err,setErr]=useState(''); const [busy,setBusy]=useState(false);
+  const submit = async (e)=>{
+    e.preventDefault(); setErr(''); setBusy(true);
+    const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+    if (error) setErr(error.message);
+    setBusy(false);
+  };
+  return (
+    <div className="login-wrap">
+      <form className="login-card" onSubmit={submit}>
+        <div className="brand"><PinLogo/> Dọc Bờ</div>
+        <div className="sub">Trang quản trị nội dung</div>
+        {err && <div className="err">{err}</div>}
+        <div className="field"><label>Email</label>
+          <input type="email" value={email} onChange={e=>setEmail(e.target.value)} required autoFocus/></div>
+        <div className="field"><label>Mật khẩu</label>
+          <input type="password" value={pw} onChange={e=>setPw(e.target.value)} required/></div>
+        <button className="btn btn-sea" style={{width:'100%',justifyContent:'center'}} disabled={busy}>
+          {busy ? 'Đang vào…' : 'Đăng nhập'}</button>
+      </form>
+    </div>
+  );
+}
+
+// ---------------- MAP PICKER ----------------
+function MapPicker({ lat, lng, onPick }) {
+  const ref = useRef(null); const mapRef = useRef(null); const mkRef = useRef(null);
+  useEffect(()=>{
+    const start = (lat!=null && lng!=null) ? [lat,lng] : [16.0,107.8];
+    const map = L.map(ref.current).setView(start, (lat!=null?12:5));
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+    const icon = L.divIcon({className:'', html:'<div class="pin-div"></div>', iconSize:[22,22], iconAnchor:[11,20]});
+    const place = (ll)=>{
+      if(mkRef.current) mkRef.current.setLatLng(ll);
+      else { mkRef.current = L.marker(ll,{icon,draggable:true}).addTo(map);
+        mkRef.current.on('dragend',()=>{const p=mkRef.current.getLatLng();onPick(p.lat,p.lng);}); }
+    };
+    if(lat!=null && lng!=null) place([lat,lng]);
+    map.on('click',(e)=>{ place([e.latlng.lat,e.latlng.lng]); onPick(e.latlng.lat,e.latlng.lng); });
+    mapRef.current = map;
+    setTimeout(()=>map.invalidateSize(), 60);
+    return ()=> map.remove();
+  },[]);
+  // cập nhật marker khi nhập tay
+  useEffect(()=>{
+    if(!mapRef.current) return;
+    if(lat!=null && lng!=null){
+      const icon = L.divIcon({className:'', html:'<div class="pin-div"></div>', iconSize:[22,22], iconAnchor:[11,20]});
+      if(mkRef.current) mkRef.current.setLatLng([lat,lng]);
+      else mkRef.current = L.marker([lat,lng],{icon}).addTo(mapRef.current);
+    }
+  },[lat,lng]);
+  return <div id="picker" ref={ref}></div>;
+}
+
+// ---------------- FORM THÊM/SỬA ----------------
+const blank = { name:'',type:'view',province:'',lat:'',lng:'',note:'',tel:'',map_url:'',images:[],status:'draft' };
+
+function Editor({ init, provinces, types, onClose, onSaved, toast }) {
+  const [f,setF]=useState(()=>({ ...blank, ...init,
+    lat: init?.lat ?? '', lng: init?.lng ?? '', images: init?.images || [] }));
+  const [busy,setBusy]=useState(false); const [upBusy,setUpBusy]=useState(false);
+  const set=(k,v)=>setF(s=>({...s,[k]:v}));
+
+  const save = async ()=>{
+    if(!f.name.trim()){ toast('Chưa có tên điểm'); return; }
+    if(!f.province){ toast('Chưa chọn tỉnh'); return; }
+    setBusy(true);
+    const payload = {
+      name:f.name.trim(), type:f.type, province:f.province,
+      lat: f.lat===''?null:Number(f.lat), lng: f.lng===''?null:Number(f.lng),
+      note:f.note||null, tel:f.tel||null, map_url:f.map_url||null,
+      images:f.images, status:f.status
+    };
+    let error;
+    if(init?.id){ ({error} = await sb.from('places').update(payload).eq('id',init.id)); }
+    else { ({error} = await sb.from('places').insert(payload)); }
+    setBusy(false);
+    if(error){ toast('Lỗi: '+error.message); return; }
+    toast(init?.id ? 'Đã cập nhật' : 'Đã thêm điểm');
+    onSaved();
+  };
+
+  const upload = async (e)=>{
+    const file = e.target.files[0]; if(!file) return;
+    setUpBusy(true);
+    const path = Date.now()+'_'+file.name.replace(/[^\w.\-]/g,'_');
+    const { error } = await sb.storage.from(STORAGE_BUCKET).upload(path, file, {upsert:false});
+    if(error){ toast('Lỗi tải ảnh: '+error.message); setUpBusy(false); return; }
+    const { data } = sb.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+    set('images',[...f.images, data.publicUrl]); setUpBusy(false);
+  };
+
+  return (
+    <div className="overlay" onMouseDown={e=>{ if(e.target.className==='overlay') onClose(); }}>
+      <div className="modal">
+        <div className="modal-head">
+          <h2>{init?.id ? 'Sửa điểm' : 'Thêm điểm mới'}</h2>
+          <button className="icon-btn" onClick={onClose}>Đóng</button>
+        </div>
+        <div className="modal-body">
+          <div>
+            <div className="field"><label>Tên điểm *</label>
+              <input value={f.name} onChange={e=>set('name',e.target.value)} placeholder="VD: Hồ Ba Bể"/></div>
+            <div className="row">
+              <div className="field"><label>Loại</label>
+                <select value={f.type} onChange={e=>set('type',e.target.value)}>
+                  {types.map(t=><option key={t.key} value={t.key}>{t.label}</option>)}
+                </select></div>
+              <div className="field"><label>Tỉnh *</label>
+                <select value={f.province} onChange={e=>set('province',e.target.value)}>
+                  <option value="">— chọn —</option>
+                  {provinces.map(p=><option key={p.key} value={p.key}>{p.name}</option>)}
+                </select></div>
+            </div>
+            <div className="field"><label>Mô tả / địa chỉ</label>
+              <textarea rows="3" value={f.note} onChange={e=>set('note',e.target.value)}
+                placeholder="Mô tả ngắn, hoặc địa chỉ quán (số nhà + đường)…"></textarea></div>
+            <div className="row">
+              <div className="field"><label>Số điện thoại</label>
+                <input value={f.tel} onChange={e=>set('tel',e.target.value)}/></div>
+              <div className="field"><label>Link Google Maps</label>
+                <input value={f.map_url} onChange={e=>set('map_url',e.target.value)}/></div>
+            </div>
+            <div className="field"><label>Ảnh</label>
+              <input type="file" accept="image/*" onChange={upload} disabled={upBusy}/>
+              {upBusy && <span className="muted" style={{fontSize:12}}> đang tải…</span>}
+              <div className="imgs">
+                {f.images.map((u,i)=>(
+                  <div className="thumb" key={i}>
+                    <img src={u} alt=""/>
+                    <button onClick={()=>set('images',f.images.filter((_,j)=>j!==i))}>✕</button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="field" style={{marginBottom:8}}>
+              <label>Toạ độ — bấm lên bản đồ để chọn (hoặc nhập tay)</label></div>
+            <MapPicker lat={f.lat===''?null:Number(f.lat)} lng={f.lng===''?null:Number(f.lng)}
+              onPick={(la,ln)=>{ set('lat',la.toFixed(6)); set('lng',ln.toFixed(6)); }}/>
+            <div className="row" style={{marginTop:10}}>
+              <div className="field"><label>Vĩ độ (lat)</label>
+                <input value={f.lat} onChange={e=>set('lat',e.target.value)} placeholder="trống nếu chưa có"/></div>
+              <div className="field"><label>Kinh độ (lng)</label>
+                <input value={f.lng} onChange={e=>set('lng',e.target.value)}/></div>
+            </div>
+            <div className="field"><label>Trạng thái</label>
+              <select value={f.status} onChange={e=>set('status',e.target.value)}>
+                <option value="draft">Nháp (chưa hiện trên app)</option>
+                <option value="published">Công khai</option>
+              </select></div>
+          </div>
+        </div>
+        <div className="modal-foot">
+          <button className="btn btn-ghost" onClick={onClose}>Huỷ</button>
+          <button className="btn btn-primary" onClick={save} disabled={busy}>
+            {busy ? 'Đang lưu…' : (init?.id ? 'Lưu thay đổi' : 'Thêm điểm')}</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------- DASHBOARD ----------------
+function Dashboard({ session }) {
+  const [places,setPlaces]=useState(null);
+  const [provinces,setProvinces]=useState([]);
+  const [types,setTypes]=useState([]);
+  const [q,setQ]=useState(''); const [fProv,setFProv]=useState(''); const [fType,setFType]=useState(''); const [fStatus,setFStatus]=useState('');
+  const [editing,setEditing]=useState(null); // {id,...} | {} (mới) | null
+  const [toastMsg,setToastMsg]=useState(''); const toast=(m)=>{ setToastMsg(m); setTimeout(()=>setToastMsg(''),2500); };
+
+  const load = async ()=>{
+    const [pl,pv,tp] = await Promise.all([
+      sb.from('places').select('*'),
+      sb.from('provinces').select('*').order('sort_order'),
+      sb.from('types').select('*'),
+    ]);
+    if(pl.error){ toast('Lỗi tải điểm: '+pl.error.message); setPlaces([]); return; }
+    setProvinces(pv.data||[]); setTypes(tp.data||[]);
+    const order = {}; (pv.data||[]).forEach((p,i)=>order[p.key]=i);
+    const rows = (pl.data||[]).sort((a,b)=>
+      (order[a.province]??99)-(order[b.province]??99) || a.name.localeCompare(b.name,'vi'));
+    setPlaces(rows);
+  };
+  useEffect(()=>{ load(); },[]);
+
+  const provName=(k)=>{ const p=provinces.find(x=>x.key===k); return p?p.name:k; };
+  const typeOf =(k)=> types.find(x=>x.key===k) || {label:k,color:'#888'};
+
+  const filtered = (places||[]).filter(p=>{
+    if(fProv && p.province!==fProv) return false;
+    if(fType && p.type!==fType) return false;
+    if(fStatus && p.status!==fStatus) return false;
+    if(q){ const s=(p.name+' '+(p.note||'')+' '+provName(p.province)).toLowerCase();
+      if(!s.includes(q.toLowerCase())) return false; }
+    return true;
+  });
+
+  const del = async (p)=>{
+    if(!confirm('Xoá "'+p.name+'"?')) return;
+    const { error } = await sb.from('places').delete().eq('id',p.id);
+    if(error){ toast('Lỗi xoá: '+error.message); return; }
+    toast('Đã xoá'); load();
+  };
+
+  return (
+    <div>
+      <div className="topbar">
+        <div className="brand"><PinLogo/> Dọc Bờ · Quản trị</div>
+        <div className="who">
+          <span>{session.user.email}</span>
+          <button className="icon-btn" style={{color:'#fff',borderColor:'rgba(255,255,255,.3)',background:'transparent'}}
+            onClick={()=>sb.auth.signOut()}>Đăng xuất</button>
+        </div>
+      </div>
+      <div className="wrap">
+        <div className="toolbar">
+          <button className="btn btn-primary" onClick={()=>setEditing({})}>+ Thêm điểm</button>
+          <input className="search" placeholder="Tìm tên, mô tả, tỉnh…" value={q} onChange={e=>setQ(e.target.value)}/>
+          <select value={fProv} onChange={e=>setFProv(e.target.value)}>
+            <option value="">Mọi tỉnh</option>
+            {provinces.map(p=><option key={p.key} value={p.key}>{p.name}</option>)}
+          </select>
+          <select value={fType} onChange={e=>setFType(e.target.value)}>
+            <option value="">Mọi loại</option>
+            {types.map(t=><option key={t.key} value={t.key}>{t.label}</option>)}
+          </select>
+          <select value={fStatus} onChange={e=>setFStatus(e.target.value)}>
+            <option value="">Mọi trạng thái</option>
+            <option value="published">Công khai</option>
+            <option value="draft">Nháp</option>
+          </select>
+        </div>
+
+        {places===null ? <div className="loading">Đang tải…</div> : (
+          <>
+            <div className="count">{filtered.length} điểm</div>
+            <table>
+              <thead><tr>
+                <th>Tên</th><th>Loại</th><th className="hide">Tỉnh</th>
+                <th className="hide">Toạ độ</th><th>Trạng thái</th><th></th>
+              </tr></thead>
+              <tbody>
+                {filtered.map(p=>{
+                  const t=typeOf(p.type);
+                  return (
+                    <tr key={p.id}>
+                      <td><b>{p.name}</b></td>
+                      <td><span className="dot" style={{background:t.color}}></span>{t.label}</td>
+                      <td className="hide">{provName(p.province)}</td>
+                      <td className="hide">{p.lat!=null ? <span className="muted">✓ có</span> : <span style={{color:'#c0392b'}}>– thiếu</span>}</td>
+                      <td><span className={'pill '+(p.status==='published'?'pub':'draft')}>{p.status==='published'?'Công khai':'Nháp'}</span></td>
+                      <td><div className="tbl-actions">
+                        <button className="icon-btn" onClick={()=>setEditing(p)}>Sửa</button>
+                        <button className="icon-btn del" onClick={()=>del(p)}>Xoá</button>
+                      </div></td>
+                    </tr>
+                  );
+                })}
+                {filtered.length===0 && <tr><td colSpan="6" className="loading">Không có điểm nào khớp.</td></tr>}
+              </tbody>
+            </table>
+          </>
+        )}
+      </div>
+
+      {editing!==null && (
+        <Editor init={editing} provinces={provinces} types={types} toast={toast}
+          onClose={()=>setEditing(null)} onSaved={()=>{ setEditing(null); load(); }}/>
+      )}
+      <Toast msg={toastMsg}/>
+    </div>
+  );
+}
+
+// ---------------- APP ----------------
+function App() {
+  const [session,setSession]=useState(undefined);
+  useEffect(()=>{
+    sb.auth.getSession().then(({data})=>setSession(data.session));
+    const { data:sub } = sb.auth.onAuthStateChange((_e,s)=>setSession(s));
+    return ()=>sub.subscription.unsubscribe();
+  },[]);
+  if(session===undefined) return <div className="loading" style={{marginTop:80}}>Đang khởi động…</div>;
+  return session ? <Dashboard session={session}/> : <Login/>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
