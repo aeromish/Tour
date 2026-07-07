@@ -34,40 +34,75 @@
 
   /* login */
   .login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;
-    background:linear-gradient(160deg,var(--sea),#072e37)}
+    background:linear-gradient(160deg,var(--sea),#161d3d)}
   .login-card{background:#fff;border-radius:20px;padding:34px;width:100%;max-width:390px;box-shadow:var(--shadow)}
   .login-card .brand{font-size:26px;font-weight:800;color:var(--sea);display:flex;align-items:center;gap:9px;margin-bottom:4px}
   .login-card .brand svg{width:24px;height:24px;color:var(--sun)}
   .login-card .sub{color:var(--ink-soft);font-size:14px;margin-bottom:22px}
   .err{background:#fdecea;color:#c0392b;border:1px solid #f0c9c3;border-radius:9px;padding:10px 12px;font-size:13px;margin-bottom:14px}
 
-  /* shell */
-  .topbar{background:var(--sea);color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
-  .topbar .brand{font-size:20px;font-weight:800;display:flex;align-items:center;gap:9px}
-  .topbar .brand svg{width:20px;height:20px;color:var(--sun)}
-  .topbar .who{display:flex;align-items:center;gap:12px;font-size:13px;color:#cfe3e5}
-  .wrap{max-width:1200px;margin:0 auto;padding:22px 20px 60px}
-  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
-  .toolbar .search{flex:1;min-width:180px}
-  .toolbar input,.toolbar select{padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;background:#fff}
-  .count{color:var(--ink-soft);font-size:13px;font-weight:600;margin-bottom:8px}
-
-  table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
-  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:middle}
-  th{background:#eef4f4;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft)}
-  tr:last-child td{border-bottom:0}
-  tr:hover td{background:#fafcfc}
-  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
-  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700}
+  /* ===== Dashboard shell ===== */
+  .shell{display:flex;min-height:100vh}
+  .sidebar{width:236px;flex-shrink:0;background:var(--sea);color:#fff;display:flex;flex-direction:column;padding:20px 16px;position:sticky;top:0;height:100vh}
+  .sidebar .brand{font-size:20px;font-weight:800;display:flex;align-items:center;gap:9px}
+  .sidebar .brand svg{width:20px;height:20px;color:var(--coral)}
+  .side-sub{font-size:12px;color:rgba(255,255,255,.55);margin:3px 0 22px}
+  .sidebar nav{display:flex;flex-direction:column;gap:4px}
+  .navlink{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:11px 13px;border:0;border-radius:10px;background:transparent;color:rgba(255,255,255,.75);font-size:14px;font-weight:600;transition:.15s}
+  .navlink svg{width:18px;height:18px;flex:none}
+  .navlink:hover{background:rgba(255,255,255,.08);color:#fff}
+  .navlink.active{background:rgba(255,255,255,.15);color:#fff}
+  .navlink .cnt{margin-left:auto;background:var(--coral);color:#fff;font-size:11px;font-weight:700;min-width:20px;height:20px;border-radius:999px;display:grid;place-items:center;padding:0 6px}
+  .sidebar .user{margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.14)}
+  .sidebar .user .email{font-size:12px;color:rgba(255,255,255,.7);word-break:break-all;margin-bottom:9px}
+  .sidebar .logout{width:100%;padding:9px;border:1px solid rgba(255,255,255,.25);border-radius:9px;background:transparent;color:#fff;font-size:13px;font-weight:600}
+  .sidebar .logout:hover{background:rgba(255,255,255,.1)}
+  .main{flex:1;min-width:0;display:flex;flex-direction:column}
+  .main-head{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .main-head h1{font-size:22px;font-weight:800}
+  .head-actions{display:flex;gap:10px;align-items:center}
+  .head-actions .search{width:260px;max-width:40vw;padding:10px 13px;border:1.5px solid var(--line);border-radius:10px}
+  .main-body{padding:24px 28px 60px}
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:22px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 17px;box-shadow:0 2px 10px rgba(26,34,70,.04)}
+  .kpi .bar{height:3px;width:26px;border-radius:2px;margin-bottom:11px}
+  .kpi .n{font-size:25px;font-weight:800;color:var(--ink);line-height:1}
+  .kpi .l{font-size:12px;color:var(--ink-soft);margin-top:4px;font-weight:600}
+  .filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+  .filters select{padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;background:#fff}
+  .count{color:var(--ink-soft);font-size:13px;font-weight:600}
+  .tbl-wrap{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(26,34,70,.05)}
+  table{width:100%;border-collapse:collapse}
+  th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:middle}
+  th{background:#f3f4fb;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft)}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover td{background:#fafaff}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+  .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700}
   .pill.pub{background:#e3f2ea;color:#2f7a4f}
   .pill.draft{background:#fdf0dd;color:#a86a12}
   .tbl-actions{display:flex;gap:6px;justify-content:flex-end}
-  .icon-btn{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;font-size:12.5px;font-weight:700;color:var(--sea)}
+  .icon-btn{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:6px 11px;font-size:12.5px;font-weight:700;color:var(--sea)}
+  .icon-btn:hover{background:var(--paper)}
   .icon-btn.del{color:#c0392b;border-color:#e6c3bd}
   .muted{color:var(--ink-soft)}
+  @media (max-width:860px){
+    .shell{flex-direction:column}
+    .sidebar{width:100%;height:auto;position:static;flex-direction:row;align-items:center;padding:12px 16px;gap:12px}
+    .side-sub{display:none}
+    .sidebar nav{flex-direction:row;gap:6px;margin-left:6px}
+    .sidebar .user{margin-top:0;margin-left:auto;padding-top:0;border-top:0;display:flex;align-items:center;gap:10px}
+    .sidebar .user .email{display:none}
+    .main-head{flex-wrap:wrap;padding:14px 18px}
+    .head-actions{width:100%}
+    .head-actions .search{flex:1;width:auto;max-width:none}
+    .main-body{padding:18px}
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    th.hide,td.hide{display:none}
+  }
 
   /* modal */
-  .overlay{position:fixed;inset:0;background:rgba(8,30,36,.55);display:grid;place-items:center;padding:16px;z-index:50}
+  .overlay{position:fixed;inset:0;background:rgba(26,34,70,.5);display:grid;place-items:center;padding:16px;z-index:50}
   .modal{background:var(--paper);border-radius:18px;width:100%;max-width:900px;max-height:92vh;overflow:auto;box-shadow:var(--shadow)}
   .modal-head{position:sticky;top:0;background:var(--paper);padding:18px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;z-index:2}
   .modal-head h2{font-size:19px}
@@ -390,68 +425,100 @@ function Dashboard({ session }) {
     toast('Đã xoá'); load();
   };
 
+  const all=places||[];
+  const pub=all.filter(p=>p.status==='published').length;
+  const draft=all.length-pub;
+  const noCoord=all.filter(p=>p.lat==null).length;
+
   return (
-    <div>
-      <div className="topbar">
-        <div className="brand"><PinLogo/> Dọc Bờ · Quản trị</div>
-        <div className="who">
-          <button className="icon-btn" style={{color:'#fff',borderColor:'rgba(255,255,255,.3)',background: sugCount? 'rgba(232,163,61,.9)':'transparent', fontWeight:700}}
-            onClick={()=>setShowSugs(true)}>Góp ý{sugCount?` (${sugCount})`:''}</button>
-          <span>{session.user.email}</span>
-          <button className="icon-btn" style={{color:'#fff',borderColor:'rgba(255,255,255,.3)',background:'transparent'}}
-            onClick={()=>sb.auth.signOut()}>Đăng xuất</button>
+    <div className="shell">
+      <aside className="sidebar">
+        <div className="brand"><PinLogo/> Dọc Bờ</div>
+        <div className="side-sub">Quản trị nội dung</div>
+        <nav>
+          <button className="navlink active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Địa điểm
+          </button>
+          <button className="navlink" onClick={()=>setShowSugs(true)}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Góp ý {sugCount>0 && <span className="cnt">{sugCount}</span>}
+          </button>
+        </nav>
+        <div className="user">
+          <div className="email">{session.user.email}</div>
+          <button className="logout" onClick={()=>sb.auth.signOut()}>Đăng xuất</button>
         </div>
-      </div>
-      <div className="wrap">
-        <div className="toolbar">
-          <button className="btn btn-primary" onClick={()=>setEditing({})}>+ Thêm điểm</button>
-          <input className="search" placeholder="Tìm tên, mô tả, tỉnh…" value={q} onChange={e=>setQ(e.target.value)}/>
-          <select value={fProv} onChange={e=>setFProv(e.target.value)}>
-            <option value="">Mọi tỉnh</option>
-            {provinces.map(p=><option key={p.key} value={p.key}>{p.name}</option>)}
-          </select>
-          <select value={fType} onChange={e=>setFType(e.target.value)}>
-            <option value="">Mọi loại</option>
-            {types.map(t=><option key={t.key} value={t.key}>{t.label}</option>)}
-          </select>
-          <select value={fStatus} onChange={e=>setFStatus(e.target.value)}>
-            <option value="">Mọi trạng thái</option>
-            <option value="published">Công khai</option>
-            <option value="draft">Nháp</option>
-          </select>
+      </aside>
+
+      <main className="main">
+        <div className="main-head">
+          <h1>Địa điểm</h1>
+          <div className="head-actions">
+            <input className="search" placeholder="Tìm tên, mô tả, tỉnh…" value={q} onChange={e=>setQ(e.target.value)}/>
+            <button className="btn btn-primary" onClick={()=>setEditing({})}>+ Thêm điểm</button>
+          </div>
         </div>
 
-        {places===null ? <div className="loading">Đang tải…</div> : (
-          <>
-            <div className="count">{filtered.length} điểm</div>
-            <table>
-              <thead><tr>
-                <th>Tên</th><th>Loại</th><th className="hide">Tỉnh</th>
-                <th className="hide">Toạ độ</th><th>Trạng thái</th><th></th>
-              </tr></thead>
-              <tbody>
-                {filtered.map(p=>{
-                  const t=typeOf(p.type);
-                  return (
-                    <tr key={p.id}>
-                      <td><b>{p.name}</b></td>
-                      <td><span className="dot" style={{background:t.color}}></span>{t.label}</td>
-                      <td className="hide">{provName(p.province)}</td>
-                      <td className="hide">{p.lat!=null ? <span className="muted">✓ có</span> : <span style={{color:'#c0392b'}}>– thiếu</span>}</td>
-                      <td><span className={'pill '+(p.status==='published'?'pub':'draft')}>{p.status==='published'?'Công khai':'Nháp'}</span></td>
-                      <td><div className="tbl-actions">
-                        <button className="icon-btn" onClick={()=>setEditing(p)}>Sửa</button>
-                        <button className="icon-btn del" onClick={()=>del(p)}>Xoá</button>
-                      </div></td>
-                    </tr>
-                  );
-                })}
-                {filtered.length===0 && <tr><td colSpan="6" className="loading">Không có điểm nào khớp.</td></tr>}
-              </tbody>
-            </table>
-          </>
-        )}
-      </div>
+        <div className="main-body">
+          {places===null ? <div className="loading">Đang tải…</div> : (
+            <>
+              <div className="kpis">
+                <div className="kpi"><div className="bar" style={{background:'var(--sea)'}}></div><div className="n">{all.length}</div><div className="l">Tổng điểm</div></div>
+                <div className="kpi"><div className="bar" style={{background:'#2f9e5f'}}></div><div className="n">{pub}</div><div className="l">Đã công khai</div></div>
+                <div className="kpi"><div className="bar" style={{background:'#e0a12e'}}></div><div className="n">{draft}</div><div className="l">Bản nháp</div></div>
+                <div className="kpi"><div className="bar" style={{background:'#f2685c'}}></div><div className="n">{noCoord}</div><div className="l">Thiếu toạ độ</div></div>
+                <div className="kpi"><div className="bar" style={{background:'#7b86c0'}}></div><div className="n">{sugCount}</div><div className="l">Góp ý chờ</div></div>
+              </div>
+
+              <div className="filters">
+                <select value={fProv} onChange={e=>setFProv(e.target.value)}>
+                  <option value="">Mọi tỉnh</option>
+                  {provinces.map(p=><option key={p.key} value={p.key}>{p.name}</option>)}
+                </select>
+                <select value={fType} onChange={e=>setFType(e.target.value)}>
+                  <option value="">Mọi loại</option>
+                  {types.map(t=><option key={t.key} value={t.key}>{t.label}</option>)}
+                </select>
+                <select value={fStatus} onChange={e=>setFStatus(e.target.value)}>
+                  <option value="">Mọi trạng thái</option>
+                  <option value="published">Công khai</option>
+                  <option value="draft">Nháp</option>
+                </select>
+                <span className="count" style={{marginLeft:'auto'}}>{filtered.length} / {all.length} điểm</span>
+              </div>
+
+              <div className="tbl-wrap">
+                <table>
+                  <thead><tr>
+                    <th>Tên</th><th>Loại</th><th className="hide">Tỉnh</th>
+                    <th className="hide">Toạ độ</th><th>Trạng thái</th><th></th>
+                  </tr></thead>
+                  <tbody>
+                    {filtered.map(p=>{
+                      const t=typeOf(p.type);
+                      return (
+                        <tr key={p.id}>
+                          <td><b>{p.name}</b></td>
+                          <td><span className="dot" style={{background:t.color}}></span>{t.label}</td>
+                          <td className="hide">{provName(p.province)}</td>
+                          <td className="hide">{p.lat!=null ? <span className="muted">✓ có</span> : <span style={{color:'#c0392b'}}>– thiếu</span>}</td>
+                          <td><span className={'pill '+(p.status==='published'?'pub':'draft')}>{p.status==='published'?'Công khai':'Nháp'}</span></td>
+                          <td><div className="tbl-actions">
+                            <button className="icon-btn" onClick={()=>setEditing(p)}>Sửa</button>
+                            <button className="icon-btn del" onClick={()=>del(p)}>Xoá</button>
+                          </div></td>
+                        </tr>
+                      );
+                    })}
+                    {filtered.length===0 && <tr><td colSpan="6" className="loading">Không có điểm nào khớp.</td></tr>}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+        </div>
+      </main>
 
       {editing!==null && (
         <Editor init={editing} provinces={provinces} types={types} toast={toast}
