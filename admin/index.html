@@ -116,7 +116,7 @@
   },4000);
 </script>
 
-<script type="text/babel" data-presets="react">
+<script type="text/jsx-source" id="app-code">
 const { useState, useEffect, useRef } = React;
 
 // ====== CẤU HÌNH ======  (publishable key — công khai được, RLS bảo vệ ghi)
@@ -428,6 +428,23 @@ function App() {
 const _rootEl=document.getElementById('root');
 _rootEl.setAttribute('data-app','1');
 ReactDOM.createRoot(_rootEl).render(<App/>);
+</script>
+<script>
+(function boot(){
+  if(!(window.Babel && window.React && window.ReactDOM && window.supabase)){ return void setTimeout(boot,60); }
+  try{
+    var code = document.getElementById('app-code').textContent;
+    var out = Babel.transform(code, {presets:[['react',{runtime:'classic'}]]}).code;
+    var el = document.createElement('script');
+    el.textContent = out;
+    document.body.appendChild(el);
+  }catch(e){
+    document.getElementById('root').innerHTML =
+      '<div style="max-width:520px;margin:60px auto;padding:24px;font-family:sans-serif;background:#fff;border-radius:14px;box-shadow:0 10px 40px rgba(8,46,55,.12)">'
+      +'<h3 style="color:#0b4f5c;margin:0 0 8px">Lỗi biên dịch giao diện</h3>'
+      +'<p style="color:#c0392b">'+e.message+'</p></div>';
+  }
+})();
 </script>
 </body>
 </html>
