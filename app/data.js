@@ -110,11 +110,7 @@ const PLACES = [
   "n": "Dốc Thẩm Mã",
   "t": "view",
   "p": "hg",
-  "note": "Dốc cua tay áo nổi tiếng để check-in.",
-  "ll": [
-   23.169,
-   105.19417
-  ]
+  "note": "Dốc cua tay áo nổi tiếng để check-in."
  },
  {
   "n": "Ruộng bậc thang Hoàng Su Phì",
@@ -156,31 +152,19 @@ const PLACES = [
   "n": "Hồ Thang Hen",
   "t": "view",
   "p": "cb",
-  "note": "Hồ trên núi nước xanh ngọc, mùa nước đẹp.",
-  "ll": [
-   22.75815,
-   106.29481
-  ]
+  "note": "Hồ trên núi nước xanh ngọc, mùa nước đẹp."
  },
  {
   "n": "Núi Mắt Thần",
   "t": "view",
   "p": "cb",
-  "note": "Núi thủng độc đáo bên thảo nguyên Quây Sơn.",
-  "ll": [
-   22.77821,
-   106.31129
-  ]
+  "note": "Núi thủng độc đáo bên thảo nguyên Quây Sơn."
  },
  {
   "n": "Làng rèn Phúc Sen",
   "t": "view",
   "p": "cb",
-  "note": "Làng nghề rèn dao truyền thống của người Nùng.",
-  "ll": [
-   22.69002,
-   106.41394
-  ]
+  "note": "Làng nghề rèn dao truyền thống của người Nùng."
  },
  {
   "n": "Đèo Mã Phục",
@@ -220,11 +204,7 @@ const PLACES = [
   "n": "Bánh cuốn Cao Bằng",
   "t": "food",
   "p": "cb",
-  "note": "Bánh cuốn chan nước xương nóng.",
-  "ll": [
-   22.66481,
-   106.26104
-  ]
+  "note": "Bánh cuốn chan nước xương nóng."
  },
  {
   "n": "Động & chùa Tam Thanh",
@@ -276,31 +256,19 @@ const PLACES = [
   "n": "Thảo nguyên Đồng Lâm",
   "t": "view",
   "p": "ls",
-  "note": "‘Vịnh Hạ Long trên cạn’ ở Hữu Lũng, cắm trại.",
-  "ll": [
-   10.95092,
-   108.20966
-  ]
+  "note": "‘Vịnh Hạ Long trên cạn’ ở Hữu Lũng, cắm trại."
  },
  {
   "n": "Ải Chi Lăng",
   "t": "view",
   "p": "ls",
-  "note": "Cửa ải lịch sử hiểm trở.",
-  "ll": [
-   21.57356,
-   106.50258
-  ]
+  "note": "Cửa ải lịch sử hiểm trở."
  },
  {
   "n": "Chợ Đông Kinh",
   "t": "view",
   "p": "ls",
-  "note": "Chợ lớn nhất xứ Lạng, hàng hoá phong phú.",
-  "ll": [
-   21.0272,
-   105.85658
-  ]
+  "note": "Chợ lớn nhất xứ Lạng, hàng hoá phong phú."
  },
  {
   "n": "Khu di tích Tân Trào",
@@ -326,21 +294,13 @@ const PLACES = [
   "n": "Suối khoáng Mỹ Lâm",
   "t": "view",
   "p": "tq",
-  "note": "Suối khoáng nóng để nghỉ dưỡng.",
-  "ll": [
-   21.76863,
-   105.12655
-  ]
+  "note": "Suối khoáng nóng để nghỉ dưỡng."
  },
  {
   "n": "Thác Bản Ba",
   "t": "view",
   "p": "tq",
-  "note": "Thác nhiều tầng giữa rừng Chiêm Hoá.",
-  "ll": [
-   22.51889,
-   105.50581
-  ]
+  "note": "Thác nhiều tầng giữa rừng Chiêm Hoá."
  },
  {
   "n": "Thác Mơ (Pác Ban)",
@@ -394,11 +354,7 @@ const PLACES = [
   "n": "Bảo tàng Tuyên Quang",
   "t": "view",
   "p": "tq",
-  "note": "Hiện vật lịch sử – văn hoá xứ Tuyên.",
-  "ll": [
-   21.81967,
-   105.20952
-  ]
+  "note": "Hiện vật lịch sử – văn hoá xứ Tuyên."
  },
  {
   "n": "Gỏi cá bỗng sông Lô",
@@ -410,11 +366,7 @@ const PLACES = [
   "n": "Bánh cuốn Tuyên Quang",
   "t": "food",
   "p": "tq",
-  "note": "Bánh cuốn nóng ăn ở chợ đêm.",
-  "ll": [
-   22.82473,
-   104.98569
-  ]
+  "note": "Bánh cuốn nóng ăn ở chợ đêm."
  },
  {
   "n": "Hồ Ba Bể",
@@ -528,11 +480,7 @@ const PLACES = [
   "n": "Lẩu cá hồ Ba Bể",
   "t": "food",
   "p": "bk",
-  "note": "Lẩu cá tươi đánh bắt trên hồ.",
-  "ll": [
-   15.92667,
-   107.96509
-  ]
+  "note": "Lẩu cá tươi đánh bắt trên hồ."
  },
  {
   "n": "Bánh trứng kiến",
@@ -636,11 +584,7 @@ const PLACES = [
   "n": "Núi Văn – Núi Võ",
   "t": "view",
   "p": "tn",
-  "note": "Hai núi thiêng gắn truyền thuyết, view vùng chè (Đại Từ).",
-  "ll": [
-   15.92667,
-   107.96509
-  ]
+  "note": "Hai núi thiêng gắn truyền thuyết, view vùng chè (Đại Từ)."
  },
  {
   "n": "Hồ Ghềnh Chè",
@@ -664,11 +608,7 @@ const PLACES = [
   "n": "Trà Tân Cương",
   "t": "food",
   "p": "tn",
-  "note": "Đặc sản ‘đệ nhất danh trà’, mua tại vườn Tân Cương.",
-  "ll": [
-   11.41937,
-   106.4625
-  ]
+  "note": "Đặc sản ‘đệ nhất danh trà’, mua tại vườn Tân Cương."
  },
  {
   "n": "Bánh chưng Bờ Đậu",
@@ -686,11 +626,7 @@ const PLACES = [
   "n": "Cơm lam – bánh ngải",
   "t": "food",
   "p": "tn",
-  "note": "Cơm lam ống tre, bánh ngải lá ngải cứu của người Tày.",
-  "ll": [
-   10.02093,
-   105.75385
-  ]
+  "note": "Cơm lam ống tre, bánh ngải lá ngải cứu của người Tày."
  },
  {
   "n": "Bánh cooc mò",
@@ -732,21 +668,13 @@ const PLACES = [
   "n": "Sở chỉ huy Mường Phăng",
   "t": "view",
   "p": "db",
-  "note": "Hầm Đại tướng Võ Nguyên Giáp giữa rừng.",
-  "ll": [
-   21.45127,
-   103.16377
-  ]
+  "note": "Hầm Đại tướng Võ Nguyên Giáp giữa rừng."
  },
  {
   "n": "A Pa Chải",
   "t": "view",
   "p": "db",
-  "note": "Cực Tây Tổ quốc, ngã ba biên giới Việt–Lào–Trung.",
-  "ll": [
-   22.39102,
-   102.23009
-  ]
+  "note": "Cực Tây Tổ quốc, ngã ba biên giới Việt–Lào–Trung."
  },
  {
   "n": "Hồ Pá Khoang",
@@ -784,11 +712,7 @@ const PLACES = [
   "n": "Thành Bản Phủ",
   "t": "view",
   "p": "db",
-  "note": "Thành cổ + đền Hoàng Công Chất.",
-  "ll": [
-   10.77015,
-   106.67635
-  ]
+  "note": "Thành cổ + đền Hoàng Công Chất."
  },
  {
   "n": "Xôi nếp nương – gà đen",
@@ -876,11 +800,7 @@ const PLACES = [
   "n": "Ngọc Chiến",
   "t": "view",
   "p": "sl",
-  "note": "Bản Thái, suối khoáng nóng, ruộng bậc thang (Mường La).",
-  "ll": [
-   21.61089,
-   104.20188
-  ]
+  "note": "Bản Thái, suối khoáng nóng, ruộng bậc thang (Mường La)."
  },
  {
   "n": "Bê chao Mộc Châu",
@@ -892,11 +812,7 @@ const PLACES = [
   "n": "Cá hồi – cá tầm Mộc Châu",
   "t": "food",
   "p": "sl",
-  "note": "Trại cá nước lạnh, lẩu cá hồi.",
-  "ll": [
-   21.47679,
-   104.15929
-  ]
+  "note": "Trại cá nước lạnh, lẩu cá hồi."
  },
  {
   "n": "Mai Châu – Bản Lác",
@@ -922,11 +838,7 @@ const PLACES = [
   "n": "Đèo Thung Khe",
   "t": "view",
   "p": "hb",
-  "note": "Đèo Đá Trắng mây mù, ngô & trứng nướng ven đường.",
-  "ll": [
-   20.67482,
-   105.1041
-  ]
+  "note": "Đèo Đá Trắng mây mù, ngô & trứng nướng ven đường."
  },
  {
   "n": "Suối khoáng Kim Bôi",
@@ -970,21 +882,13 @@ const PLACES = [
   "n": "Hang Kia – Pà Cò",
   "t": "view",
   "p": "hb",
-  "note": "Săn mây, vườn mận đào, bản người Mông.",
-  "ll": [
-   20.71661,
-   104.98651
-  ]
+  "note": "Săn mây, vườn mận đào, bản người Mông."
  },
  {
   "n": "Lũng Vân",
   "t": "view",
   "p": "hb",
-  "note": "‘Nóc nhà xứ Mường’, bản vùng cao mây phủ.",
-  "ll": [
-   23.35968,
-   105.2983
-  ]
+  "note": "‘Nóc nhà xứ Mường’, bản vùng cao mây phủ."
  },
  {
   "n": "Bảo tàng Không gian Văn hoá Mường",
@@ -996,11 +900,7 @@ const PLACES = [
   "n": "Cơm lam – lợn mán",
   "t": "food",
   "p": "hb",
-  "note": "Cơm lam ống tre, thịt lợn mán nướng.",
-  "ll": [
-   20.70905,
-   105.25764
-  ]
+  "note": "Cơm lam ống tre, thịt lợn mán nướng."
  },
  {
   "n": "Vịnh Hạ Long",
@@ -1046,21 +946,13 @@ const PLACES = [
   "n": "Đảo Quan Lạn",
   "t": "view",
   "p": "qn",
-  "note": "Đảo hoang sơ, bãi Minh Châu.",
-  "ll": [
-   20.85936,
-   107.48022
-  ]
+  "note": "Đảo hoang sơ, bãi Minh Châu."
  },
  {
   "n": "Trà Cổ – Móng Cái",
   "t": "view",
   "p": "qn",
-  "note": "Bãi biển dài gần biên giới.",
-  "ll": [
-   21.48188,
-   108.02759
-  ]
+  "note": "Bãi biển dài gần biên giới."
  },
  {
   "n": "Hang Sửng Sốt",
@@ -1116,11 +1008,7 @@ const PLACES = [
   "n": "Chả mực Hạ Long",
   "t": "food",
   "p": "qn",
-  "note": "Chả mực giã tay, ăn với xôi/bánh cuốn.",
-  "ll": [
-   10.75566,
-   106.67634
-  ]
+  "note": "Chả mực giã tay, ăn với xôi/bánh cuốn."
  },
  {
   "n": "Đảo Cát Bà",
@@ -1162,141 +1050,85 @@ const PLACES = [
   "n": "Bánh đa cua Kỳ Đồng",
   "t": "food",
   "p": "hp",
-  "note": "26 Kỳ Đồng — nước cua đồng ngọt thanh.",
-  "ll": [
-   20.85843,
-   106.68025
-  ]
+  "note": "26 Kỳ Đồng — nước cua đồng ngọt thanh."
  },
  {
   "n": "Bánh đa cua 48 Lạch Tray",
   "t": "food",
   "p": "hp",
-  "note": "48 Lạch Tray — quán đông khách quen.",
-  "ll": [
-   20.84907,
-   106.69344
-  ]
+  "note": "48 Lạch Tray — quán đông khách quen."
  },
  {
   "n": "Bánh mì cay Ông Cuông",
   "t": "food",
   "p": "hp",
-  "note": "184 Hàng Kênh — bánh mì que pate, chí chương cay.",
-  "ll": [
-   20.85055,
-   106.68527
-  ]
+  "note": "184 Hàng Kênh — bánh mì que pate, chí chương cay."
  },
  {
   "n": "Bánh mì cay Lê Hoàng",
   "t": "food",
   "p": "hp",
-  "note": "39 Đinh Tiên Hoàng — bánh mì que nổi tiếng.",
-  "ll": [
-   20.86428,
-   106.68265
-  ]
+  "note": "39 Đinh Tiên Hoàng — bánh mì que nổi tiếng."
  },
  {
   "n": "Nem cua bể Thuận Yến",
   "t": "food",
   "p": "hp",
-  "note": "88 Trần Nhật Duật — nem cua bể vuông giòn rụm.",
-  "ll": [
-   20.85557,
-   106.68348
-  ]
+  "note": "88 Trần Nhật Duật — nem cua bể vuông giòn rụm."
  },
  {
   "n": "Nem cua bể Nga",
   "t": "food",
   "p": "hp",
-  "note": "92 Trần Nhật Duật — nem hải sản trứ danh.",
-  "ll": [
-   20.85557,
-   106.68348
-  ]
+  "note": "92 Trần Nhật Duật — nem hải sản trứ danh."
  },
  {
   "n": "Ốc Thủy Dương",
   "t": "food",
   "p": "hp",
-  "note": "30/263 Lạch Tray — thiên đường ốc, mở chiều tối.",
-  "ll": [
-   20.84907,
-   106.69344
-  ]
+  "note": "30/263 Lạch Tray — thiên đường ốc, mở chiều tối."
  },
  {
   "n": "Ốc chị Hoa",
   "t": "food",
   "p": "hp",
-  "note": "69 Máy Tơ — quán ốc bình dân đông khách.",
-  "ll": [
-   20.86388,
-   106.69626
-  ]
+  "note": "69 Máy Tơ — quán ốc bình dân đông khách."
  },
  {
   "n": "Bún cá cay Lê Lợi",
   "t": "food",
   "p": "hp",
-  "note": "66 Lê Lợi — bún cá cay chuẩn vị đất Cảng.",
-  "ll": [
-   21.16372,
-   106.36898
-  ]
+  "note": "66 Lê Lợi — bún cá cay chuẩn vị đất Cảng."
  },
  {
   "n": "Giá bể xào Huệ Béo",
   "t": "food",
   "p": "hp",
-  "note": "103 Dư Hàng — giá bể (giá biển) xào đặc sản.",
-  "ll": [
-   20.84703,
-   106.67886
-  ]
+  "note": "103 Dư Hàng — giá bể (giá biển) xào đặc sản."
  },
  {
   "n": "Sủi dìn & chè Cô Út",
   "t": "food",
   "p": "hp",
-  "note": "163-165 Cầu Đất — sủi dìn, bơ dầm, chè vừng.",
-  "ll": [
-   20.85703,
-   106.68692
-  ]
+  "note": "163-165 Cầu Đất — sủi dìn, bơ dầm, chè vừng."
  },
  {
   "n": "Dừa dầm Cô Tuyến",
   "t": "food",
   "p": "hp",
-  "note": "100/124 Lạch Tray — dừa dầm mát lạnh.",
-  "ll": [
-   20.84907,
-   106.69344
-  ]
+  "note": "100/124 Lạch Tray — dừa dầm mát lạnh."
  },
  {
   "n": "Chợ Cố Đạo (ăn vặt)",
   "t": "food",
   "p": "hp",
-  "note": "78 Trần Nhật Duật — thiên đường ăn vặt chiều tối.",
-  "ll": [
-   20.85557,
-   106.68348
-  ]
+  "note": "78 Trần Nhật Duật — thiên đường ăn vặt chiều tối."
  },
  {
   "n": "Pate cột đèn",
   "t": "food",
   "p": "hp",
-  "note": "Pate gan truyền thống, mua làm quà.",
-  "ll": [
-   21.0095,
-   105.83545
-  ]
+  "note": "Pate gan truyền thống, mua làm quà."
  },
  {
   "n": "Thiên Cầm",
@@ -1312,21 +1144,13 @@ const PLACES = [
   "n": "Cầu Cửa Nhượng",
   "t": "view",
   "p": "ht",
-  "map": "https://maps.app.goo.gl/QUydHETRMHBcN6HNA",
-  "ll": [
-   18.25814,
-   106.11077
-  ]
+  "map": "https://maps.app.goo.gl/QUydHETRMHBcN6HNA"
  },
  {
   "n": "Hải đăng Cửa Nhượng",
   "t": "view",
   "p": "ht",
-  "map": "https://maps.app.goo.gl/T6bxfv1Fpf75sGfS8",
-  "ll": [
-   18.26571,
-   106.12248
-  ]
+  "map": "https://maps.app.goo.gl/T6bxfv1Fpf75sGfS8"
  },
  {
   "n": "Nhà hàng Hải Đăng Tình Lành",
@@ -1334,21 +1158,13 @@ const PLACES = [
   "p": "ht",
   "note": "Phía sau ngọn hải đăng, Cẩm Trung.",
   "tel": "0968540598",
-  "map": "https://maps.app.goo.gl/Zgf4hRDr4RqJzpu7A",
-  "ll": [
-   18.26562,
-   106.12344
-  ]
+  "map": "https://maps.app.goo.gl/Zgf4hRDr4RqJzpu7A"
  },
  {
   "n": "Đường ven biển Kỳ Bắc",
   "t": "view",
   "p": "ht",
-  "map": "https://maps.app.goo.gl/R5GVSosEeznNEpSf9",
-  "ll": [
-   18.26649,
-   106.15305
-  ]
+  "map": "https://maps.app.goo.gl/R5GVSosEeznNEpSf9"
  },
  {
   "n": "Bãi biển Cu Kỳ — Kỳ Xuân",
@@ -1366,11 +1182,7 @@ const PLACES = [
   "n": "Bãi biển Kỳ Xuân",
   "t": "view",
   "p": "ht",
-  "map": "https://maps.app.goo.gl/6XCGwM5M9dmtTwrU7",
-  "ll": [
-   18.25123,
-   106.18692
-  ]
+  "map": "https://maps.app.goo.gl/6XCGwM5M9dmtTwrU7"
  },
  {
   "n": "Nhà hàng & Homestay Phương Đức",
@@ -1378,22 +1190,14 @@ const PLACES = [
   "p": "ht",
   "note": "Chân biển Kỳ Xuân, có homestay view biển cực chill.",
   "tel": "0964588777",
-  "map": "https://maps.app.goo.gl/ohqVbjva9fLwxJ1YA",
-  "ll": [
-   18.25212,
-   106.18581
-  ]
+  "map": "https://maps.app.goo.gl/ohqVbjva9fLwxJ1YA"
  },
  {
   "n": "Rì Rào Homestay Kỳ Xuân",
   "t": "stay",
   "p": "ht",
   "note": "Thắng Lợi, Kỳ Xuân.",
-  "map": "https://maps.app.goo.gl/MsGZi1Vt8HVvzKz86",
-  "ll": [
-   18.25096,
-   106.18737
-  ]
+  "map": "https://maps.app.goo.gl/MsGZi1Vt8HVvzKz86"
  },
  {
   "n": "Nhà hàng Thế Giới Mực Nhảy",
@@ -1401,11 +1205,7 @@ const PLACES = [
   "p": "ht",
   "note": "Xuân Thắng, Kỳ Xuân.",
   "tel": "0964890369",
-  "map": "https://maps.app.goo.gl/6r6wv7feHPFHhYg19",
-  "ll": [
-   18.24986,
-   106.18713
-  ]
+  "map": "https://maps.app.goo.gl/6r6wv7feHPFHhYg19"
  },
  {
   "n": "Bếp dã ngoại Kỳ Xuân",
@@ -1413,11 +1213,7 @@ const PLACES = [
   "p": "ht",
   "note": "Phải kéo đồ một đoạn.",
   "tel": "0978822543",
-  "map": "https://maps.app.goo.gl/gXz3bGTDmTtE8Yfq5",
-  "ll": [
-   18.24205,
-   106.19912
-  ]
+  "map": "https://maps.app.goo.gl/gXz3bGTDmTtE8Yfq5"
  },
  {
   "n": "Hải sản Bao Cấp 1994",
@@ -1425,22 +1221,14 @@ const PLACES = [
   "p": "ht",
   "note": "Quán ruột ở Kỳ Xuân, dân địa phương hay ăn.",
   "tel": "0358571276",
-  "map": "https://maps.app.goo.gl/fmjzCHmVuPMQHxQE8",
-  "ll": [
-   18.23422,
-   106.20706
-  ]
+  "map": "https://maps.app.goo.gl/fmjzCHmVuPMQHxQE8"
  },
  {
   "n": "Nhà hàng Hải Sản Dân Hường",
   "t": "food",
   "p": "ht",
   "tel": "0919973458",
-  "map": "https://maps.app.goo.gl/vBGEMQzyY98Ni95N9",
-  "ll": [
-   18.23321,
-   106.20886
-  ]
+  "map": "https://maps.app.goo.gl/vBGEMQzyY98Ni95N9"
  },
  {
   "n": "LIMDIM Hotel",
@@ -1448,11 +1236,7 @@ const PLACES = [
   "p": "ht",
   "note": "Kỳ Xuân.",
   "tel": "0971560642",
-  "map": "https://maps.app.goo.gl/ZhWccgYaqUkzc1Sw6",
-  "ll": [
-   18.23196,
-   106.2103
-  ]
+  "map": "https://maps.app.goo.gl/ZhWccgYaqUkzc1Sw6"
  },
  {
   "n": "Nhà nghỉ Phương Nam",
@@ -1460,53 +1244,33 @@ const PLACES = [
   "p": "ht",
   "note": "Sơn Tịnh, Kỳ Xuân.",
   "tel": "0972520420",
-  "map": "https://maps.app.goo.gl/qwZbkxLv3wtenze37",
-  "ll": [
-   18.23303,
-   106.21342
-  ]
+  "map": "https://maps.app.goo.gl/qwZbkxLv3wtenze37"
  },
  {
   "n": "Bãi biển Nguyễn Huệ — Kỳ Xuân",
   "t": "view",
   "p": "ht",
-  "map": "https://maps.app.goo.gl/TRqUSdQ81hLsb39j6",
-  "ll": [
-   18.22879,
-   106.2177
-  ]
+  "map": "https://maps.app.goo.gl/TRqUSdQ81hLsb39j6"
  },
  {
   "n": "Eo biển Kỳ Xuân – Kỳ Phú",
   "t": "view",
   "p": "ht",
-  "map": "https://maps.app.goo.gl/ZoCn26Bf4cMMnMZ2A",
-  "ll": [
-   18.2226,
-   106.22711
-  ]
+  "map": "https://maps.app.goo.gl/ZoCn26Bf4cMMnMZ2A"
  },
  {
   "n": "Đường quốc phòng ven biển Xuân Hội",
   "t": "view",
   "p": "ht",
   "note": "Kỳ Khang.",
-  "map": "https://maps.app.goo.gl/YdNLaWsGaAxUJKLW9",
-  "ll": [
-   18.15628,
-   106.30473
-  ]
+  "map": "https://maps.app.goo.gl/YdNLaWsGaAxUJKLW9"
  },
  {
   "n": "Quảng trường biển Kỳ Ninh",
   "t": "view",
   "p": "ht",
   "note": "Kỳ Anh.",
-  "map": "https://maps.app.goo.gl/Lo8TA53yeD5BbknEA",
-  "ll": [
-   18.12983,
-   106.33476
-  ]
+  "map": "https://maps.app.goo.gl/Lo8TA53yeD5BbknEA"
  },
  {
   "n": "Homestay View Biển — Kỳ Nam",
@@ -1514,11 +1278,7 @@ const PLACES = [
   "p": "ht",
   "note": "Kỳ Nam, Kỳ Anh. Gặp em Hương.",
   "tel": "0963345335",
-  "map": "https://maps.app.goo.gl/1CJBSWrU3vegdFg96",
-  "ll": [
-   17.98983,
-   106.47645
-  ]
+  "map": "https://maps.app.goo.gl/1CJBSWrU3vegdFg96"
  },
  {
   "n": "Nhà hàng Ra Khơi",
@@ -1526,22 +1286,14 @@ const PLACES = [
   "p": "ht",
   "note": "Đường ven biển Hoành Sơn.",
   "tel": "0973266579",
-  "map": "https://maps.app.goo.gl/ocEDwm11LDtnx3Lz5",
-  "ll": [
-   17.98396,
-   106.48136
-  ]
+  "map": "https://maps.app.goo.gl/ocEDwm11LDtnx3Lz5"
  },
  {
   "n": "Nhà hàng – Khách sạn Hoành Sơn",
   "t": "stay",
   "p": "ht",
   "tel": "0973531430",
-  "map": "https://maps.app.goo.gl/irkKmi72A7Z5LpJr7",
-  "ll": [
-   17.98301,
-   106.48207
-  ]
+  "map": "https://maps.app.goo.gl/irkKmi72A7Z5LpJr7"
  },
  {
   "n": "Bãi biển Hoành Sơn",
@@ -1559,21 +1311,13 @@ const PLACES = [
   "t": "food",
   "p": "ht",
   "tel": "0967825852",
-  "map": "https://maps.app.goo.gl/Qd8dZr2JEJDBEdKu7",
-  "ll": [
-   17.96716,
-   106.49202
-  ]
+  "map": "https://maps.app.goo.gl/Qd8dZr2JEJDBEdKu7"
  },
  {
   "n": "Camping bãi biển Kỳ Anh",
   "t": "view",
   "p": "ht",
-  "map": "https://maps.app.goo.gl/mYqhvD2FSw6w59bu6",
-  "ll": [
-   17.96638,
-   106.49272
-  ]
+  "map": "https://maps.app.goo.gl/mYqhvD2FSw6w59bu6"
  },
  {
   "n": "Mực nháy Vũng Áng – NH Hậu Thìn",
@@ -1581,11 +1325,7 @@ const PLACES = [
   "p": "ht",
   "note": "Ở cuối bãi biển.",
   "tel": "0978957599",
-  "map": "https://maps.app.goo.gl/shmGsDDTs3kuCXhj6",
-  "ll": [
-   18.11697,
-   106.40954
-  ]
+  "map": "https://maps.app.goo.gl/shmGsDDTs3kuCXhj6"
  },
  {
   "n": "KS Hoàng Anh — Kỳ Thịnh",
@@ -1593,11 +1333,7 @@ const PLACES = [
   "p": "ht",
   "note": "Chỗ ngủ khi phải ở lại Vũng Áng.",
   "tel": "0967855509",
-  "map": "https://maps.app.goo.gl/eTGTPeQSH6SyFT2P9",
-  "ll": [
-   18.04684,
-   106.36808
-  ]
+  "map": "https://maps.app.goo.gl/eTGTPeQSH6SyFT2P9"
  },
  {
   "n": "Ngã ba Đồng Lộc",
@@ -1646,33 +1382,21 @@ const PLACES = [
   "n": "Cảnh Dương Beach",
   "t": "view",
   "p": "qb",
-  "map": "https://maps.app.goo.gl/vAayVrQGaenmGofs8",
-  "ll": [
-   17.87282,
-   106.45262
-  ]
+  "map": "https://maps.app.goo.gl/vAayVrQGaenmGofs8"
  },
  {
   "n": "Bãi tắm Cảnh Dương",
   "t": "view",
   "p": "qb",
   "note": "Cảnh Thượng, Quảng Trạch.",
-  "map": "https://maps.app.goo.gl/wyv9RL1ADBgvx9cWA",
-  "ll": [
-   17.86885,
-   106.45051
-  ]
+  "map": "https://maps.app.goo.gl/wyv9RL1ADBgvx9cWA"
  },
  {
   "n": "Bãi biển Quảng Thọ",
   "t": "view",
   "p": "qb",
   "note": "Bắc Gianh.",
-  "map": "https://maps.app.goo.gl/3oPDb7tiAQCU3e8MA",
-  "ll": [
-   17.75326,
-   106.4663
-  ]
+  "map": "https://maps.app.goo.gl/3oPDb7tiAQCU3e8MA"
  },
  {
   "n": "Bãi Đá Nhảy — Lý Hòa",
@@ -1689,43 +1413,27 @@ const PLACES = [
   "n": "Bãi biển Đá Nhảy — Thanh Trạch",
   "t": "view",
   "p": "qb",
-  "map": "https://maps.app.goo.gl/pqRhuALjoCoCj8cV6",
-  "ll": [
-   17.66084,
-   106.51483
-  ]
+  "map": "https://maps.app.goo.gl/pqRhuALjoCoCj8cV6"
  },
  {
   "n": "Đá Nhảy Beach Hotel",
   "t": "stay",
   "p": "qb",
   "tel": "0848445444",
-  "map": "https://maps.app.goo.gl/b6MVNyA9vk9zxfh28",
-  "ll": [
-   17.66481,
-   106.51031
-  ]
+  "map": "https://maps.app.goo.gl/b6MVNyA9vk9zxfh28"
  },
  {
   "n": "Bãi Đá Nhảy (phía sau)",
   "t": "view",
   "p": "qb",
   "note": "Lý Hòa, Bố Trạch.",
-  "map": "https://maps.app.goo.gl/6FSbQyMzaVhiShY56",
-  "ll": [
-   17.65858,
-   106.51662
-  ]
+  "map": "https://maps.app.goo.gl/6FSbQyMzaVhiShY56"
  },
  {
   "n": "Camping bãi Đá Nhảy",
   "t": "view",
   "p": "qb",
-  "map": "https://maps.app.goo.gl/48BYHQTG9sB4Jya58",
-  "ll": [
-   17.65729,
-   106.51746
-  ]
+  "map": "https://maps.app.goo.gl/48BYHQTG9sB4Jya58"
  },
  {
   "n": "Khách sạn Hoài Thu",
@@ -1733,11 +1441,7 @@ const PLACES = [
   "p": "qb",
   "note": "Bắc Trạch.",
   "tel": "0348740959",
-  "map": "https://maps.app.goo.gl/MMbBN6xACWF3p9sy5",
-  "ll": [
-   17.69571,
-   106.47602
-  ]
+  "map": "https://maps.app.goo.gl/MMbBN6xACWF3p9sy5"
  },
  {
   "n": "Khách sạn An Bình",
@@ -1745,11 +1449,7 @@ const PLACES = [
   "p": "qb",
   "note": "Xóm Cồn, Bắc Gianh.",
   "tel": "0912414121",
-  "map": "https://maps.app.goo.gl/12fY5JHVjtkNv19J9",
-  "ll": [
-   17.7315,
-   106.43989
-  ]
+  "map": "https://maps.app.goo.gl/12fY5JHVjtkNv19J9"
  },
  {
   "n": "Cường Thu Nhà Nghỉ",
@@ -1757,11 +1457,7 @@ const PLACES = [
   "p": "qb",
   "note": "Quyết Thắng, Bắc Trạch.",
   "tel": "0949094004",
-  "map": "https://maps.app.goo.gl/7PtWfvkqV2hpNoKY6",
-  "ll": [
-   17.69988,
-   106.47924
-  ]
+  "map": "https://maps.app.goo.gl/7PtWfvkqV2hpNoKY6"
  },
  {
   "n": "Khách sạn Hoài Thu 2",
@@ -1769,11 +1465,7 @@ const PLACES = [
   "p": "qb",
   "note": "Bắc Trạch.",
   "tel": "0348740959",
-  "map": "https://maps.app.goo.gl/2HrV5Kn5bPv5aDxM7",
-  "ll": [
-   17.68076,
-   106.49869
-  ]
+  "map": "https://maps.app.goo.gl/2HrV5Kn5bPv5aDxM7"
  },
  {
   "n": "Thanh Tuấn Homestay",
@@ -1781,22 +1473,14 @@ const PLACES = [
   "p": "qb",
   "note": "Bãi Đá Nhảy, Thanh Trạch.",
   "tel": "0977536332",
-  "map": "https://maps.app.goo.gl/TaWiRPWWvcPF9eAc6",
-  "ll": [
-   17.67603,
-   106.50023
-  ]
+  "map": "https://maps.app.goo.gl/TaWiRPWWvcPF9eAc6"
  },
  {
   "n": "Đồi cát Quang Phú",
   "t": "view",
   "p": "qb",
   "note": "567 Trương Pháp, Nam Trạch.",
-  "map": "https://maps.app.goo.gl/iwyMNKG5BBis85pd6",
-  "ll": [
-   17.5314,
-   106.59462
-  ]
+  "map": "https://maps.app.goo.gl/iwyMNKG5BBis85pd6"
  },
  {
   "n": "Bãi biển Nhật Lệ — Đồng Hới",
@@ -1814,11 +1498,7 @@ const PLACES = [
   "p": "qb",
   "note": "View biển Nhật Lệ, gặp chị Cao Hoài Thu.",
   "tel": "0707173173",
-  "map": "https://maps.app.goo.gl/C4GPYpUXW3C8EuFR6",
-  "ll": [
-   17.49228,
-   106.62635
-  ]
+  "map": "https://maps.app.goo.gl/C4GPYpUXW3C8EuFR6"
  },
  {
   "n": "Nam Long Plus Hotel",
@@ -1826,22 +1506,14 @@ const PLACES = [
   "p": "qb",
   "note": "28A Phan Chu Trinh, Đồng Hới.",
   "tel": "0918923595",
-  "map": "https://maps.app.goo.gl/TikF8fPJoNVecUiq7",
-  "ll": [
-   17.47831,
-   106.62314
-  ]
+  "map": "https://maps.app.goo.gl/TikF8fPJoNVecUiq7"
  },
  {
   "n": "Nhà khách Thanh Thiếu Niên",
   "t": "stay",
   "p": "qb",
   "tel": "02323810447",
-  "map": "https://maps.app.goo.gl/frn75ux8UyNQAyyBA",
-  "ll": [
-   17.50322,
-   106.61822
-  ]
+  "map": "https://maps.app.goo.gl/frn75ux8UyNQAyyBA"
  },
  {
   "n": "Nhà Vườn Thuyền Trưởng",
@@ -1855,22 +1527,14 @@ const PLACES = [
   "t": "stay",
   "p": "qb",
   "note": "KĐT Đông Phùng Hưng, Đồng Hới.",
-  "tel": "0827652225",
-  "ll": [
-   21.03194,
-   105.83706
-  ]
+  "tel": "0827652225"
  },
  {
   "n": "Thanh Hương Motel",
   "t": "stay",
   "p": "qb",
   "note": "Ngoài trung tâm Đồng Hới 3–4km, thôn 7 Bố Trạch.",
-  "map": "https://maps.app.goo.gl/CrVoeg5sFoBjhfmR9",
-  "ll": [
-   17.51717,
-   106.57736
-  ]
+  "map": "https://maps.app.goo.gl/CrVoeg5sFoBjhfmR9"
  },
  {
   "n": "Nhà khách 30/4",
@@ -1878,11 +1542,7 @@ const PLACES = [
   "p": "qb",
   "note": "219 Trương Pháp, Đồng Hới.",
   "tel": "0912072387",
-  "map": "https://maps.app.goo.gl/qXhuf94uLRuaA8eA9",
-  "ll": [
-   17.49938,
-   106.62226
-  ]
+  "map": "https://maps.app.goo.gl/qXhuf94uLRuaA8eA9"
  },
  {
   "n": "Cơm bao cấp Quảng Bình",
@@ -1951,11 +1611,7 @@ const PLACES = [
   "n": "Suối Nước Moọc",
   "t": "view",
   "p": "qb",
-  "note": "Suối xanh mát giữa thung lũng đá vôi, tắm suối thư giãn.",
-  "ll": [
-   17.55539,
-   106.23574
-  ]
+  "note": "Suối xanh mát giữa thung lũng đá vôi, tắm suối thư giãn."
  },
  {
   "n": "Công viên Ozo Phong Nha",
@@ -1973,11 +1629,7 @@ const PLACES = [
   "n": "Khách sạn Phương Đông — Cửa Việt",
   "t": "stay",
   "p": "qt",
-  "tel": "0969440545",
-  "ll": [
-   16.81469,
-   107.11028
-  ]
+  "tel": "0969440545"
  },
  {
   "n": "Bãi biển Trung Giang — Cửa Tùng",
@@ -2005,11 +1657,7 @@ const PLACES = [
   "n": "Thành cổ Quảng Trị",
   "t": "view",
   "p": "qt",
-  "map": "https://maps.app.goo.gl/6fRKfYYJPZy8Nm2W7",
-  "ll": [
-   16.75429,
-   107.18703
-  ]
+  "map": "https://maps.app.goo.gl/6fRKfYYJPZy8Nm2W7"
  },
  {
   "n": "Khách sạn Song Phát — Cửa Việt",
@@ -2017,53 +1665,33 @@ const PLACES = [
   "p": "qt",
   "note": "Đường Hoàng Diệu.",
   "tel": "0368136699",
-  "map": "https://maps.app.goo.gl/T592cYRtUBLtBKDV8",
-  "ll": [
-   16.91664,
-   107.18285
-  ]
+  "map": "https://maps.app.goo.gl/T592cYRtUBLtBKDV8"
  },
  {
   "n": "Eo biển xanh — Cửa Tùng",
   "t": "view",
   "p": "qt",
-  "map": "https://maps.app.goo.gl/21M77DhnhPGHUw5K7",
-  "ll": [
-   17.0185,
-   107.11105
-  ]
+  "map": "https://maps.app.goo.gl/21M77DhnhPGHUw5K7"
  },
  {
   "n": "Địa đạo Vịnh Mốc",
   "t": "view",
   "p": "qt",
   "note": "Có quán ăn ngay cổng.",
-  "map": "https://maps.app.goo.gl/J5pAFPGCGM59RjRj8",
-  "ll": [
-   17.07414,
-   107.10989
-  ]
+  "map": "https://maps.app.goo.gl/J5pAFPGCGM59RjRj8"
  },
  {
   "n": "Mũi Si",
   "t": "view",
   "p": "qt",
   "note": "Hợp mọi xe, đầy đủ dịch vụ.",
-  "map": "https://maps.app.goo.gl/XmEQpwP3MfAX44Ep8",
-  "ll": [
-   16.46949,
-   107.59621
-  ]
+  "map": "https://maps.app.goo.gl/XmEQpwP3MfAX44Ep8"
  },
  {
   "n": "Homestay Mũi Si",
   "t": "stay",
   "p": "qt",
-  "map": "https://maps.app.goo.gl/DoPjh9mszkp37DDt8",
-  "ll": [
-   17.04477,
-   107.11387
-  ]
+  "map": "https://maps.app.goo.gl/DoPjh9mszkp37DDt8"
  },
  {
   "n": "Điện gió Hướng Tân",
@@ -2077,11 +1705,7 @@ const PLACES = [
   "t": "view",
   "p": "qt",
   "note": "Hợp mọi xe, không dịch vụ.",
-  "map": "https://maps.app.goo.gl/SmXDtydo8DdKzSxs9",
-  "ll": [
-   16.63311,
-   106.69644
-  ]
+  "map": "https://maps.app.goo.gl/SmXDtydo8DdKzSxs9"
  },
  {
   "n": "Cây cô đơn hồ Rào Quán",
@@ -2104,11 +1728,7 @@ const PLACES = [
   "n": "Cầu treo Đakrông",
   "t": "view",
   "p": "qt",
-  "note": "Cầu treo trên đường Hồ Chí Minh nhánh Tây.",
-  "ll": [
-   16.6618,
-   106.82396
-  ]
+  "note": "Cầu treo trên đường Hồ Chí Minh nhánh Tây."
  },
  {
   "n": "Nhà nghỉ Gia Đạt",
@@ -2116,11 +1736,7 @@ const PLACES = [
   "p": "hue",
   "note": "58 Trần Trúc Nhẫn. Phòng đôi 4 người 500k. Cô Vân.",
   "tel": "0906551771",
-  "map": "https://maps.app.goo.gl/Xk6PV8iqJmBjkQo26",
-  "ll": [
-   16.45639,
-   107.58333
-  ]
+  "map": "https://maps.app.goo.gl/Xk6PV8iqJmBjkQo26"
  },
  {
   "n": "Quán cơm chị Tẹo",
@@ -2128,22 +1744,14 @@ const PLACES = [
   "p": "hue",
   "note": "59 Hai Bà Trưng — nhiều món Huế đặc trưng, có chỗ đỗ xe.",
   "tel": "0905862388",
-  "map": "https://maps.app.goo.gl/qWKw6Eiymnd3j7t67",
-  "ll": [
-   16.45691,
-   107.58927
-  ]
+  "map": "https://maps.app.goo.gl/qWKw6Eiymnd3j7t67"
  },
  {
   "n": "Cơm niêu Lửa Việt",
   "t": "food",
   "p": "hue",
   "note": "Nội thành Huế.",
-  "map": "https://maps.app.goo.gl/WLZNv4XbJV1B3szx7",
-  "ll": [
-   16.46816,
-   107.59788
-  ]
+  "map": "https://maps.app.goo.gl/WLZNv4XbJV1B3szx7"
  },
  {
   "n": "Homestay ở Đại Nội",
@@ -2158,11 +1766,7 @@ const PLACES = [
   "p": "hue",
   "note": "19 Nguyễn Tuân, Vỹ Dạ.",
   "tel": "0774446656",
-  "map": "https://maps.app.goo.gl/sfoZqkGVZW9Xsna96",
-  "ll": [
-   16.46937,
-   107.60319
-  ]
+  "map": "https://maps.app.goo.gl/sfoZqkGVZW9Xsna96"
  },
  {
   "n": "KS Nữ Hoàng",
@@ -2182,11 +1786,7 @@ const PLACES = [
   "n": "Bãi biển Thuận An",
   "t": "view",
   "p": "hue",
-  "map": "https://maps.app.goo.gl/gimRvp5nYch4LhSz5",
-  "ll": [
-   16.57095,
-   107.63115
-  ]
+  "map": "https://maps.app.goo.gl/gimRvp5nYch4LhSz5"
  },
  {
   "n": "Sunshine Villa",
@@ -2194,11 +1794,7 @@ const PLACES = [
   "p": "hue",
   "note": "77 Thái Dương, Thuận An.",
   "tel": "0899865931",
-  "map": "https://maps.app.goo.gl/EmFS2aaEx7YuSRrd9",
-  "ll": [
-   16.56176,
-   107.64307
-  ]
+  "map": "https://maps.app.goo.gl/EmFS2aaEx7YuSRrd9"
  },
  {
   "n": "Homestay Summer",
@@ -2206,21 +1802,13 @@ const PLACES = [
   "p": "hue",
   "note": "98 Hoàng Sa, Thuận An.",
   "tel": "0914091418",
-  "map": "https://maps.app.goo.gl/KxuEEuy36VR1AJPPA",
-  "ll": [
-   16.562,
-   107.64525
-  ]
+  "map": "https://maps.app.goo.gl/KxuEEuy36VR1AJPPA"
  },
  {
   "n": "Cầu vượt cửa biển Thuận An",
   "t": "view",
   "p": "hue",
-  "map": "https://maps.app.goo.gl/GzExZJ6dLyofWoxV8",
-  "ll": [
-   16.56826,
-   107.62267
-  ]
+  "map": "https://maps.app.goo.gl/GzExZJ6dLyofWoxV8"
  },
  {
   "n": "Phá Tam Giang",
@@ -2239,31 +1827,19 @@ const PLACES = [
   "p": "hue",
   "note": "Thôn Tân Mỹ, Phong Quảng.",
   "tel": "0388728681",
-  "map": "https://maps.app.goo.gl/Fks9W9LNqKMNbKrW8",
-  "ll": [
-   16.63877,
-   107.52048
-  ]
+  "map": "https://maps.app.goo.gl/Fks9W9LNqKMNbKrW8"
  },
  {
   "n": "Cầu Tư Hiền",
   "t": "view",
   "p": "hue",
-  "map": "https://maps.app.goo.gl/scyMugwh6fdcQFMn6",
-  "ll": [
-   16.34927,
-   107.91348
-  ]
+  "map": "https://maps.app.goo.gl/scyMugwh6fdcQFMn6"
  },
  {
   "n": "Bãi biển Cảnh Dương — Chân Mây",
   "t": "view",
   "p": "hue",
-  "map": "https://maps.app.goo.gl/iaMTeSbNABE71x3X8",
-  "ll": [
-   16.32992,
-   107.96152
-  ]
+  "map": "https://maps.app.goo.gl/iaMTeSbNABE71x3X8"
  },
  {
   "n": "Nhà nghỉ Cảnh Dương",
@@ -2271,42 +1847,26 @@ const PLACES = [
   "p": "hue",
   "note": "Chân Mây – Lăng Cô.",
   "tel": "0935110905",
-  "map": "https://maps.app.goo.gl/QbPurAahDeLdderT6",
-  "ll": [
-   16.31492,
-   107.98044
-  ]
+  "map": "https://maps.app.goo.gl/QbPurAahDeLdderT6"
  },
  {
   "n": "Nhà nghỉ Hoàng Ngọc — biển Cảnh Dương",
   "t": "stay",
   "p": "hue",
   "tel": "0935106990",
-  "map": "https://maps.app.goo.gl/uKNt6B8ZAoxm5zp89",
-  "ll": [
-   16.31391,
-   107.98363
-  ]
+  "map": "https://maps.app.goo.gl/uKNt6B8ZAoxm5zp89"
  },
  {
   "n": "Bãi biển Tân Cảnh Dương",
   "t": "view",
   "p": "hue",
-  "map": "https://maps.app.goo.gl/uPM2eVWQrVGCUsoh7",
-  "ll": [
-   16.31708,
-   107.97718
-  ]
+  "map": "https://maps.app.goo.gl/uPM2eVWQrVGCUsoh7"
  },
  {
   "n": "Bãi biển Chân Mây",
   "t": "view",
   "p": "hue",
-  "map": "https://maps.app.goo.gl/RZJiwXwxxtdb3ZuG6",
-  "ll": [
-   16.31283,
-   108.00096
-  ]
+  "map": "https://maps.app.goo.gl/RZJiwXwxxtdb3ZuG6"
  },
  {
   "n": "Nhà nghỉ Nguyệt Ánh",
@@ -2314,11 +1874,7 @@ const PLACES = [
   "p": "hue",
   "note": "Biển Cảnh Dương, Chân Mây.",
   "tel": "0978941527",
-  "map": "https://maps.app.goo.gl/BSktNKbee9YRh9To7",
-  "ll": [
-   16.31232,
-   108.00558
-  ]
+  "map": "https://maps.app.goo.gl/BSktNKbee9YRh9To7"
  },
  {
   "n": "Nhà nghỉ Anh Dũng",
@@ -2326,11 +1882,7 @@ const PLACES = [
   "p": "hue",
   "note": "Cảnh Dương, Chân Mây.",
   "tel": "0899081701",
-  "map": "https://maps.app.goo.gl/gHuBnsTyCNHcia2W6",
-  "ll": [
-   16.31171,
-   108.00514
-  ]
+  "map": "https://maps.app.goo.gl/gHuBnsTyCNHcia2W6"
  },
  {
   "n": "Bình An Guest House",
@@ -2338,11 +1890,7 @@ const PLACES = [
   "p": "hue",
   "note": "Thôn Bình An, Chân Mây.",
   "tel": "0935000727",
-  "map": "https://maps.app.goo.gl/iq1e4hZCVhqNCCxD7",
-  "ll": [
-   16.31115,
-   108.00432
-  ]
+  "map": "https://maps.app.goo.gl/iq1e4hZCVhqNCCxD7"
  },
  {
   "n": "MIMI Guest House",
@@ -2350,31 +1898,19 @@ const PLACES = [
   "p": "hue",
   "note": "Lộc Vĩnh, Chân Mây.",
   "tel": "0774552912",
-  "map": "https://maps.app.goo.gl/NehDvWUe9oiX9AGPA",
-  "ll": [
-   16.31149,
-   108.00512
-  ]
+  "map": "https://maps.app.goo.gl/NehDvWUe9oiX9AGPA"
  },
  {
   "n": "Ghềnh Chân Mây",
   "t": "view",
   "p": "hue",
-  "map": "https://maps.app.goo.gl/bbKhNRT4LeDTfxJ2A",
-  "ll": [
-   16.34376,
-   108.02018
-  ]
+  "map": "https://maps.app.goo.gl/bbKhNRT4LeDTfxJ2A"
  },
  {
   "n": "Điểm ngắm bình minh Bãi Bàng — Chân Mây",
   "t": "view",
   "p": "hue",
-  "map": "https://maps.app.goo.gl/gKehTFJybF24tCBx6",
-  "ll": [
-   16.33912,
-   108.02524
-  ]
+  "map": "https://maps.app.goo.gl/gKehTFJybF24tCBx6"
  },
  {
   "n": "Bãi biển Lăng Cô",
@@ -2392,11 +1928,7 @@ const PLACES = [
   "t": "stay",
   "p": "hue",
   "tel": "0937460888",
-  "map": "https://maps.app.goo.gl/6B8Zr9CNSBdYfx9U8",
-  "ll": [
-   16.23329,
-   108.08613
-  ]
+  "map": "https://maps.app.goo.gl/6B8Zr9CNSBdYfx9U8"
  },
  {
   "n": "Nhà nghỉ dưỡng Lăng Cô — Bộ Công An",
@@ -2404,11 +1936,7 @@ const PLACES = [
   "p": "hue",
   "note": "Đ. Lạc Long Quân.",
   "tel": "02343683890",
-  "map": "https://maps.app.goo.gl/6oS5yAZ67D8H5EXg8",
-  "ll": [
-   16.24309,
-   108.0774
-  ]
+  "map": "https://maps.app.goo.gl/6oS5yAZ67D8H5EXg8"
  },
  {
   "n": "Vitamin Sea Home",
@@ -2416,11 +1944,7 @@ const PLACES = [
   "p": "hue",
   "note": "Lăng Cô.",
   "tel": "0974136886",
-  "map": "https://maps.app.goo.gl/3NCkeNQ8WVvhvroAA",
-  "ll": [
-   16.23255,
-   108.08665
-  ]
+  "map": "https://maps.app.goo.gl/3NCkeNQ8WVvhvroAA"
  },
  {
   "n": "Khu nghỉ dưỡng Lăng Cô T26",
@@ -2428,11 +1952,7 @@ const PLACES = [
   "p": "hue",
   "note": "493 Lạc Long Quân.",
   "tel": "0935483548",
-  "map": "https://maps.app.goo.gl/F7nHorZ8Us8KXBS79",
-  "ll": [
-   16.24371,
-   108.07709
-  ]
+  "map": "https://maps.app.goo.gl/F7nHorZ8Us8KXBS79"
  },
  {
   "n": "Hải Vân Quan",
@@ -2519,21 +2039,13 @@ const PLACES = [
   "n": "Bãi tắm Mân Thái",
   "t": "view",
   "p": "dn",
-  "map": "https://maps.app.goo.gl/jLXZTPSmkRDv9Fff7",
-  "ll": [
-   16.08902,
-   108.24959
-  ]
+  "map": "https://maps.app.goo.gl/jLXZTPSmkRDv9Fff7"
  },
  {
   "n": "Ngũ Hành Sơn",
   "t": "view",
   "p": "dn",
-  "map": "https://maps.app.goo.gl/C9hVShNNi2RorRZU9",
-  "ll": [
-   16.00371,
-   108.26316
-  ]
+  "map": "https://maps.app.goo.gl/C9hVShNNi2RorRZU9"
  },
  {
   "n": "Bãi biển Mỹ Khê",
@@ -2560,31 +2072,19 @@ const PLACES = [
   "p": "dn",
   "note": "82 Nguyễn Phan Vinh, Hội An.",
   "tel": "0904885502",
-  "map": "https://maps.app.goo.gl/5G1LM3UKFYemiXJv6",
-  "ll": [
-   15.91183,
-   108.3416
-  ]
+  "map": "https://maps.app.goo.gl/5G1LM3UKFYemiXJv6"
  },
  {
   "n": "Bãi biển Cửa Đại",
   "t": "view",
   "p": "dn",
-  "map": "https://maps.app.goo.gl/6oSnpNBXwh3paz1t8",
-  "ll": [
-   15.90181,
-   108.36001
-  ]
+  "map": "https://maps.app.goo.gl/6oSnpNBXwh3paz1t8"
  },
  {
   "n": "Bãi tắm Cửa Đại",
   "t": "view",
   "p": "dn",
-  "map": "https://maps.app.goo.gl/8pimYUoxunkpERcWA",
-  "ll": [
-   15.89458,
-   108.37214
-  ]
+  "map": "https://maps.app.goo.gl/8pimYUoxunkpERcWA"
  },
  {
   "n": "Làng bích hoạ Tam Thanh",
@@ -2601,11 +2101,7 @@ const PLACES = [
   "t": "stay",
   "p": "dn",
   "tel": "0935199159",
-  "map": "https://maps.app.goo.gl/r6FMNGqwjGkVdwoe9",
-  "ll": [
-   15.60231,
-   108.54404
-  ]
+  "map": "https://maps.app.goo.gl/r6FMNGqwjGkVdwoe9"
  },
  {
   "n": "Homestay Ngọc Lan",
@@ -2613,11 +2109,7 @@ const PLACES = [
   "p": "dn",
   "note": "Thôn Hòa Hạ, Quảng Phú.",
   "tel": "0868655433",
-  "map": "https://maps.app.goo.gl/JgTe7yi27yrNgxea8",
-  "ll": [
-   15.59832,
-   108.54575
-  ]
+  "map": "https://maps.app.goo.gl/JgTe7yi27yrNgxea8"
  },
  {
   "n": "Mi Casa Garden",
@@ -2625,11 +2117,7 @@ const PLACES = [
   "p": "dn",
   "note": "Thanh Niên, Quảng Phú.",
   "tel": "0902158919",
-  "map": "https://maps.app.goo.gl/zLdfVr82h2x3ovHS7",
-  "ll": [
-   15.5941,
-   108.54963
-  ]
+  "map": "https://maps.app.goo.gl/zLdfVr82h2x3ovHS7"
  },
  {
   "n": "Homestay Hoa Giấy",
@@ -2637,11 +2125,7 @@ const PLACES = [
   "p": "dn",
   "note": "Đường Thanh Niên, Quảng Phú.",
   "tel": "0914747266",
-  "map": "https://maps.app.goo.gl/auoK3CfF2ioHZUNKA",
-  "ll": [
-   15.5915,
-   108.55046
-  ]
+  "map": "https://maps.app.goo.gl/auoK3CfF2ioHZUNKA"
  },
  {
   "n": "Tam Tien Homes",
@@ -2649,31 +2133,19 @@ const PLACES = [
   "p": "dn",
   "note": "Homestay duy nhất có bãi cát dài đi thẳng xuống biển, không bị che chắn.",
   "tel": "0901998115",
-  "map": "https://maps.app.goo.gl/hnBdvgyGv37uMgJs9",
-  "ll": [
-   15.54636,
-   108.58911
-  ]
+  "map": "https://maps.app.goo.gl/hnBdvgyGv37uMgJs9"
  },
  {
   "n": "Chợ cá Tam Tiến",
   "t": "food",
   "p": "dn",
-  "map": "https://maps.app.goo.gl/YGaQg3z3gYuphDrG6",
-  "ll": [
-   15.54859,
-   108.58769
-  ]
+  "map": "https://maps.app.goo.gl/YGaQg3z3gYuphDrG6"
  },
  {
   "n": "Bà Nà Hills",
   "t": "view",
   "p": "dn",
-  "map": "https://maps.app.goo.gl/j26WFCoNfGeDg27o9",
-  "ll": [
-   15.99514,
-   107.99614
-  ]
+  "map": "https://maps.app.goo.gl/j26WFCoNfGeDg27o9"
  },
  {
   "n": "Nhà nghỉ Việt Thương",
@@ -2681,11 +2153,7 @@ const PLACES = [
   "p": "dn",
   "note": "Hòa Tiến.",
   "tel": "0362955674",
-  "map": "https://maps.app.goo.gl/xBmuJQXwrAkK2uqB8",
-  "ll": [
-   15.94622,
-   108.13726
-  ]
+  "map": "https://maps.app.goo.gl/xBmuJQXwrAkK2uqB8"
  },
  {
   "n": "Bean's House Riverfront",
@@ -2693,11 +2161,7 @@ const PLACES = [
   "p": "dn",
   "note": "285 Trần Hưng Đạo, An Hải.",
   "tel": "0777930210",
-  "map": "https://maps.app.goo.gl/MJaWPSGAkvjE1nTn9",
-  "ll": [
-   16.0754,
-   108.22902
-  ]
+  "map": "https://maps.app.goo.gl/MJaWPSGAkvjE1nTn9"
  },
  {
   "n": "Khách sạn MT Ngô Quyền — Sơn Trà",
@@ -2705,11 +2169,7 @@ const PLACES = [
   "p": "dn",
   "note": "Sát trạm sạc VinFast, bãi đỗ ô tô rộng, thuê xe AB 100k/ngày, giá từ 300k.",
   "tel": "0367772088",
-  "map": "https://maps.app.goo.gl/pomzP4jkZTZADSGe7",
-  "ll": [
-   16.07642,
-   108.23077
-  ]
+  "map": "https://maps.app.goo.gl/pomzP4jkZTZADSGe7"
  },
  {
   "n": "Homestay biển Làng Bích Hoạ — Tam Kỳ",
@@ -2723,11 +2183,7 @@ const PLACES = [
   "t": "stay",
   "p": "dn",
   "note": "Hùng Vương.",
-  "map": "https://maps.app.goo.gl/Qg5EAZfcKys2C4b67",
-  "ll": [
-   13.95399,
-   108.64626
-  ]
+  "map": "https://maps.app.goo.gl/Qg5EAZfcKys2C4b67"
  },
  {
   "n": "KS ở Non Nước",
@@ -2742,11 +2198,7 @@ const PLACES = [
   "p": "dn",
   "note": "10 Trần Cao Vân, gần phố cổ, ~300k.",
   "tel": "0905434943",
-  "map": "https://maps.app.goo.gl/LV1JnsMXhcFhjqBT9",
-  "ll": [
-   15.88369,
-   108.32559
-  ]
+  "map": "https://maps.app.goo.gl/LV1JnsMXhcFhjqBT9"
  },
  {
   "n": "Phố cổ Hội An (Chùa Cầu)",
@@ -2772,11 +2224,7 @@ const PLACES = [
   "n": "Cù Lao Chàm",
   "t": "view",
   "p": "dn",
-  "note": "Cụm 8 đảo, lặn ngắm san hô; đi tàu/cano từ Cửa Đại.",
-  "ll": [
-   15.95086,
-   108.52272
-  ]
+  "note": "Cụm 8 đảo, lặn ngắm san hô; đi tàu/cano từ Cửa Đại."
  },
  {
   "n": "Cầu Rồng",
@@ -2838,32 +2286,20 @@ const PLACES = [
   "n": "Chùa Minh Đức",
   "t": "view",
   "p": "qng",
-  "note": "Trên cung đường ven biển Quảng Ngãi.",
-  "ll": [
-   14.74232,
-   107.68382
-  ]
+  "note": "Trên cung đường ven biển Quảng Ngãi."
  },
  {
   "n": "Đảo Lý Sơn",
   "t": "view",
   "p": "qng",
   "note": "Đi tàu ra, dịch vụ cơ bản.",
-  "map": "https://maps.app.goo.gl/bxKUN5k8VxQULEf38",
-  "ll": [
-   15.38856,
-   109.13403
-  ]
+  "map": "https://maps.app.goo.gl/bxKUN5k8VxQULEf38"
  },
  {
   "n": "Mũi Ba Làng An",
   "t": "view",
   "p": "qng",
-  "note": "Mũi đá đen, hải đăng, view biển hoang sơ.",
-  "ll": [
-   15.23534,
-   108.9439
-  ]
+  "note": "Mũi đá đen, hải đăng, view biển hoang sơ."
  },
  {
   "n": "Biển Mỹ Khê (Quảng Ngãi)",
@@ -2886,11 +2322,7 @@ const PLACES = [
  {
   "n": "Cầu Đề Gi",
   "t": "view",
-  "p": "bd",
-  "ll": [
-   14.12739,
-   109.20681
-  ]
+  "p": "bd"
  },
  {
   "n": "Eo Gió — Nhơn Lý",
@@ -2946,11 +2378,7 @@ const PLACES = [
   "n": "Lẩu sứa Thanh Kiều",
   "t": "food",
   "p": "bd",
-  "note": "69/1 Trần Hưng Đạo — gỏi cá & lẩu sứa đặc sản Quy Nhơn.",
-  "ll": [
-   13.78051,
-   109.22285
-  ]
+  "note": "69/1 Trần Hưng Đạo — gỏi cá & lẩu sứa đặc sản Quy Nhơn."
  },
  {
   "n": "Lẩu sứa Hoa Hoa",
@@ -2988,22 +2416,14 @@ const PLACES = [
   "t": "stay",
   "p": "bd",
   "note": "Trung tâm Quy Nhơn.",
-  "tel": "0941351557",
-  "ll": [
-   11.94918,
-   108.43962
-  ]
+  "tel": "0941351557"
  },
  {
   "n": "KS Hà Min",
   "t": "stay",
   "p": "bd",
   "note": "Trung tâm Quy Nhơn.",
-  "tel": "0913600327",
-  "ll": [
-   10.7801,
-   106.6441
-  ]
+  "tel": "0913600327"
  },
  {
   "n": "KS Dezon",
@@ -3043,11 +2463,7 @@ const PLACES = [
   "n": "Ngọc Linh Hotel",
   "t": "stay",
   "p": "bd",
-  "tel": "02563546699",
-  "ll": [
-   10.81891,
-   106.69669
-  ]
+  "tel": "02563546699"
  },
  {
   "n": "Yến Vi Hotel",
@@ -3065,33 +2481,21 @@ const PLACES = [
   "n": "KS Anh Vy",
   "t": "stay",
   "p": "bd",
-  "tel": "02563847763",
-  "ll": [
-   16.48152,
-   107.60041
-  ]
+  "tel": "02563847763"
  },
  {
   "n": "KS Hoàng Hưng",
   "t": "stay",
   "p": "bd",
   "note": "Khu quảng trường.",
-  "tel": "0905410628",
-  "ll": [
-   10.73319,
-   106.69016
-  ]
+  "tel": "0905410628"
  },
  {
   "n": "Seaside Hotel",
   "t": "stay",
   "p": "bd",
   "note": "Khu quảng trường.",
-  "tel": "0903954915",
-  "ll": [
-   16.06278,
-   108.24335
-  ]
+  "tel": "0903954915"
  },
  {
   "n": "Mio Hotel",
@@ -3105,11 +2509,7 @@ const PLACES = [
   "t": "stay",
   "p": "bd",
   "note": "Khu quảng trường.",
-  "tel": "02563629369",
-  "ll": [
-   10.04275,
-   105.77977
-  ]
+  "tel": "02563629369"
  },
  {
   "n": "À Ơi Home",
@@ -3117,22 +2517,14 @@ const PLACES = [
   "p": "bd",
   "note": "Khu TP/Bãi Xếp.",
   "tel": "0357035590",
-  "map": "https://maps.app.goo.gl/a7DXpBf5VCuejgH77",
-  "ll": [
-   13.75681,
-   109.21317
-  ]
+  "map": "https://maps.app.goo.gl/a7DXpBf5VCuejgH77"
  },
  {
   "n": "Nắng Home",
   "t": "stay",
   "p": "bd",
   "note": "Khu TP/Bãi Xếp.",
-  "tel": "0328865768",
-  "ll": [
-   21.04329,
-   105.78528
-  ]
+  "tel": "0328865768"
  },
  {
   "n": "Sen Trúc Home",
@@ -3151,21 +2543,13 @@ const PLACES = [
   "n": "Home Bảo Bảo",
   "t": "stay",
   "p": "bd",
-  "tel": "0914299177",
-  "ll": [
-   20.21531,
-   105.93725
-  ]
+  "tel": "0914299177"
  },
  {
   "n": "Home Sunrise",
   "t": "stay",
   "p": "bd",
-  "tel": "02563535151",
-  "ll": [
-   20.91674,
-   105.85333
-  ]
+  "tel": "02563535151"
  },
  {
   "n": "Pimira Home",
@@ -3192,11 +2576,7 @@ const PLACES = [
   "t": "stay",
   "p": "bd",
   "note": "Hòn Khô – Nhơn Hải.",
-  "tel": "0933677764",
-  "ll": [
-   10.83789,
-   106.74548
-  ]
+  "tel": "0933677764"
  },
  {
   "n": "Phát Lợi Hotel",
@@ -3215,22 +2595,14 @@ const PLACES = [
   "n": "Nhơn Hải Beach Hotel",
   "t": "stay",
   "p": "bd",
-  "tel": "0373358858",
-  "ll": [
-   13.76357,
-   109.28935
-  ]
+  "tel": "0373358858"
  },
  {
   "n": "FLC Luxury Resort",
   "t": "stay",
   "p": "bd",
   "note": "Eo Gió – Nhơn Lý.",
-  "tel": "02566288888",
-  "ll": [
-   13.88658,
-   109.28
-  ]
+  "tel": "02566288888"
  },
  {
   "n": "Casa de Miramar",
@@ -3258,11 +2630,7 @@ const PLACES = [
   "t": "stay",
   "p": "bd",
   "note": "Eo Gió – Nhơn Lý.",
-  "tel": "0905042699",
-  "ll": [
-   13.77113,
-   109.23621
-  ]
+  "tel": "0905042699"
  },
  {
   "n": "Mộc Sỏi Home & Mộc Núi Home",
@@ -3370,71 +2738,43 @@ const PLACES = [
   "n": "Bãi biển Xuân Hải",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/6dQMoWDTwJRtbEec8",
-  "ll": [
-   13.62425,
-   109.23297
-  ]
+  "map": "https://maps.app.goo.gl/6dQMoWDTwJRtbEec8"
  },
  {
   "n": "Bãi biển Bãi Nồm",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/YZZTErccEYFBtVoK8",
-  "ll": [
-   13.56752,
-   109.28984
-  ]
+  "map": "https://maps.app.goo.gl/YZZTErccEYFBtVoK8"
  },
  {
   "n": "Bãi biển Vịnh Hòa",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/XkJzFX69nLDh35hy9",
-  "ll": [
-   13.50824,
-   109.29049
-  ]
+  "map": "https://maps.app.goo.gl/XkJzFX69nLDh35hy9"
  },
  {
   "n": "Bãi biển Từ Nham",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/qXQAUm7ZvaCe3nwA7",
-  "ll": [
-   13.47981,
-   109.29393
-  ]
+  "map": "https://maps.app.goo.gl/qXQAUm7ZvaCe3nwA7"
  },
  {
   "n": "Biển Gành Đỏ",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/QFXTTV3AZH6Q7U7a6",
-  "ll": [
-   13.38617,
-   109.24418
-  ]
+  "map": "https://maps.app.goo.gl/QFXTTV3AZH6Q7U7a6"
  },
  {
   "n": "Bãi biển Gành Đỏ",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/bLvpABTZTm73tLi78",
-  "ll": [
-   13.37233,
-   109.24705
-  ]
+  "map": "https://maps.app.goo.gl/bLvpABTZTm73tLi78"
  },
  {
   "n": "Hải đăng Gành Đèn",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/Rtw6HenbSn6J7K8w5",
-  "ll": [
-   13.36397,
-   109.29395
-  ]
+  "map": "https://maps.app.goo.gl/Rtw6HenbSn6J7K8w5"
  },
  {
   "n": "Gành Đá Đĩa",
@@ -3451,41 +2791,25 @@ const PLACES = [
   "n": "Cảng cá Phú Lương",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/Z3s76PgpwFUJeYKg6",
-  "ll": [
-   13.33601,
-   109.2914
-  ]
+  "map": "https://maps.app.goo.gl/Z3s76PgpwFUJeYKg6"
  },
  {
   "n": "Bãi tắm Làng Chài",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/TGfzu1KUkNoXuGe19",
-  "ll": [
-   13.2737,
-   109.30915
-  ]
+  "map": "https://maps.app.goo.gl/TGfzu1KUkNoXuGe19"
  },
  {
   "n": "Gành Ông",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/K6zB2vXzZQ5p5LVKA",
-  "ll": [
-   13.19323,
-   109.30022
-  ]
+  "map": "https://maps.app.goo.gl/K6zB2vXzZQ5p5LVKA"
  },
  {
   "n": "Bãi biển Long Thủy",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/6Hdh9KCyxoQPkM139",
-  "ll": [
-   13.16656,
-   109.29297
-  ]
+  "map": "https://maps.app.goo.gl/6Hdh9KCyxoQPkM139"
  },
  {
   "n": "Bãi biển Tuy Hòa",
@@ -3511,11 +2835,7 @@ const PLACES = [
   "t": "view",
   "p": "py",
   "note": "Hòa Hiệp.",
-  "map": "https://maps.app.goo.gl/uv8XpE7tPYJXZaZg7",
-  "ll": [
-   13.0024,
-   109.37618
-  ]
+  "map": "https://maps.app.goo.gl/uv8XpE7tPYJXZaZg7"
  },
  {
   "n": "Làng Biển Homestay Phú Yên",
@@ -3523,11 +2843,7 @@ const PLACES = [
   "p": "py",
   "note": "Hòa Hiệp.",
   "tel": "0792305305",
-  "map": "https://maps.app.goo.gl/LPPTnEX29ApnV8TE7",
-  "ll": [
-   12.99367,
-   109.38254
-  ]
+  "map": "https://maps.app.goo.gl/LPPTnEX29ApnV8TE7"
  },
  {
   "n": "Hotel Anh Quốc",
@@ -3535,11 +2851,7 @@ const PLACES = [
   "p": "py",
   "note": "Đường Lê Hanh, Hòa Hiệp.",
   "tel": "0365555957",
-  "map": "https://maps.app.goo.gl/QYFqYTGnZV7xHM6U7",
-  "ll": [
-   12.99292,
-   109.38304
-  ]
+  "map": "https://maps.app.goo.gl/QYFqYTGnZV7xHM6U7"
  },
  {
   "n": "SandA Villa",
@@ -3547,11 +2859,7 @@ const PLACES = [
   "p": "py",
   "note": "KP Phú Thọ, Hòa Hiệp.",
   "tel": "0939406479",
-  "map": "https://maps.app.goo.gl/wuBgS7MyDRiNNALz8",
-  "ll": [
-   12.98931,
-   109.38151
-  ]
+  "map": "https://maps.app.goo.gl/wuBgS7MyDRiNNALz8"
  },
  {
   "n": "Phú Yên Bluesea Villas",
@@ -3559,11 +2867,7 @@ const PLACES = [
   "p": "py",
   "note": "Trần Phú, Hòa Hiệp. Có bể bơi.",
   "tel": "0913018882",
-  "map": "https://maps.app.goo.gl/mArmRAa93mGDQUpg6",
-  "ll": [
-   13.00045,
-   109.37588
-  ]
+  "map": "https://maps.app.goo.gl/mArmRAa93mGDQUpg6"
  },
  {
   "n": "Nhà nghỉ An Phát",
@@ -3571,11 +2875,7 @@ const PLACES = [
   "p": "py",
   "note": "Phú Thọ, Hòa Hiệp. Phòng đơn 300k.",
   "tel": "0987379770",
-  "map": "https://maps.app.goo.gl/1vH8rKYGuUcaEv6A8",
-  "ll": [
-   12.99353,
-   109.38243
-  ]
+  "map": "https://maps.app.goo.gl/1vH8rKYGuUcaEv6A8"
  },
  {
   "n": "Homestay Ông Bà Tám Làng Lò",
@@ -3583,11 +2883,7 @@ const PLACES = [
   "p": "py",
   "note": "Biển Lò 3, KP Phú Thọ 3, Hòa Hiệp.",
   "tel": "0918861934",
-  "map": "https://maps.app.goo.gl/DmL8zKwxGXXyupot5",
-  "ll": [
-   12.98872,
-   109.38954
-  ]
+  "map": "https://maps.app.goo.gl/DmL8zKwxGXXyupot5"
  },
  {
   "n": "Homestay Đất Phú",
@@ -3595,53 +2891,33 @@ const PLACES = [
   "p": "py",
   "note": "KP Đa Ngư, Hòa Hiệp.",
   "tel": "0935359957",
-  "map": "https://maps.app.goo.gl/BtXWMuGRtJR46xTVA",
-  "ll": [
-   12.9574,
-   109.39455
-  ]
+  "map": "https://maps.app.goo.gl/BtXWMuGRtJR46xTVA"
  },
  {
   "n": "Làng Chài Homestay Phú Yên",
   "t": "stay",
   "p": "py",
   "tel": "0976983336",
-  "map": "https://maps.app.goo.gl/GtfiPvENs2DtuJyf8",
-  "ll": [
-   13.00635,
-   109.37658
-  ]
+  "map": "https://maps.app.goo.gl/GtfiPvENs2DtuJyf8"
  },
  {
   "n": "Gành đá Bãi Gốc",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/6nSgH5V7aC5MgtH36",
-  "ll": [
-   12.94649,
-   109.43099
-  ]
+  "map": "https://maps.app.goo.gl/6nSgH5V7aC5MgtH36"
  },
  {
   "n": "Cung đường biển đẹp nhất Phú Yên",
   "t": "view",
   "p": "py",
   "note": "QL29, Hòa Xuân.",
-  "map": "https://maps.app.goo.gl/bxLCtwuDZcoSWFrY6",
-  "ll": [
-   12.91495,
-   109.45024
-  ]
+  "map": "https://maps.app.goo.gl/bxLCtwuDZcoSWFrY6"
  },
  {
   "n": "Viewpoint đường ven biển Phú Yên",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/h6YV1EciPkFfkZVz7",
-  "ll": [
-   12.91795,
-   109.44428
-  ]
+  "map": "https://maps.app.goo.gl/h6YV1EciPkFfkZVz7"
  },
  {
   "n": "Bãi biển Bãi Môn — Mũi Điện",
@@ -3668,11 +2944,7 @@ const PLACES = [
   "n": "Điểm check-in địa phận Phú Yên – Khánh Hòa",
   "t": "view",
   "p": "py",
-  "map": "https://maps.app.goo.gl/cKxsMeiowZ4ZZh3i9",
-  "ll": [
-   12.84443,
-   109.38945
-  ]
+  "map": "https://maps.app.goo.gl/cKxsMeiowZ4ZZh3i9"
  },
  {
   "n": "Tháp Nhạn",
@@ -3738,21 +3010,13 @@ const PLACES = [
   "n": "Bãi rêu Xóm Rớ",
   "t": "view",
   "p": "py",
-  "note": "Kè đá phủ rêu xanh khi triều rút, Tuy Hòa.",
-  "ll": [
-   13.07171,
-   109.33792
-  ]
+  "note": "Kè đá phủ rêu xanh khi triều rút, Tuy Hòa."
  },
  {
   "n": "Vịnh Xuân Đài",
   "t": "view",
   "p": "py",
-  "note": "Vịnh biển đẹp ở Sông Cầu, nhiều hải sản.",
-  "ll": [
-   13.42436,
-   109.24642
-  ]
+  "note": "Vịnh biển đẹp ở Sông Cầu, nhiều hải sản."
  },
  {
   "n": "VinWonders Hòn Tre",
@@ -3934,11 +3198,7 @@ const PLACES = [
   "n": "Bún cá Nguyên Loan",
   "t": "food",
   "p": "kh",
-  "note": "123 Ngô Gia Tự — bún cá/sứa gần 45 năm.",
-  "ll": [
-   12.2411,
-   109.18819
-  ]
+  "note": "123 Ngô Gia Tự — bún cá/sứa gần 45 năm."
  },
  {
   "n": "Nem nướng Đặng Văn Quyên",
@@ -3950,11 +3210,7 @@ const PLACES = [
   "n": "Bò nướng Lạc Cảnh",
   "t": "food",
   "p": "kh",
-  "note": "44 Nguyễn Bỉnh Khiêm — bò nướng đặc sản.",
-  "ll": [
-   12.25697,
-   109.19453
-  ]
+  "note": "44 Nguyễn Bỉnh Khiêm — bò nướng đặc sản."
  },
  {
   "n": "Bún sứa Năm Beo",
@@ -4062,51 +3318,31 @@ const PLACES = [
   "n": "Đồng cừu An Hòa",
   "t": "view",
   "p": "nt",
-  "note": "Cánh đồng chăn thả cừu nổi tiếng, chụp ảnh.",
-  "ll": [
-   16.45623,
-   107.60826
-  ]
+  "note": "Cánh đồng chăn thả cừu nổi tiếng, chụp ảnh."
  },
  {
   "n": "Biển Cà Ná",
   "t": "view",
   "p": "nt",
-  "note": "Bãi biển hoang sơ phía nam, đá xếp chênh vênh.",
-  "ll": [
-   11.3487,
-   108.8872
-  ]
+  "note": "Bãi biển hoang sơ phía nam, đá xếp chênh vênh."
  },
  {
   "n": "Cừu – dê nướng Phan Rang",
   "t": "food",
   "p": "nt",
-  "note": "Đặc sản cừu nướng, dê xào lăn.",
-  "ll": [
-   11.56367,
-   108.99386
-  ]
+  "note": "Đặc sản cừu nướng, dê xào lăn."
  },
  {
   "n": "Bánh căn Phan Rang",
   "t": "food",
   "p": "nt",
-  "note": "Bánh căn chấm nước cá kho/mắm nêm.",
-  "ll": [
-   11.59076,
-   108.96216
-  ]
+  "note": "Bánh căn chấm nước cá kho/mắm nêm."
  },
  {
   "n": "Gỏi cá mai",
   "t": "food",
   "p": "nt",
-  "note": "Cá mai cuốn bánh tráng, chấm nước đậu phộng.",
-  "ll": [
-   13.77198,
-   109.24715
-  ]
+  "note": "Cá mai cuốn bánh tráng, chấm nước đậu phộng."
  },
  {
   "n": "Đồi Cát Bay Mũi Né",
@@ -4218,21 +3454,13 @@ const PLACES = [
   "n": "Bánh căn Lân Nguyệt",
   "t": "food",
   "p": "bt",
-  "note": "8 Hải Thượng Lãn Ông — bánh căn chấm xíu mại.",
-  "ll": [
-   10.92969,
-   108.09981
-  ]
+  "note": "8 Hải Thượng Lãn Ông — bánh căn chấm xíu mại."
  },
  {
   "n": "Bánh quai vạc",
   "t": "food",
   "p": "bt",
-  "note": "152 Võ Thị Sáu — bánh quai vạc tôm.",
-  "ll": [
-   10.92525,
-   108.10514
-  ]
+  "note": "152 Võ Thị Sáu — bánh quai vạc tôm."
  },
  {
   "n": "Răng mực nướng",
@@ -4244,31 +3472,19 @@ const PLACES = [
   "n": "Hải sản Bi Bo",
   "t": "food",
   "p": "bt",
-  "note": "191 Nguyễn Đình Chiểu, Mũi Né — hải sản bình dân.",
-  "ll": [
-   10.95472,
-   108.22309
-  ]
+  "note": "191 Nguyễn Đình Chiểu, Mũi Né — hải sản bình dân."
  },
  {
   "n": "Bánh xèo Phan Thiết",
   "t": "food",
   "p": "bt",
-  "note": "Bánh xèo tôm mực, ăn cuốn rau.",
-  "ll": [
-   10.93602,
-   108.09073
-  ]
+  "note": "Bánh xèo tôm mực, ăn cuốn rau."
  },
  {
   "n": "Mì Quảng vịt",
   "t": "food",
   "p": "bt",
-  "note": "129 Trần Phú — mì Quảng vịt Phan Thiết.",
-  "ll": [
-   10.93185,
-   108.09793
-  ]
+  "note": "129 Trần Phú — mì Quảng vịt Phan Thiết."
  },
  {
   "n": "Tượng Chúa Kitô Vua",
@@ -4384,71 +3600,43 @@ const PLACES = [
   "n": "Hồ Đá Xanh",
   "t": "view",
   "p": "vt",
-  "note": "Hồ nước xanh ngọc giữa núi đá (Tân Thành).",
-  "ll": [
-   10.50993,
-   107.14737
-  ]
+  "note": "Hồ nước xanh ngọc giữa núi đá (Tân Thành)."
  },
  {
   "n": "Hồ Tràm",
   "t": "view",
   "p": "vt",
-  "note": "Biển hoang sơ, resort, casino (Xuyên Mộc).",
-  "ll": [
-   10.48635,
-   107.45428
-  ]
+  "note": "Biển hoang sơ, resort, casino (Xuyên Mộc)."
  },
  {
   "n": "Suối nước nóng Bình Châu",
   "t": "view",
   "p": "vt",
-  "note": "Suối khoáng nóng giữa rừng (Xuyên Mộc).",
-  "ll": [
-   10.60037,
-   107.55998
-  ]
+  "note": "Suối khoáng nóng giữa rừng (Xuyên Mộc)."
  },
  {
   "n": "Núi Minh Đạm",
   "t": "view",
   "p": "vt",
-  "note": "Căn cứ cách mạng, hang động, view biển (Long Điền).",
-  "ll": [
-   21.09458,
-   105.65662
-  ]
+  "note": "Căn cứ cách mạng, hang động, view biển (Long Điền)."
  },
  {
   "n": "Bánh khọt Gốc Vú Sữa",
   "t": "food",
   "p": "vt",
-  "note": "14 Nguyễn Trường Tộ — bánh khọt nhân tôm trứ danh.",
-  "ll": [
-   10.34011,
-   107.07885
-  ]
+  "note": "14 Nguyễn Trường Tộ — bánh khọt nhân tôm trứ danh."
  },
  {
   "n": "Lẩu cá đuối Hoàng Minh",
   "t": "food",
   "p": "vt",
-  "note": "44 Trương Công Định — lẩu cá đuối măng chua.",
-  "ll": [
-   10.34365,
-   107.07851
-  ]
+  "note": "44 Trương Công Định — lẩu cá đuối măng chua."
  },
  {
   "n": "Bánh canh ghẹ",
   "t": "food",
   "p": "vt",
-  "note": "Bánh canh ghẹ topping đầy (Võ Thị Sáu/Tú Xương).",
-  "ll": [
-   10.04631,
-   105.78727
-  ]
+  "note": "Bánh canh ghẹ topping đầy (Võ Thị Sáu/Tú Xương)."
  },
  {
   "n": "Hải sản Gành Hào",
