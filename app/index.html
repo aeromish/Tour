@@ -152,7 +152,12 @@
   .handle:active{cursor:grabbing}
 
   /* ---------- Danh sách ---------- */
-  .list{flex:1;overflow-y:auto;padding:6px 12px calc(24px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+  .list{flex:1;overflow-y:auto;padding:6px 12px calc(24px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+  .totop{position:absolute;right:14px;bottom:calc(20px + env(safe-area-inset-bottom));width:46px;height:46px;
+    border-radius:50%;background:var(--sea);color:#fff;border:0;place-items:center;cursor:pointer;
+    box-shadow:0 6px 18px rgba(26,34,70,.4);z-index:6;display:none;opacity:0;transition:opacity .2s}
+  .totop svg{width:22px;height:22px}
+  .totop.show{display:grid;opacity:1}
   .count{font-size:12.5px;color:var(--ink-soft);padding:8px 4px 4px;font-weight:600}
   .listfoot{margin:14px 4px 6px;padding-top:12px;border-top:1px solid var(--line);
     font-size:11px;line-height:1.6;color:var(--ink-soft);opacity:.85}
@@ -579,6 +584,20 @@ function setSheet(state){ sheet.classList.toggle('full', state==='full'); if(sta
   handle.addEventListener('pointermove',move);
   handle.addEventListener('pointerup',up);
   handle.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();} });
+})();
+
+/* Cuộn danh sách -> tự bung full màn (khỏi phải kéo panel trước) + nút về đầu */
+(function(){
+  const toTop=document.createElement('button');
+  toTop.className='totop'; toTop.type='button';
+  toTop.setAttribute('aria-label','Về đầu danh sách');
+  toTop.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>';
+  sheet.appendChild(toTop);
+  toTop.addEventListener('click',()=>{ listEl.scrollTo({top:0,behavior:'smooth'}); });
+  listEl.addEventListener('scroll',()=>{
+    if(listEl.scrollTop>6 && !sheet.classList.contains('full')) setSheet('full');
+    toTop.classList.toggle('show', listEl.scrollTop>500);
+  },{passive:true});
 })();
 
 /* ---------- Toast ---------- */
