@@ -72,9 +72,22 @@
   .filters select{padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;background:#fff}
   .count{color:var(--ink-soft);font-size:13px;font-weight:600}
   .tbl-wrap{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(26,34,70,.05)}
+  .pager{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:16px;flex-wrap:wrap}
+  .pager .info{font-size:13px;color:var(--ink-soft)}
+  .pager .info b{color:var(--ink)}
+  .pager .info select{padding:6px 9px;border:1.5px solid var(--line);border-radius:8px;font-size:13px}
+  .pager .pages{display:flex;gap:6px;align-items:center}
+  .pager .pages button{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;font-size:13px;font-weight:600;color:var(--sea)}
+  .pager .pages button:hover:not(:disabled){background:var(--paper)}
+  .pager .pages button:disabled{opacity:.4;cursor:not-allowed}
+  .pager .cur{font-size:13px;font-weight:700;padding:0 8px;white-space:nowrap}
   table{width:100%;border-collapse:collapse}
   th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);font-size:13.5px;vertical-align:middle}
   th{background:#f3f4fb;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft)}
+  th.sortable{cursor:pointer;user-select:none}
+  th.sortable:hover{color:var(--sea)}
+  .sarr{font-size:9px;margin-left:3px;opacity:.35}
+  .sarr.on{opacity:1;color:var(--sea)}
   tbody tr:last-child td{border-bottom:0}
   tbody tr:hover td{background:#fafaff}
   .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
@@ -385,6 +398,8 @@ function Dashboard({ session }) {
   const [provinces,setProvinces]=useState([]);
   const [types,setTypes]=useState([]);
   const [q,setQ]=useState(''); const [fProv,setFProv]=useState(''); const [fType,setFType]=useState(''); const [fStatus,setFStatus]=useState('');
+  const [page,setPage]=useState(1); const [perPage,setPerPage]=useState(25);
+  const [sortKey,setSortKey]=useState(''); const [sortDir,setSortDir]=useState('asc');
   const [editing,setEditing]=useState(null); // {id,...} | {} (mới) | null
   const [toastMsg,setToastMsg]=useState(''); const toast=(m)=>{ setToastMsg(m); setTimeout(()=>setToastMsg(''),2500); };
   const [showSugs,setShowSugs]=useState(false); const [sugCount,setSugCount]=useState(0);
@@ -429,6 +444,30 @@ function Dashboard({ session }) {
   const pub=all.filter(p=>p.status==='published').length;
   const draft=all.length-pub;
   const noCoord=all.filter(p=>p.lat==null).length;
+
+  const sorted = React.useMemo(()=>{
+    if(!sortKey) return filtered;
+    const dir=sortDir==='asc'?1:-1;
+    const val=(p)=> sortKey==='name'?(p.name||'')
+      : sortKey==='type'?(typeOf(p.type).label||'')
+      : sortKey==='prov'?(provName(p.province)||'')
+      : sortKey==='coord'?(p.lat!=null?1:0)
+      : sortKey==='status'?(p.status==='published'?1:0) : '';
+    return [...filtered].sort((a,b)=>{
+      const va=val(a), vb=val(b);
+      if(typeof va==='number') return (va-vb)*dir || String(a.name).localeCompare(b.name,'vi');
+      return String(va).localeCompare(String(vb),'vi')*dir;
+    });
+  },[filtered,sortKey,sortDir]);
+
+  React.useEffect(()=>{ setPage(1); },[q,fProv,fType,fStatus,perPage,sortKey,sortDir]);
+  const totalPages=Math.max(1,Math.ceil(sorted.length/perPage));
+  const curPage=Math.min(page,totalPages);
+  const pageRows=sorted.slice((curPage-1)*perPage, curPage*perPage);
+  const from=sorted.length? (curPage-1)*perPage+1 : 0;
+  const to=Math.min(curPage*perPage, sorted.length);
+  const toggleSort=(k)=>{ if(sortKey===k) setSortDir(d=>d==='asc'?'desc':'asc'); else { setSortKey(k); setSortDir('asc'); } };
+  const sarr=(k)=> <span className={'sarr'+(sortKey===k?' on':'')}>{sortKey===k?(sortDir==='asc'?'▲':'▼'):'⇅'}</span>;
 
   return (
     <div className="shell">
@@ -491,11 +530,15 @@ function Dashboard({ session }) {
               <div className="tbl-wrap">
                 <table>
                   <thead><tr>
-                    <th>Tên</th><th>Loại</th><th className="hide">Tỉnh</th>
-                    <th className="hide">Toạ độ</th><th>Trạng thái</th><th></th>
+                    <th className="sortable" onClick={()=>toggleSort('name')}>Tên {sarr('name')}</th>
+                    <th className="sortable" onClick={()=>toggleSort('type')}>Loại {sarr('type')}</th>
+                    <th className="sortable hide" onClick={()=>toggleSort('prov')}>Tỉnh {sarr('prov')}</th>
+                    <th className="sortable hide" onClick={()=>toggleSort('coord')}>Toạ độ {sarr('coord')}</th>
+                    <th className="sortable" onClick={()=>toggleSort('status')}>Trạng thái {sarr('status')}</th>
+                    <th></th>
                   </tr></thead>
                   <tbody>
-                    {filtered.map(p=>{
+                    {pageRows.map(p=>{
                       const t=typeOf(p.type);
                       return (
                         <tr key={p.id}>
@@ -515,6 +558,26 @@ function Dashboard({ session }) {
                   </tbody>
                 </table>
               </div>
+
+              {filtered.length>0 && (
+                <div className="pager">
+                  <div className="info">
+                    Đang xem <b>{from}–{to}</b> trong <b>{filtered.length}</b> điểm
+                    <select value={perPage} onChange={e=>setPerPage(+e.target.value)} style={{marginLeft:10}}>
+                      <option value={25}>25 / trang</option>
+                      <option value={50}>50 / trang</option>
+                      <option value={100}>100 / trang</option>
+                    </select>
+                  </div>
+                  <div className="pages">
+                    <button onClick={()=>setPage(1)} disabled={curPage<=1}>«</button>
+                    <button onClick={()=>setPage(curPage-1)} disabled={curPage<=1}>‹ Trước</button>
+                    <span className="cur">Trang {curPage} / {totalPages}</span>
+                    <button onClick={()=>setPage(curPage+1)} disabled={curPage>=totalPages}>Sau ›</button>
+                    <button onClick={()=>setPage(totalPages)} disabled={curPage>=totalPages}>»</button>
+                  </div>
+                </div>
+              )}
             </>
           )}
         </div>
