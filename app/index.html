@@ -66,7 +66,7 @@
     font-family:'Google Sans Flex',system-ui,sans-serif;
     font-weight:800;font-size:26px;letter-spacing:-.02em;line-height:1;
   }
-  .brand .tag{font-size:12.5px;color:#a9d2d6;font-weight:500}
+  .brand .tag{font-size:12.5px;color:#aeb6e0;font-weight:500}
 
   /* ---------- Dải điểm dừng theo vùng (signature) ---------- */
   .ribbon-wrap{position:relative;margin-top:12px}
@@ -77,19 +77,19 @@
   .ribbon::-webkit-scrollbar{display:none}
   .ribbon::before{
     content:"";position:absolute;top:13px;left:0;right:0;height:2px;
-    background:rgba(169,210,214,.35);
+    background:rgba(174,182,224,.32);
   }
   /* gợi ý còn nội dung khi vuốt ngang */
   .ribbon-wrap::after{
     content:"";position:absolute;top:0;bottom:0;right:0;width:34px;pointer-events:none;
-    background:linear-gradient(to right,rgba(11,79,92,0),var(--sea));
+    background:linear-gradient(to right,transparent,var(--sea));
   }
   .stop{
     position:relative;flex:0 0 auto;padding:0 14px;text-align:center;
-    background:none;border:0;color:#a9d2d6;cursor:pointer;font-family:inherit;
+    background:none;border:0;color:#aeb6e0;cursor:pointer;font-family:inherit;
   }
   .stop .dot{
-    width:12px;height:12px;border-radius:50%;background:#2b6d78;
+    width:12px;height:12px;border-radius:50%;background:#4b5589;
     border:2px solid var(--sea);margin:7px auto 6px;transition:.18s;
   }
   .stop .lbl{font-size:12px;font-weight:600;white-space:nowrap}
@@ -142,7 +142,7 @@
   /* ---------- Tấm trượt (bottom sheet) ---------- */
   .sheet{position:absolute;left:0;right:0;bottom:0;height:92%;z-index:650;
     background:var(--paper);border-radius:20px 20px 0 0;
-    box-shadow:0 -8px 30px rgba(11,47,53,.18);
+    box-shadow:0 -8px 30px rgba(26,34,70,.16);
     display:flex;flex-direction:column;
     transform:translateY(var(--sy,52%));transition:transform .28s ease}
   .sheet.full{--sy:4%}
@@ -236,6 +236,19 @@
   .marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{
     background:var(--sea-2);color:#fff;font-family:'Google Sans Flex';font-weight:700}
   .leaflet-popup-content{font-family:'Google Sans Flex';font-size:14px;font-weight:600;margin:10px 12px}
+  @media (max-width:480px){
+    header{padding:11px 14px}
+    header{padding-top:max(11px,env(safe-area-inset-top))}
+    .brand h1{font-size:22px}
+    .brand .tag{display:none}                 /* mô tả dài — thừa trong app, ẩn cho gọn */
+    .ribbon-wrap{margin-top:9px}
+    .fbbtn.hdr{padding:7px 13px;min-height:36px;font-size:12px}
+    .card{padding:13px;margin-bottom:9px;border-radius:14px}
+    .card .note{margin-top:6px}
+    .card .thumbs img{width:70px;height:52px}
+    .acts{margin-top:10px;gap:7px}
+    .act{padding:10px;font-size:13px}
+  }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
