@@ -155,6 +155,19 @@
   .count{font-size:12.5px;color:var(--ink-soft);padding:8px 4px 4px;font-weight:600}
   .listfoot{margin:14px 4px 6px;padding-top:12px;border-top:1px solid var(--line);
     font-size:11px;line-height:1.6;color:var(--ink-soft);opacity:.85}
+  .fbwrap{text-align:center;margin:4px 0 10px}
+  .fbbtn{background:none;border:1.5px solid var(--line);border-radius:999px;padding:8px 16px;
+    font-family:inherit;font-size:12.5px;font-weight:600;color:var(--sea);cursor:pointer}
+  .fbbtn:hover{background:rgba(14,124,134,.06)}
+  .fb-overlay{position:fixed;inset:0;background:rgba(8,30,36,.55);display:grid;place-items:center;z-index:2000;padding:16px}
+  .fb-modal{background:#fff;border-radius:16px;padding:22px;width:100%;max-width:380px;box-shadow:var(--shadow)}
+  .fb-modal h3{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;color:var(--sea);margin-bottom:12px}
+  .fb-modal label{display:block;font-size:12px;font-weight:700;color:var(--ink-soft);margin:10px 0 4px}
+  .fb-modal input,.fb-modal select,.fb-modal textarea{width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:9px;font-family:inherit;font-size:14px}
+  .fb-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+  .fb-btn{border:0;border-radius:10px;padding:10px 18px;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer}
+  .fb-btn.ghost{background:#fff;border:1.5px solid var(--line);color:var(--sea)}
+  .fb-btn.send{background:var(--teal);color:#fff}
   @keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   .card{
     animation:cardIn .3s ease both;
@@ -168,6 +181,8 @@
   .badge{flex:0 0 auto;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;
     color:#fff;white-space:nowrap;letter-spacing:.01em}
   .card .note{font-size:13px;color:var(--ink-soft);margin-top:8px;line-height:1.5}
+  .card .thumbs{display:flex;gap:6px;margin-top:9px}
+  .card .thumbs img{width:78px;height:58px;object-fit:cover;border-radius:8px;border:1px solid var(--line);background:#eef4f4}
   .acts{display:flex;gap:8px;margin-top:12px}
   .act{
     flex:1;text-align:center;text-decoration:none;font-weight:600;font-size:13.5px;
@@ -452,7 +467,7 @@ function render(){
   const nearBar=(nearMode&&userPos)?
     `<button id="nearoff" class="nearbar"><svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Đang sắp theo khoảng cách từ bạn · Tắt</button>`:'';
   listEl.innerHTML=`<div class="count">${label}</div>${nearBar}`+
-    `<div class="cardhost" id="cardhost"></div><div id="sentinel" aria-hidden="true" style="height:1px"></div>`+`<p class="listfoot">Vị trí chỉ dùng trên máy bạn, không gửi đi đâu. · Thông tin có thể thay đổi — hãy kiểm tra trước khi đi. · Dữ liệu bản đồ © OpenStreetMap.</p>`;
+    `<div class="cardhost" id="cardhost"></div><div id="sentinel" aria-hidden="true" style="height:1px"></div>`+`<p class="listfoot">Vị trí chỉ dùng trên máy bạn, không gửi đi đâu. · Thông tin có thể thay đổi — hãy kiểm tra trước khi đi. · Dữ liệu bản đồ © OpenStreetMap.</p>`+`<div class="fbwrap"><button type="button" class="fbbtn" id="fbBtn">Báo điểm sai / gợi ý điểm mới</button></div>`;
   listEl.scrollTop=0;
   const noff=document.getElementById('nearoff');
   if(noff) noff.onclick=()=>{ nearMode=false; render(); };
@@ -484,6 +499,7 @@ function buildCard(p,j){
         <span class="badge" style="background:${TYPE[p.t].color}">${TYPE[p.t].label}</span>
       </div>
       ${p.note?`<div class="note">${esc(p.note)}</div>`:''}
+      ${(p.img&&p.img.length)?`<div class="thumbs">${p.img.slice(0,3).map(u=>`<img src="${esc(u)}" alt="" loading="lazy">`).join('')}</div>`:''}
       <div class="acts">
         ${p.ll&&map?`<button type="button" class="act viewmap" aria-label="Xem ${esc(p.n)} trên bản đồ"><svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Bản đồ</button>`:''}
         <a class="act dir" href="${mapsHref(p)}" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg> Chỉ đường</a>
@@ -569,9 +585,53 @@ window.addEventListener('popstate',()=>{
   if(nearMode){ nearMode=false; render(); return; }
 });
 
+/* ---------- Góp ý cộng đồng ---------- */
+function openFeedback(){
+  let ov=document.getElementById('fbOverlay');
+  if(ov){ ov.style.display='grid'; return; }
+  ov=document.createElement('div'); ov.id='fbOverlay'; ov.className='fb-overlay';
+  ov.innerHTML=`<div class="fb-modal">
+    <h3>Góp ý cho Dọc Bờ</h3>
+    <label>Loại</label>
+    <select id="fbKind">
+      <option value="sai">Báo điểm sai / đã đóng cửa</option>
+      <option value="moi">Gợi ý điểm mới</option>
+      <option value="gopy">Góp ý khác</option>
+    </select>
+    <label>Tên điểm (nếu có)</label>
+    <input id="fbName" placeholder="VD: Quán bún cá X, Nha Trang">
+    <label>Nội dung *</label>
+    <textarea id="fbMsg" rows="3" placeholder="Mô tả giúp mình…"></textarea>
+    <label>Liên hệ (không bắt buộc)</label>
+    <input id="fbContact" placeholder="email/sđt nếu muốn được phản hồi">
+    <div class="fb-foot">
+      <button type="button" class="fb-btn ghost" id="fbCancel">Đóng</button>
+      <button type="button" class="fb-btn send" id="fbSend">Gửi</button>
+    </div></div>`;
+  document.body.appendChild(ov);
+  ov.addEventListener('mousedown',e=>{ if(e.target===ov) ov.style.display='none'; });
+  ov.querySelector('#fbCancel').onclick=()=>ov.style.display='none';
+  ov.querySelector('#fbSend').onclick=async()=>{
+    const msg=ov.querySelector('#fbMsg').value.trim();
+    if(!msg){ toast('Hãy nhập nội dung góp ý'); return; }
+    if(!sbClient){ toast('Cần mạng để gửi góp ý'); return; }
+    const btn=ov.querySelector('#fbSend'); btn.disabled=true;
+    const payload={ kind:ov.querySelector('#fbKind').value,
+      place_name:ov.querySelector('#fbName').value.trim()||null,
+      message:msg, contact:ov.querySelector('#fbContact').value.trim()||null };
+    const res=await sbClient.from('suggestions').insert(payload);
+    btn.disabled=false;
+    if(res.error){ toast('Lỗi gửi: '+res.error.message); return; }
+    ov.querySelector('#fbMsg').value=''; ov.querySelector('#fbName').value=''; ov.querySelector('#fbContact').value='';
+    ov.style.display='none'; toast('Đã gửi góp ý — cảm ơn bạn!');
+  };
+}
+document.addEventListener('click',e=>{ if(e.target && e.target.id==='fbBtn') openFeedback(); });
+
 /* ---------- Nguồn dữ liệu: Supabase (động) + data.js (dự phòng offline) ---------- */
 const SB_URL='https://musbrsfduxvihlmomvvu.supabase.co';
 const SB_KEY='sb_publishable_AqpgPIy5OFrbp7o8Ix09-Q_8_0fGFOB';
+let sbClient = window.supabase ? supabase.createClient(SB_URL, SB_KEY) : null;
 function sortByProvince(){
   const ord={}; PROVINCES.forEach((p,i)=>ord[p.key]=i);
   PLACES.sort((a,b)=>(ord[a.p]??99)-(ord[b.p]??99) || String(a.n).localeCompare(b.n,'vi'));
@@ -588,11 +648,11 @@ paintAll();  // vẽ từ cache hoặc từ data.js (dự phòng)
 
 // 2) Có mạng -> tải bản mới nhất từ Supabase rồi cập nhật
 async function loadFromSupabase(){
-  if(!window.supabase) return;
+  if(!sbClient) return;
   try{
-    const sb=supabase.createClient(SB_URL, SB_KEY);
+    const sb=sbClient;
     const [pl,pv,tp]=await Promise.all([
-      sb.from('places').select('name,type,province,lat,lng,note,tel,map_url').eq('status','published'),
+      sb.from('places').select('name,type,province,lat,lng,note,tel,map_url,images').eq('status','published'),
       sb.from('provinces').select('key,name,center_lat,center_lng,sort_order').order('sort_order'),
       sb.from('types').select('key,label,color'),
     ]);
@@ -600,7 +660,8 @@ async function loadFromSupabase(){
     if(!pl.data || !pl.data.length) return;
     PLACES = pl.data.map(r=>({ n:r.name, t:r.type, p:r.province,
       ll:(r.lat!=null && r.lng!=null)?[r.lat,r.lng]:undefined,
-      note:r.note||undefined, tel:r.tel||undefined, map:r.map_url||undefined }));
+      note:r.note||undefined, tel:r.tel||undefined, map:r.map_url||undefined,
+      img:(Array.isArray(r.images)&&r.images.length)?r.images:undefined }));
     PROVINCES = pv.data.map(r=>({ key:r.key, name:r.name, c:[r.center_lat, r.center_lng] }));
     const T={}; tp.data.forEach(r=>T[r.key]={label:r.label, color:r.color}); TYPE=T;
     sortByProvince();

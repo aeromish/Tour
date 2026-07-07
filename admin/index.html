@@ -300,6 +300,50 @@ function Editor({ init, provinces, types, onClose, onSaved, toast }) {
   );
 }
 
+// ---------------- GÓP Ý ----------------
+const KIND_LABEL={sai:'Báo sai',moi:'Điểm mới',gopy:'Góp ý'};
+function SuggestionsModal({onClose, toast}){
+  const [list,setList]=useState(null);
+  const load=async()=>{
+    const {data,error}=await sb.from('suggestions').select('*').order('created_at',{ascending:false});
+    if(error){ toast('Lỗi tải góp ý: '+error.message); setList([]); return; }
+    setList(data||[]);
+  };
+  useEffect(()=>{ load(); },[]);
+  const setStatus=async(s,st)=>{ const {error}=await sb.from('suggestions').update({status:st}).eq('id',s.id); if(error){toast('Lỗi: '+error.message);return;} load(); };
+  const del=async(s)=>{ if(!confirm('Xoá góp ý này?'))return; const {error}=await sb.from('suggestions').delete().eq('id',s.id); if(error){toast('Lỗi: '+error.message);return;} load(); };
+  return (
+    <div className="overlay" onMouseDown={e=>{ if(e.target.className==='overlay') onClose(); }}>
+      <div className="modal" style={{maxWidth:640}}>
+        <div className="modal-head"><h2>Góp ý cộng đồng</h2><button className="icon-btn" onClick={onClose}>Đóng</button></div>
+        <div style={{padding:'16px 22px'}}>
+          {list===null ? <div className="loading">Đang tải…</div> :
+           list.length===0 ? <div className="loading">Chưa có góp ý nào.</div> :
+           list.map(s=>(
+             <div key={s.id} style={{border:'1px solid #dfe7e7',borderRadius:12,padding:14,marginBottom:12,background:s.status==='pending'?'#fff':'#f5f9f8'}}>
+               <div style={{display:'flex',justifyContent:'space-between',gap:10,alignItems:'flex-start'}}>
+                 <div>
+                   <span className="pill" style={{background:'#eef4f4',color:'#0b4f5c'}}>{KIND_LABEL[s.kind]||s.kind}</span>
+                   {s.status!=='pending' && <span className="muted" style={{marginLeft:8,fontSize:12}}>· {s.status==='done'?'đã xử lý':'bỏ qua'}</span>}
+                   {s.place_name && <b style={{marginLeft:8}}>{s.place_name}</b>}
+                 </div>
+                 <span className="muted" style={{fontSize:12,whiteSpace:'nowrap'}}>{new Date(s.created_at).toLocaleDateString('vi')}</span>
+               </div>
+               <p style={{margin:'8px 0',fontSize:14,whiteSpace:'pre-wrap'}}>{s.message}</p>
+               {s.contact && <div className="muted" style={{fontSize:12.5}}>Liên hệ: {s.contact}</div>}
+               <div style={{display:'flex',gap:6,marginTop:10}}>
+                 <button className="icon-btn" onClick={()=>setStatus(s,'done')}>Đã xử lý</button>
+                 <button className="icon-btn" onClick={()=>setStatus(s,'ignored')}>Bỏ qua</button>
+                 <button className="icon-btn del" onClick={()=>del(s)}>Xoá</button>
+               </div>
+             </div>
+           ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ---------------- DASHBOARD ----------------
 function Dashboard({ session }) {
   const [places,setPlaces]=useState(null);
@@ -308,6 +352,8 @@ function Dashboard({ session }) {
   const [q,setQ]=useState(''); const [fProv,setFProv]=useState(''); const [fType,setFType]=useState(''); const [fStatus,setFStatus]=useState('');
   const [editing,setEditing]=useState(null); // {id,...} | {} (mới) | null
   const [toastMsg,setToastMsg]=useState(''); const toast=(m)=>{ setToastMsg(m); setTimeout(()=>setToastMsg(''),2500); };
+  const [showSugs,setShowSugs]=useState(false); const [sugCount,setSugCount]=useState(0);
+  const loadSugCount=()=>{ sb.from('suggestions').select('id',{count:'exact',head:true}).eq('status','pending').then(r=>setSugCount(r.count||0)); };
 
   const load = async ()=>{
     const [pl,pv,tp] = await Promise.all([
@@ -321,6 +367,7 @@ function Dashboard({ session }) {
     const rows = (pl.data||[]).sort((a,b)=>
       (order[a.province]??99)-(order[b.province]??99) || a.name.localeCompare(b.name,'vi'));
     setPlaces(rows);
+    loadSugCount();
   };
   useEffect(()=>{ load(); },[]);
 
@@ -348,6 +395,8 @@ function Dashboard({ session }) {
       <div className="topbar">
         <div className="brand"><PinLogo/> Dọc Bờ · Quản trị</div>
         <div className="who">
+          <button className="icon-btn" style={{color:'#fff',borderColor:'rgba(255,255,255,.3)',background: sugCount? 'rgba(232,163,61,.9)':'transparent', fontWeight:700}}
+            onClick={()=>setShowSugs(true)}>Góp ý{sugCount?` (${sugCount})`:''}</button>
           <span>{session.user.email}</span>
           <button className="icon-btn" style={{color:'#fff',borderColor:'rgba(255,255,255,.3)',background:'transparent'}}
             onClick={()=>sb.auth.signOut()}>Đăng xuất</button>
@@ -408,6 +457,7 @@ function Dashboard({ session }) {
         <Editor init={editing} provinces={provinces} types={types} toast={toast}
           onClose={()=>setEditing(null)} onSaved={()=>{ setEditing(null); load(); }}/>
       )}
+      {showSugs && <SuggestionsModal toast={toast} onClose={()=>{ setShowSugs(false); loadSugCount(); }}/>}
       <Toast msg={toastMsg}/>
     </div>
   );
