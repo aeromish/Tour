@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Chia tiền nhóm — Dọc Bờ</title>
+<meta name="description" content="Ghi quỹ nhóm, chi tiêu theo ngày và quyết toán ai trả ai bao nhiêu — dành cho chuyến phượt 3–5 người. Lưu ngay trong máy bạn.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2c3768">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@8..144,400..700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sea:#2c3768; --coral:#f2685c; --sun:#e0a12e; --moss:#2f9e5f;
+    --ink:#1a2246; --ink-soft:#5b6285; --paper:#f4f5fb; --card:#fff; --line:#e6e8f0;
+    --shadow:0 2px 14px rgba(26,34,70,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Google Sans Flex',system-ui,sans-serif;background:var(--paper);color:var(--ink);
+    line-height:1.5;-webkit-font-smoothing:antialiased}
+  :focus{outline:none}
+  :focus-visible{outline:2.5px solid var(--coral);outline-offset:2px;border-radius:6px}
+  h1,h2,h3{letter-spacing:-.02em;line-height:1.2}
+  .wrap{max-width:720px;margin:0 auto;padding:0 14px 70px}
+
+  header{background:var(--sea);color:#fff;padding:14px 0;padding-top:max(14px,env(safe-area-inset-top))}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:0}
+  header h1{font-size:19px;font-weight:700;display:flex;align-items:center;gap:8px}
+  header h1 svg{width:19px;height:19px;color:var(--sun);flex:none}
+  .back{color:#fff;text-decoration:none;font-size:12.5px;font-weight:600;border:1.5px solid rgba(255,255,255,.32);
+    background:rgba(255,255,255,.1);border-radius:999px;padding:9px 15px;white-space:nowrap;min-height:44px;display:flex;align-items:center}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px;box-shadow:var(--shadow)}
+  .card > h2{font-size:15px;font-weight:700;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+  .card > h2 .n{margin-left:auto;font-size:12.5px;font-weight:600;color:var(--ink-soft)}
+  .hint{font-size:11.5px;color:var(--ink-soft);margin-bottom:12px;line-height:1.5}
+
+  label{display:block;font-size:11.5px;font-weight:700;color:var(--ink-soft);margin:9px 0 4px}
+  input,select{width:100%;padding:10px 11px;border:1.5px solid var(--line);border-radius:9px;
+    font-family:inherit;font-size:14.5px;background:#fff;color:var(--ink);min-height:44px}
+  input[type=date]{min-height:44px}
+  .row{display:flex;gap:9px}
+  .row > *{flex:1;min-width:0}
+  .row.tight{gap:7px}
+
+  button{font-family:inherit;cursor:pointer}
+  .btn{border:0;border-radius:10px;padding:12px 16px;font-weight:700;font-size:14px;min-height:46px;
+    display:inline-flex;align-items:center;justify-content:center;gap:7px}
+  .btn.primary{background:var(--sea);color:#fff}
+  .btn.coral{background:var(--coral);color:#fff}
+  .btn.ghost{background:#fff;border:1.5px solid var(--line);color:var(--sea)}
+  .btn.danger{background:#fff;border:1.5px solid #e6c3bd;color:#c0392b}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn.full{width:100%}
+
+  /* thành viên */
+  .mem{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px}
+  .mchip{display:flex;align-items:center;gap:7px;background:var(--paper);border:1.5px solid var(--line);
+    border-radius:999px;padding:7px 8px 7px 13px;font-size:13.5px;font-weight:600}
+  .mchip.tre{border-color:var(--sun);background:#fdf6e6}
+  .mchip .crown{font-size:11px;color:var(--sun)}
+  .mchip button{border:0;background:none;color:var(--ink-soft);font-size:15px;line-height:1;
+    width:26px;height:26px;border-radius:50%}
+  .mchip .nm{width:auto;height:auto;color:var(--ink);font-family:inherit;font-size:13.5px;
+    font-weight:600;padding:2px 0;border-radius:4px}
+  .mchip .nm:hover{text-decoration:underline}
+  .mchip button:hover{background:#e9ebf3;color:#c0392b}
+
+  /* danh sách mục */
+  .day{margin-top:12px}
+  .day h3{font-size:12px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;
+    display:flex;justify-content:space-between;align-items:baseline;padding-bottom:5px;border-bottom:1px solid var(--line)}
+  .day h3 b{color:var(--ink);font-size:13px;font-variant-numeric:tabular-nums}
+  .item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .item:last-child{border-bottom:0}
+  .item .info{flex:1;min-width:0}
+  .item .info b{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .item .info span{font-size:11.5px;color:var(--ink-soft)}
+  .item .amt{font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .item .ops{display:flex;gap:4px;flex:none}
+  .iop{width:40px;height:40px;border:1.5px solid var(--line);background:#fff;border-radius:8px;
+    display:grid;place-items:center;color:var(--sea);font-size:13px}
+  .iop.del{color:#c0392b;border-color:#e6c3bd}
+  .empty{padding:14px 0;font-size:13px;color:var(--ink-soft);text-align:center}
+
+  /* tổng kết */
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:6px}
+  .kpi{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:11px}
+  .kpi .l{font-size:10.5px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em}
+  .kpi .v{font-size:16px;font-weight:700;margin-top:3px;font-variant-numeric:tabular-nums}
+  table{width:100%;border-collapse:collapse;margin-top:10px}
+  th,td{text-align:right;padding:9px 6px;font-size:13px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+  th:first-child,td:first-child{text-align:left;font-variant-numeric:normal}
+  th{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);font-weight:700}
+  tbody tr:last-child td{border-bottom:0}
+  td b{font-weight:700}
+  .pos{color:var(--moss)} .neg{color:var(--coral)}
+
+  .settle{margin-top:10px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px}
+  .srow{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .srow:last-child{border-bottom:0}
+  .srow .ar{color:var(--ink-soft);flex:none}
+  .srow .amt{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums;color:var(--sea)}
+  .srow .who{font-weight:600}
+  .done{text-align:center;padding:12px;font-size:13.5px;color:var(--moss);font-weight:600}
+
+  .acts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+  .foot{margin-top:18px;font-size:11px;color:var(--ink-soft);text-align:center;line-height:1.6}
+
+  .toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:var(--ink);color:#fff;
+    padding:11px 18px;border-radius:999px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;
+    transition:.22s;z-index:99;max-width:90vw;text-align:center}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+  .split-box{border:1.5px solid var(--line);border-radius:9px;padding:9px 11px;background:#fff}
+  .split-box .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .split-box .top span{font-size:11.5px;font-weight:700;color:var(--ink-soft)}
+  .split-box .top button{border:0;background:none;color:var(--sea);font-size:12.5px;font-weight:700;
+    min-height:40px;padding:0 6px;margin:-8px -6px}
+  .cks{display:flex;flex-wrap:wrap;gap:6px}
+  .ck{display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:999px;
+    padding:6px 11px;font-size:13px;font-weight:600;cursor:pointer;min-height:38px}
+  .ck.on{background:var(--sea);color:#fff;border-color:var(--sea)}
+  .ck input{display:none}
+  @media (max-width:420px){ .kpis{grid-template-columns:1fr} .acts{grid-template-columns:1fr} }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>
+      Chia tiền nhóm
+    </h1>
+    <a class="back" href="../">← Bản đồ</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- Chuyến + thành viên -->
+  <section class="card">
+    <h2>Chuyến đi</h2>
+    <label for="tripName">Tên chuyến</label>
+    <input id="tripName" placeholder="VD: Hà Giang 3N2Đ" autocomplete="off">
+
+    <label style="margin-top:14px">Thành viên</label>
+    <div class="mem" id="memList"></div>
+    <div class="row tight" style="margin-top:8px">
+      <input id="memName" placeholder="Tên thành viên" autocomplete="off" maxlength="24">
+      <button class="btn primary" id="memAdd" style="flex:0 0 auto;padding:12px 18px">Thêm</button>
+    </div>
+    <label for="treSel" style="margin-top:12px">Thủ quỹ (người giữ quỹ, ứng tiền)</label>
+    <select id="treSel"></select>
+  </section>
+
+  <!-- Góp quỹ -->
+  <section class="card">
+    <h2>Góp quỹ <span class="n" id="cCount"></span></h2>
+    <p class="hint">Tiền mỗi người đưa vào quỹ chung (kể cả thủ quỹ tự ứng trước). Đây là <b>thu</b>, không phải khoản chi.</p>
+    <div class="row tight">
+      <select id="cWho"></select>
+      <input id="cAmt" inputmode="numeric" placeholder="Số tiền · 500k" autocomplete="off">
+    </div>
+    <div class="row tight" style="margin-top:8px">
+      <input id="cDate" type="date">
+      <button class="btn primary" id="cAdd" style="flex:0 0 auto;padding:12px 18px">Thêm</button>
+    </div>
+    <div id="cList"></div>
+  </section>
+
+  <!-- Khoản chi -->
+  <section class="card">
+    <h2>Khoản chi <span class="n" id="eCount"></span></h2>
+    <p class="hint">Mỗi khoản chia đều cho những người được chọn. Ai không tham gia (không nhậu, không thuê xe…) thì bỏ tick.</p>
+    <label for="eTitle">Nội dung</label>
+    <input id="eTitle" placeholder="VD: Xăng xe, ăn trưa, nhà nghỉ" autocomplete="off" maxlength="60">
+    <div class="row tight" style="margin-top:8px">
+      <input id="eAmt" inputmode="numeric" placeholder="Số tiền · 1tr2 · 350k" autocomplete="off">
+      <input id="eDate" type="date">
+    </div>
+    <label for="ePayer">Ai trả</label>
+    <select id="ePayer"></select>
+    <label>Chia cho</label>
+    <div class="split-box">
+      <div class="top"><span id="splitInfo">—</span><button type="button" id="splitAll">Chọn tất cả</button></div>
+      <div class="cks" id="eSplit"></div>
+    </div>
+    <button class="btn coral full" id="eAdd" style="margin-top:12px">Thêm khoản chi</button>
+    <div id="eList"></div>
+  </section>
+
+  <!-- Tổng kết -->
+  <section class="card">
+    <h2>Tổng kết</h2>
+    <div class="kpis">
+      <div class="kpi"><div class="l">Tổng chi</div><div class="v" id="kSpend">0 đ</div></div>
+      <div class="kpi"><div class="l">Tổng góp quỹ</div><div class="v" id="kFund">0 đ</div></div>
+      <div class="kpi"><div class="l">Quỹ còn lại</div><div class="v" id="kLeft">0 đ</div></div>
+    </div>
+    <p class="hint" id="fundNote" style="margin-top:8px"></p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Người</th><th>Góp quỹ</th><th>Trả hộ</th><th>Phải chịu</th><th>Thừa / Thiếu</th></tr></thead>
+        <tbody id="sumBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Quyết toán -->
+  <section class="card">
+    <h2>Quyết toán</h2>
+    <p class="hint">Cách trả gọn nhất — người thiếu trả thẳng người thừa, ít giao dịch nhất có thể.</p>
+    <div class="settle" id="settle"></div>
+    <div class="acts">
+      <button class="btn primary" id="copySum">Chép tóm tắt</button>
+      <button class="btn ghost" id="exportJson">Xuất file</button>
+      <button class="btn ghost" id="importBtn">Nhập file</button>
+      <button class="btn danger" id="resetAll">Xoá hết</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json,.json" hidden>
+  </section>
+
+  <p class="foot">
+    Mọi số liệu lưu ngay trong máy bạn, không gửi đi đâu.<br>
+    Xoá dữ liệu trình duyệt là mất — nhớ bấm <b>Xuất file</b> để giữ bản sao.
+  </p>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+const KEY='docbo_quy';
+const $=id=>document.getElementById(id);
+const uid=()=>Math.random().toString(36).slice(2,9);
+const todayStr=()=>{const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);};
+
+let S={name:'',members:[],treasurer:null,contribs:[],expenses:[]};
+let editingExp=null, editingCon=null;
+
+/* ---------- tiện ích ---------- */
+const fmt=n=>new Intl.NumberFormat('vi-VN').format(Math.round(n))+' đ';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function parseMoney(raw){
+  if(raw==null) return 0;
+  const s=String(raw).trim().toLowerCase().replace(/\s|đ|vnd/g,'');
+  if(!s) return 0;
+  let m=s.match(/^(\d+)(?:tr|m)(\d*)$/);            // 1tr2 · 1tr250 · 2m5
+  if(m){ const f=m[2]?parseInt(m[2],10)/Math.pow(10,m[2].length):0;
+         return Math.round((parseInt(m[1],10)+f)*1e6); }
+  m=s.match(/^([\d.,]+)(tr|m|k)$/);                  // 1,5tr · 350k
+  if(m){ const num=m[1].replace(/,/g,'.'), parts=num.split('.');
+         const v = parts.length>2 ? parseFloat(parts.join('')) : parseFloat(num);
+         if(isNaN(v)) return 0;
+         return Math.round(v*(m[2]==='k'?1e3:1e6)); }
+  const d=s.replace(/\D/g,'');                       // 1.200.000 · 1200000
+  return d?parseInt(d,10):0;
+}
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('on');
+  clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('on'),2200); }
+const memName=id=>{const m=S.members.find(x=>x.id===id);return m?m.name:'?';};
+const dmy=d=>{const p=String(d||'').split('-');return p.length===3?`${p[2]}/${p[1]}`:d;};
+
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(_){ toast('Không lưu được (bộ nhớ đầy?)'); } }
+function load(){
+  try{ const j=JSON.parse(localStorage.getItem(KEY)||'null');
+    if(j&&Array.isArray(j.members)) S=Object.assign(S,j);
+  }catch(_){}
+  if(!S.members.length){ S.members=[{id:uid(),name:'Tôi'}]; S.treasurer=S.members[0].id; }
+  if(!S.members.some(m=>m.id===S.treasurer)) S.treasurer=S.members[0].id;
+}
+
+/* ---------- tính toán ---------- */
+function shareOf(amount,split){           // chia đều, phần lẻ dồn cho người đầu (không thất thoát đồng nào)
+  const k=split.length; if(!k) return {};
+  const base=Math.floor(amount/k), rem=amount-base*k, out={};
+  split.forEach((id,i)=>out[id]=base+(i<rem?1:0));
+  return out;
+}
+function compute(){
+  const bal={}, gop={}, traHo={}, phaiChiu={};
+  S.members.forEach(m=>{bal[m.id]=0;gop[m.id]=0;traHo[m.id]=0;phaiChiu[m.id]=0;});
+  const tre=S.treasurer;
+
+  S.contribs.forEach(c=>{ if(!(c.who in bal)) return;
+    gop[c.who]+=c.amount; bal[c.who]+=c.amount; if(tre in bal) bal[tre]-=c.amount; });
+
+  S.expenses.forEach(e=>{
+    const payer = e.payer==='fund' ? tre : e.payer;
+    if(!(payer in bal)) return;
+    bal[payer]+=e.amount;
+    if(e.payer!=='fund') traHo[payer]+=e.amount;
+    const split=e.split.filter(id=>id in bal);
+    const sh=shareOf(e.amount, split.length?split:[payer]);
+    Object.entries(sh).forEach(([id,v])=>{ bal[id]-=v; phaiChiu[id]+=v; });
+  });
+
+  const totalSpend=S.expenses.reduce((a,e)=>a+e.amount,0);
+  const totalFund=S.contribs.reduce((a,c)=>a+c.amount,0);
+  const fundSpend=S.expenses.filter(e=>e.payer==='fund').reduce((a,e)=>a+e.amount,0);
+  return {bal,gop,traHo,phaiChiu,totalSpend,totalFund,fundLeft:totalFund-fundSpend,fundSpend};
+}
+function settle(bal){
+  const cred=[],deb=[];
+  Object.entries(bal).forEach(([id,v])=>{ if(v>0) cred.push([id,v]); else if(v<0) deb.push([id,-v]); });
+  cred.sort((a,b)=>b[1]-a[1]); deb.sort((a,b)=>b[1]-a[1]);
+  const out=[]; let i=0,j=0;
+  while(i<deb.length && j<cred.length){
+    const x=Math.min(deb[i][1],cred[j][1]);
+    if(x>0) out.push({from:deb[i][0],to:cred[j][0],amount:x});
+    deb[i][1]-=x; cred[j][1]-=x;
+    if(deb[i][1]===0) i++;
+    if(cred[j][1]===0) j++;
+  }
+  return out;
+}
+
+/* ---------- dựng giao diện ---------- */
+function renderMembers(){
+  $('memList').innerHTML = S.members.map(m=>`
+    <span class="mchip${m.id===S.treasurer?' tre':''}">
+      ${m.id===S.treasurer?'<span class="crown" title="Thủ quỹ">★</span>':''}
+      <button type="button" class="nm" data-ren="${m.id}" title="Bấm để đổi tên">${esc(m.name)}</button>
+      <button type="button" data-del="${m.id}" aria-label="Xoá ${esc(m.name)}">×</button>
+    </span>`).join('');
+  $('memList').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>delMember(b.dataset.del));
+  $('memList').querySelectorAll('[data-ren]').forEach(b=>b.onclick=()=>renameMember(b.dataset.ren));
+
+  const opts=S.members.map(m=>`<option value="${m.id}">${esc(m.name)}</option>`).join('');
+  $('treSel').innerHTML=opts; $('treSel').value=S.treasurer;
+  $('cWho').innerHTML=opts;
+  $('ePayer').innerHTML=`<option value="fund">Quỹ chung (${esc(memName(S.treasurer))} giữ)</option>`+opts;
+  const wasChecked=new Set(readSplit());
+  const wasShown=new Set([...document.querySelectorAll('#eSplit input')].map(i=>i.value));
+  const on=id => !wasShown.size || wasChecked.has(id) || !wasShown.has(id); // người mới: mặc định có tham gia
+  $('eSplit').innerHTML=S.members.map(m=>`
+    <label class="ck${on(m.id)?' on':''}">
+      <input type="checkbox" value="${m.id}" ${on(m.id)?'checked':''}>${esc(m.name)}
+    </label>`).join('');
+  bindSplit();
+}
+function bindSplit(){
+  $('eSplit').querySelectorAll('input').forEach(i=>{
+    i.onchange=()=>{ i.closest('.ck').classList.toggle('on',i.checked); updSplitInfo(); };
+  });
+  updSplitInfo();
+}
+const readSplit=()=>[...document.querySelectorAll('#eSplit input:checked')].map(i=>i.value);
+function updSplitInfo(){
+  const n=readSplit().length, amt=parseMoney($('eAmt').value);
+  $('splitInfo').textContent = n===0 ? 'Chưa chọn ai'
+    : (amt>0 ? `${n} người · mỗi người ~${fmt(Math.floor(amt/n))}` : `${n} người`);
+}
+function renameMember(id){
+  const m=S.members.find(x=>x.id===id); if(!m) return;
+  const n=(window.prompt('Đổi tên thành viên:', m.name)||'').trim();
+  if(!n || n===m.name) return;
+  if(S.members.some(x=>x.id!==id && x.name.toLowerCase()===n.toLowerCase())){ toast('Tên này đã có'); return; }
+  m.name=n; save(); renderAll();
+}
+function delMember(id){
+  if(S.members.length<=1){ toast('Cần ít nhất 1 thành viên'); return; }
+  const used = S.contribs.some(c=>c.who===id) || S.expenses.some(e=>e.payer===id||e.split.includes(id));
+  if(used && !confirm(`"${memName(id)}" đang có trong các khoản đã ghi.\n\n• Khoản chi do người này TRẢ sẽ bị xoá.\n• Người này bị bỏ khỏi phần chia của các khoản khác.\n• Tiền họ góp quỹ cũng bị xoá.\n\nTiếp tục?`)) return;
+  S.members=S.members.filter(m=>m.id!==id);
+  S.contribs=S.contribs.filter(c=>c.who!==id);
+  S.expenses=S.expenses.filter(e=>e.payer!==id);
+  S.expenses.forEach(e=>e.split=e.split.filter(x=>x!==id));
+  S.expenses=S.expenses.filter(e=>e.split.length);
+  if(S.treasurer===id) S.treasurer=S.members[0].id;
+  save(); renderAll();
+}
+
+function groupByDate(list){
+  const g={}; list.forEach(x=>{ (g[x.date]=g[x.date]||[]).push(x); });
+  return Object.keys(g).sort().map(d=>[d,g[d]]);
+}
+function renderContribs(){
+  $('cCount').textContent = S.contribs.length ? S.contribs.length+' khoản' : '';
+  const host=$('cList');
+  if(!S.contribs.length){ host.innerHTML='<div class="empty">Chưa có ai góp quỹ.</div>'; return; }
+  host.innerHTML = groupByDate(S.contribs).map(([d,items])=>`
+    <div class="day"><h3><span>${dmy(d)}</span><b>${fmt(items.reduce((a,x)=>a+x.amount,0))}</b></h3>
+      ${items.map(c=>`<div class="item">
+        <span class="info"><b>${esc(memName(c.who))}</b><span>góp vào quỹ</span></span>
+        <span class="amt">${fmt(c.amount)}</span>
+        <span class="ops">
+          <button class="iop" data-ec="${c.id}" aria-label="Sửa">✎</button>
+          <button class="iop del" data-dc="${c.id}" aria-label="Xoá">✕</button>
+        </span></div>`).join('')}
+    </div>`).join('');
+  host.querySelectorAll('[data-dc]').forEach(b=>b.onclick=()=>{ S.contribs=S.contribs.filter(x=>x.id!==b.dataset.dc); save(); renderAll(); });
+  host.querySelectorAll('[data-ec]').forEach(b=>b.onclick=()=>{
+    const c=S.contribs.find(x=>x.id===b.dataset.ec); if(!c) return;
+    $('cWho').value=c.who; $('cAmt').value=c.amount; $('cDate').value=c.date;
+    editingCon=c.id; $('cAdd').textContent='Lưu';
+    $('cAmt').scrollIntoView({block:'center',behavior:'smooth'});
+  });
+}
+function renderExpenses(){
+  $('eCount').textContent = S.expenses.length ? S.expenses.length+' khoản' : '';
+  const host=$('eList');
+  if(!S.expenses.length){ host.innerHTML='<div class="empty">Chưa có khoản chi nào.</div>'; return; }
+  host.innerHTML = groupByDate(S.expenses).map(([d,items])=>`
+    <div class="day"><h3><span>${dmy(d)}</span><b>${fmt(items.reduce((a,x)=>a+x.amount,0))}</b></h3>
+      ${items.map(e=>{
+        const payer = e.payer==='fund' ? 'Quỹ chung' : memName(e.payer);
+        const n=e.split.length, all=n===S.members.length;
+        return `<div class="item">
+          <span class="info"><b>${esc(e.title)}</b><span>${esc(payer)} trả · chia ${all?'cả nhóm':n+' người'}</span></span>
+          <span class="amt">${fmt(e.amount)}</span>
+          <span class="ops">
+            <button class="iop" data-ee="${e.id}" aria-label="Sửa">✎</button>
+            <button class="iop del" data-de="${e.id}" aria-label="Xoá">✕</button>
+          </span></div>`;}).join('')}
+    </div>`).join('');
+  host.querySelectorAll('[data-de]').forEach(b=>b.onclick=()=>{ S.expenses=S.expenses.filter(x=>x.id!==b.dataset.de); save(); renderAll(); });
+  host.querySelectorAll('[data-ee]').forEach(b=>b.onclick=()=>{
+    const e=S.expenses.find(x=>x.id===b.dataset.ee); if(!e) return;
+    $('eTitle').value=e.title; $('eAmt').value=e.amount; $('eDate').value=e.date; $('ePayer').value=e.payer;
+    $('eSplit').querySelectorAll('input').forEach(i=>{ i.checked=e.split.includes(i.value); i.closest('.ck').classList.toggle('on',i.checked); });
+    updSplitInfo(); editingExp=e.id; $('eAdd').textContent='Lưu khoản chi';
+    $('eTitle').scrollIntoView({block:'center',behavior:'smooth'});
+  });
+}
+function renderSummary(){
+  const c=compute();
+  $('kSpend').textContent=fmt(c.totalSpend);
+  $('kFund').textContent=fmt(c.totalFund);
+  $('kLeft').textContent=fmt(c.fundLeft);
+  $('kLeft').className='v '+(c.fundLeft<0?'neg':'');
+  $('fundNote').textContent = !S.contribs.length ? ''
+    : c.fundLeft<0 ? `Quỹ đã tiêu vượt ${fmt(-c.fundLeft)} — phần vượt do ${memName(S.treasurer)} (thủ quỹ) bù bằng tiền túi.`
+    : c.fundLeft>0 ? `${memName(S.treasurer)} (thủ quỹ) đang giữ ${fmt(c.fundLeft)} tiền quỹ chưa tiêu.`
+    : 'Quỹ đã tiêu vừa hết.';
+
+  $('sumBody').innerHTML=S.members.map(m=>{
+    const b=c.bal[m.id]||0;
+    return `<tr>
+      <td><b>${esc(m.name)}</b>${m.id===S.treasurer?' <span style="color:var(--sun)">★</span>':''}</td>
+      <td>${c.gop[m.id]?fmt(c.gop[m.id]):'—'}</td>
+      <td>${c.traHo[m.id]?fmt(c.traHo[m.id]):'—'}</td>
+      <td>${fmt(c.phaiChiu[m.id]||0)}</td>
+      <td class="${b>0?'pos':b<0?'neg':''}"><b>${b===0?'đủ':(b>0?'+':'−')+fmt(Math.abs(b))}</b></td>
+    </tr>`;}).join('');
+
+  const tx=settle(c.bal), host=$('settle');
+  if(!S.expenses.length && !S.contribs.length) host.innerHTML='<div class="empty">Thêm khoản chi để xem quyết toán.</div>';
+  else if(!tx.length) host.innerHTML='<div class="done">Không ai nợ ai — đã cân bằng.</div>';
+  else host.innerHTML=tx.map(t=>`<div class="srow">
+      <span class="who">${esc(memName(t.from))}</span><span class="ar">→</span>
+      <span class="who">${esc(memName(t.to))}</span><span class="amt">${fmt(t.amount)}</span></div>`).join('');
+}
+function renderAll(){ renderMembers(); renderContribs(); renderExpenses(); renderSummary(); }
+
+/* ---------- tóm tắt để dán vào chat nhóm ---------- */
+function summaryText(){
+  const c=compute(), tx=settle(c.bal);
+  const L=[];
+  L.push(`💰 ${S.name||'Chuyến đi'} — chia tiền`);
+  L.push(`Tổng chi: ${fmt(c.totalSpend)} · ${S.members.length} người`);
+  if(c.totalFund) L.push(`Quỹ: góp ${fmt(c.totalFund)}, còn ${fmt(c.fundLeft)}`);
+  L.push('');
+  groupByDate(S.expenses).forEach(([d,items])=>{
+    L.push(`${dmy(d)} — ${fmt(items.reduce((a,x)=>a+x.amount,0))}`);
+    items.forEach(e=>L.push(`  · ${e.title}: ${fmt(e.amount)}`));
+  });
+  L.push('');
+  L.push('Mỗi người phải chịu:');
+  S.members.forEach(m=>L.push(`  · ${m.name}: ${fmt(c.phaiChiu[m.id]||0)}`));
+  L.push('');
+  if(tx.length){ L.push('Quyết toán:'); tx.forEach(t=>L.push(`  · ${memName(t.from)} trả ${memName(t.to)}: ${fmt(t.amount)}`)); }
+  else L.push('Đã cân bằng, không ai nợ ai.');
+  return L.join('\n');
+}
+
+/* ---------- sự kiện ---------- */
+$('tripName').oninput=e=>{ S.name=e.target.value.trim(); save(); };
+$('memAdd').onclick=()=>{
+  const n=$('memName').value.trim();
+  if(!n){ toast('Nhập tên thành viên'); return; }
+  if(S.members.length>=12){ toast('Tối đa 12 người'); return; }
+  if(S.members.some(m=>m.name.toLowerCase()===n.toLowerCase())){ toast('Tên này đã có'); return; }
+  S.members.push({id:uid(),name:n}); $('memName').value=''; save(); renderAll();
+};
+$('memName').onkeydown=e=>{ if(e.key==='Enter'){ e.preventDefault(); $('memAdd').click(); } };
+$('treSel').onchange=e=>{ S.treasurer=e.target.value; save(); renderAll(); };
+
+$('cAdd').onclick=()=>{
+  const amt=parseMoney($('cAmt').value);
+  if(amt<=0){ toast('Số tiền chưa hợp lệ'); return; }
+  const rec={id:editingCon||uid(), who:$('cWho').value, amount:amt, date:$('cDate').value||todayStr()};
+  if(editingCon){ S.contribs=S.contribs.map(x=>x.id===editingCon?rec:x); editingCon=null; $('cAdd').textContent='Thêm'; }
+  else S.contribs.push(rec);
+  $('cAmt').value=''; save(); renderAll(); toast('Đã ghi góp quỹ');
+};
+$('eAmt').oninput=updSplitInfo;
+$('splitAll').onclick=()=>{
+  const boxes=[...$('eSplit').querySelectorAll('input')];
+  const allOn=boxes.every(b=>b.checked);
+  boxes.forEach(b=>{ b.checked=!allOn; b.closest('.ck').classList.toggle('on',b.checked); });
+  updSplitInfo();
+};
+$('eAdd').onclick=()=>{
+  const title=$('eTitle').value.trim(), amt=parseMoney($('eAmt').value), split=readSplit();
+  if(!title){ toast('Nhập nội dung khoản chi'); return; }
+  if(amt<=0){ toast('Số tiền chưa hợp lệ'); return; }
+  if(!split.length){ toast('Chọn ít nhất 1 người để chia'); return; }
+  const rec={id:editingExp||uid(), title, amount:amt, date:$('eDate').value||todayStr(), payer:$('ePayer').value, split};
+  if(editingExp){ S.expenses=S.expenses.map(x=>x.id===editingExp?rec:x); editingExp=null; $('eAdd').textContent='Thêm khoản chi'; }
+  else S.expenses.push(rec);
+  $('eTitle').value=''; $('eAmt').value=''; save(); renderAll(); toast('Đã ghi khoản chi');
+};
+$('copySum').onclick=async()=>{
+  const txt=summaryText();
+  if(navigator.share){ try{ await navigator.share({title:'Chia tiền — '+(S.name||'Chuyến đi'),text:txt}); return; }catch(_){ return; } }
+  try{ await navigator.clipboard.writeText(txt); toast('Đã chép tóm tắt — dán vào chat nhóm'); }
+  catch(_){ window.prompt('Chép tóm tắt:', txt); }
+};
+$('exportJson').onclick=()=>{
+  const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`chia-tien-${(S.name||'chuyen').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').toLowerCase()}.json`;
+  a.click(); URL.revokeObjectURL(a.href); toast('Đã xuất file');
+};
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{ try{
+      const j=JSON.parse(r.result);
+      if(!j||!Array.isArray(j.members)||!j.members.length) throw 0;
+      if(!confirm('Nhập file này sẽ thay toàn bộ dữ liệu hiện tại. Tiếp tục?')) return;
+      S={name:j.name||'',members:j.members,treasurer:j.treasurer,contribs:j.contribs||[],expenses:j.expenses||[]};
+      if(!S.members.some(m=>m.id===S.treasurer)) S.treasurer=S.members[0].id;
+      $('tripName').value=S.name; save(); renderAll(); toast('Đã nhập dữ liệu');
+    }catch(_){ toast('File không hợp lệ'); } };
+  r.readAsText(f); e.target.value='';
+};
+$('resetAll').onclick=()=>{
+  if(!confirm('Xoá toàn bộ thành viên, quỹ và khoản chi? Nên Xuất file trước.')) return;
+  S={name:'',members:[{id:uid(),name:'Tôi'}],treasurer:null,contribs:[],expenses:[]};
+  S.treasurer=S.members[0].id; $('tripName').value=''; save(); renderAll(); toast('Đã xoá hết');
+};
+
+/* ---------- khởi động ---------- */
+load();
+$('tripName').value=S.name||'';
+$('cDate').value=todayStr(); $('eDate').value=todayStr();
+renderAll();
+
+if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
+</script>
+</body>
+</html>

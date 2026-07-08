@@ -10,6 +10,8 @@ const SHELL = [
   './index.html',
   './data.js',
   './manifest.json',
+  './chia-tien/',
+  './chia-tien/index.html',
   './lib/leaflet.js',
   './lib/leaflet.css',
   './lib/leaflet.markercluster.js',
