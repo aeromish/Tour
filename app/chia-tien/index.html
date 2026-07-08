@@ -107,8 +107,6 @@
   .done{text-align:center;padding:12px;font-size:13.5px;color:var(--moss);font-weight:600}
 
   .acts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
-  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
-  .dot.ok{background:var(--moss)} .dot.wait{background:var(--sun)} .dot.off{background:#b9bed4} .dot.err{background:var(--coral)}
   .lnk{border:0;background:none;color:var(--sea);font-weight:700;font-size:11.5px;text-decoration:underline;padding:6px 2px;min-height:34px}
   .foot{margin-top:18px;font-size:11px;color:var(--ink-soft);text-align:center;line-height:1.6}
 
@@ -187,30 +185,36 @@
   <!-- Chuyến + thành viên -->
   <section class="card">
     <h2>Chuyến đi</h2>
-    <label for="tripName">Tên chuyến</label>
-    <input id="tripName" placeholder="VD: Hà Giang 3N2Đ" autocomplete="off">
+    <div>
+      <label for="tripName">Tên chuyến</label>
+      <input id="tripName" placeholder="VD: Hà Giang 3N2Đ" autocomplete="off">
+    </div>
 
     <label style="margin-top:14px">Thành viên</label>
     <div class="mem" id="memList"></div>
-    <div class="row tight" style="margin-top:8px">
-      <input id="memName" placeholder="Tên thành viên" autocomplete="off" maxlength="24">
-      <button class="btn primary" id="memAdd" style="flex:0 0 auto;padding:12px 18px">Thêm</button>
+    <div>
+      <div class="row tight" style="margin-top:8px">
+        <input id="memName" placeholder="Tên thành viên" autocomplete="off" maxlength="24">
+        <button class="btn primary" id="memAdd" style="flex:0 0 auto;padding:12px 18px">Thêm</button>
+      </div>
+      <label for="treSel" style="margin-top:12px">Thủ quỹ (người giữ quỹ, ứng tiền)</label>
+      <select id="treSel"></select>
     </div>
-    <label for="treSel" style="margin-top:12px">Thủ quỹ (người giữ quỹ, ứng tiền)</label>
-    <select id="treSel"></select>
   </section>
 
   <!-- Góp quỹ -->
   <section class="card">
     <h2>Góp quỹ <span class="n" id="cCount"></span></h2>
-    <p class="hint">Tiền mỗi người đưa vào quỹ chung (kể cả thủ quỹ tự ứng trước). Đây là <b>thu</b>, không phải khoản chi.</p>
-    <div class="row tight">
-      <select id="cWho"></select>
-      <input id="cAmt" inputmode="numeric" placeholder="Số tiền · 500k" autocomplete="off">
-    </div>
-    <div class="row tight" style="margin-top:8px">
-      <input id="cDate" type="date">
-      <button class="btn primary" id="cAdd" style="flex:0 0 auto;padding:12px 18px">Thêm</button>
+    <div>
+      <p class="hint">Tiền mỗi người đưa vào quỹ chung (kể cả thủ quỹ tự ứng trước). Đây là <b>thu</b>, không phải khoản chi.</p>
+      <div class="row tight">
+        <select id="cWho"></select>
+        <input id="cAmt" inputmode="numeric" placeholder="Số tiền · 500k" autocomplete="off">
+      </div>
+      <div class="row tight" style="margin-top:8px">
+        <input id="cDate" type="date">
+        <button class="btn primary" id="cAdd" style="flex:0 0 auto;padding:12px 18px">Thêm</button>
+      </div>
     </div>
     <div id="cList"></div>
   </section>
@@ -218,6 +222,7 @@
   <!-- Khoản chi -->
   <section class="card">
     <h2>Khoản chi <span class="n" id="eCount"></span></h2>
+    <div>
     <p class="hint">Mỗi khoản chia đều cho những người được chọn. Ai không tham gia (không nhậu, không thuê xe…) thì bỏ tick.</p>
     <label for="eTitle">Nội dung</label>
     <input id="eTitle" placeholder="VD: Xăng xe, ăn trưa, nhà nghỉ" autocomplete="off" maxlength="60">
@@ -233,6 +238,7 @@
       <div class="cks" id="eSplit"></div>
     </div>
     <button class="btn coral full" id="eAdd" style="margin-top:12px">Thêm khoản chi</button>
+    </div>
     <div id="eList"></div>
   </section>
 
@@ -253,47 +259,26 @@
     </div>
   </section>
 
-  <!-- Đồng bộ -->
-  <section class="card">
-    <h2>Đồng bộ <span class="n" id="syncPill"></span></h2>
-    <p class="hint">Bật đồng bộ để dữ liệu lưu trên máy chủ — đổi máy, mất điện thoại vẫn còn. Cả nhóm mở cùng một link là thấy chung một bảng.</p>
-    <div id="syncOff">
-      <button class="btn primary full" id="syncOn">Bật đồng bộ &amp; lưu lên máy chủ</button>
-    </div>
-    <div id="syncOnBox" hidden>
-      <div class="acts" style="margin-top:0">
-        <button class="btn primary" id="syncShare">Chia sẻ link nhóm</button>
-        <button class="btn ghost" id="syncPull">Tải bản mới nhất</button>
-        <button class="btn ghost" id="syncOffBtn" style="grid-column:1/-1">Ngừng đồng bộ trên máy này</button>
-      </div>
-      <p class="hint" style="margin:10px 0 0">
-        ⚠️ Ai có link này đều <b>xem và sửa được</b> — chỉ gửi cho người trong nhóm.
-        Hai người sửa cùng lúc thì bản lưu sau đè bản trước.
-      </p>
-    </div>
-  </section>
-
   <!-- Quyết toán -->
   <section class="card">
     <h2>Quyết toán</h2>
     <p class="hint">Cách trả gọn nhất — người thiếu trả thẳng người thừa, ít giao dịch nhất có thể.</p>
     <div class="settle" id="settle"></div>
     <div class="acts">
-      <button class="btn primary" id="exportPdf">Xuất PDF</button>
+      <button class="btn primary" id="exportPdf">Xuất PDF tổng kết</button>
       <button class="btn ghost" id="copySum">Chép tóm tắt</button>
+      <button class="btn ghost" id="exportJson">Sao lưu ra file</button>
+      <button class="btn ghost" id="importBtn">Khôi phục từ file</button>
       <button class="btn danger" id="resetAll" style="grid-column:1/-1">Xoá hết</button>
     </div>
-    <p class="hint" style="margin:10px 0 0;text-align:center">
-      Sao lưu thủ công:
-      <button class="lnk" id="exportJson">xuất .json</button> ·
-      <button class="lnk" id="importBtn">nhập .json</button>
-    </p>
     <input type="file" id="importFile" accept="application/json,.json" hidden>
   </section>
 
   <p class="foot">
-    Mọi số liệu lưu ngay trong máy bạn, không gửi đi đâu.<br>
-    Xoá dữ liệu trình duyệt là mất — nhớ bấm <b>Xuất file</b> để giữ bản sao.
+    Mọi số liệu <b>chỉ nằm trong máy bạn</b> — không tài khoản, không gửi đi đâu.<br>
+    Nhưng xoá dữ liệu trình duyệt, hỏng máy hay mất điện thoại là <b>mất sạch</b>.<br>
+    Đi tour dài, mỗi tối bấm <b>Sao lưu ra file</b> một lần rồi gửi file vào chat nhóm hoặc email cho chính mình.<br>
+    Chốt tour xong: <b>Xuất PDF tổng kết</b> gửi cả nhóm là xong.
   </p>
 </div>
 
@@ -333,8 +318,11 @@ function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('on'
 const memName=id=>{const m=S.members.find(x=>x.id===id);return m?m.name:'?';};
 const dmy=d=>{const p=String(d||'').split('-');return p.length===3?`${p[2]}/${p[1]}`:d;};
 
-function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(_){ toast('Không lưu được (bộ nhớ đầy?)'); }
-  if(typeof schedulePush==='function') schedulePush(); }
+// Mọi thay đổi đều đi qua save(). Sau này muốn bật đồng bộ máy chủ,
+// chỉ cần gọi thêm hàm đẩy dữ liệu ở đây (xem 08_money_sync.sql).
+function save(){
+  try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(_){ toast('Không lưu được (bộ nhớ đầy?)'); }
+}
 function load(){
   try{ const j=JSON.parse(localStorage.getItem(KEY)||'null');
     if(j&&Array.isArray(j.members)) S=Object.assign(S,j);
@@ -547,86 +535,6 @@ function summaryText(){
   return L.join('\n');
 }
 
-/* ---------- Đồng bộ máy chủ ---------- */
-const SB_URL='https://musbrsfduxvihlmomvvu.supabase.co';
-const SB_KEY='sb_publishable_AqpgPIy5OFrbp7o8Ix09-Q_8_0fGFOB';
-const CKEY='docbo_quy_cloud';
-let cloud=null, pushT=null, pushing=false;
-
-function loadCloud(){ try{ const c=JSON.parse(localStorage.getItem(CKEY)||'null');
-  if(c&&c.id&&c.secret) cloud=c; }catch(_){} }
-function saveCloud(){ try{ cloud? localStorage.setItem(CKEY,JSON.stringify(cloud)) : localStorage.removeItem(CKEY); }catch(_){} }
-
-async function rpc(fn,body,ms=12000){
-  const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),ms);
-  try{
-    const r=await fetch(`${SB_URL}/rest/v1/rpc/${fn}`,{method:'POST',signal:ctl.signal,
-      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},
-      body:JSON.stringify(body)});
-    if(!r.ok){ let m=''; try{ m=(await r.json()).message||''; }catch(_){}
-      throw new Error(m||('HTTP '+r.status)); }
-    return await r.json();
-  } finally { clearTimeout(to); }
-}
-function setSync(state,extra){
-  const pill=$('syncPill');
-  const map={ off:['off','Chỉ lưu trong máy'], wait:['wait','Chờ lưu…'], saving:['wait','Đang lưu…'],
-              ok:['ok','Đã đồng bộ'+(extra?' · '+extra:'')], err:['err','Chưa lưu được — sẽ thử lại'],
-              bad:['err','Link nhóm không đúng'] };
-  const [d,t]=map[state]||map.off;
-  pill.innerHTML=`<span class="dot ${d}"></span>${t}`;
-  $('syncOff').hidden=!!cloud; $('syncOnBox').hidden=!cloud;
-}
-const hhmm=()=>new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
-
-function schedulePush(){
-  if(!cloud) return;
-  setSync('wait'); clearTimeout(pushT);
-  pushT=setTimeout(pushCloud,1200);
-}
-async function pushCloud(){
-  if(!cloud||pushing) return;
-  pushing=true; setSync('saving');
-  try{ await rpc('money_save',{p_id:cloud.id,p_secret:cloud.secret,p_name:S.name||'',p_data:S});
-       setSync('ok',hhmm()); }
-  catch(e){ setSync('err'); }
-  finally{ pushing=false; }
-}
-async function pullCloud(quiet){
-  if(!cloud) return;
-  setSync('saving');
-  try{
-    const data=await rpc('money_load',{p_id:cloud.id,p_secret:cloud.secret});
-    if(data&&Array.isArray(data.members)&&data.members.length){
-      try{ localStorage.setItem(KEY+'_prev', JSON.stringify(S)); }catch(_){}   // phòng khi cần lấy lại
-      S={name:data.name||'',members:data.members,treasurer:data.treasurer,
-         contribs:data.contribs||[],expenses:data.expenses||[]};
-      if(!S.members.some(m=>m.id===S.treasurer)) S.treasurer=S.members[0].id;
-      try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(_){}
-      $('tripName').value=S.name; renderAll();
-      if(!quiet) toast('Đã tải bản mới nhất');
-    }
-    setSync('ok',hhmm());
-  }catch(e){
-    const notFound=/không tìm thấy|mã không đúng/i.test(e.message||'');
-    if(notFound){                       // link/mã sai -> gỡ khỏi máy này, đừng thử lại vô ích
-      cloud=null; saveCloud(); setSync('bad');
-      toast('Link nhóm không đúng hoặc chuyến đã bị xoá');
-    }else{
-      setSync('err');
-      toast(quiet ? 'Chưa tải được dữ liệu nhóm — kiểm tra mạng' : 'Không tải được: '+e.message);
-    }
-  }
-}
-const cloudLink=()=>location.origin+location.pathname+'?ma='+cloud.id+'.'+cloud.secret;
-async function shareCloud(){
-  if(!cloud) return;
-  const url=cloudLink();
-  try{ await navigator.clipboard.writeText(url); toast('Đã chép link nhóm — gửi cho cả nhóm'); return; }catch(_){}
-  if(isTouch&&navigator.share){ try{ await navigator.share({title:'Chia tiền — '+(S.name||'Chuyến đi'),url}); return; }catch(_){ return; } }
-  window.prompt('Link nhóm:', url);
-}
-
 /* ---------- bản in / PDF ---------- */
 function dateRange(){
   const ds=[...S.expenses.map(e=>e.date),...S.contribs.map(c=>c.date)].filter(Boolean).sort();
@@ -771,53 +679,43 @@ $('importFile').onchange=e=>{
   r.readAsText(f); e.target.value='';
 };
 $('resetAll').onclick=()=>{
-  if(!confirm('Xoá toàn bộ thành viên, quỹ và khoản chi? Nên Xuất file trước.')) return;
+  if(!confirm('Xoá toàn bộ thành viên, quỹ và khoản chi?\n\nNên bấm “Sao lưu ra file” trước.')) return;
   S={name:'',members:[{id:uid(),name:'Tôi'}],treasurer:null,contribs:[],expenses:[]};
   S.treasurer=S.members[0].id; $('tripName').value=''; save(); renderAll(); toast('Đã xoá hết');
 };
 
-$('syncOn').onclick=async()=>{
-  if(cloud){ toast('Đã bật rồi'); return; }
-  const btn=$('syncOn'); btn.disabled=true; setSync('saving');
-  try{
-    const r=await rpc('money_create',{p_name:S.name||'',p_data:S});
-    const row=Array.isArray(r)?r[0]:r;
-    if(!row||!row.trip_id) throw new Error('Máy chủ trả về dữ liệu lạ');
-    cloud={id:row.trip_id,secret:row.trip_secret}; saveCloud();
-    setSync('ok',hhmm()); toast('Đã bật đồng bộ — bấm “Chia sẻ link nhóm”');
-  }catch(e){ setSync('off'); toast('Bật không được: '+e.message); }
-  finally{ btn.disabled=false; }
+$('exportJson').onclick=()=>{
+  if(!S.expenses.length && !S.contribs.length && S.members.length<2){ toast('Chưa có gì để sao lưu'); return; }
+  const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  const slug=(S.name||'chuyen').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[đĐ]/g,'d').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-+|-+$/g,'').toLowerCase();
+  a.download=`chia-tien-${slug||'chuyen'}-${todayStr()}.json`;
+  a.click(); URL.revokeObjectURL(a.href);
+  toast('Đã sao lưu ra file — gửi vào chat nhóm cho chắc');
 };
-$('syncShare').onclick=shareCloud;
-$('syncPull').onclick=()=>pullCloud(false);
-$('syncOffBtn').onclick=()=>{
-  if(!confirm('Ngừng đồng bộ trên máy này?\n\nDữ liệu trên máy chủ vẫn còn — mở lại bằng link nhóm là thấy. Dữ liệu trong máy này cũng giữ nguyên.')) return;
-  cloud=null; saveCloud(); setSync('off'); toast('Đã ngừng đồng bộ trên máy này');
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{ try{
+      const j=JSON.parse(r.result);
+      if(!j||!Array.isArray(j.members)||!j.members.length) throw 0;
+      if(!confirm('Khôi phục từ file này sẽ thay toàn bộ bảng hiện tại. Tiếp tục?')) return;
+      try{ localStorage.setItem(KEY+'_prev', JSON.stringify(S)); }catch(_){}
+      S={name:j.name||'',members:j.members,treasurer:j.treasurer,contribs:j.contribs||[],expenses:j.expenses||[]};
+      if(!S.members.some(m=>m.id===S.treasurer)) S.treasurer=S.members[0].id;
+      $('tripName').value=S.name; save(); renderAll(); toast('Đã khôi phục từ file');
+    }catch(_){ toast('File không hợp lệ'); } };
+  r.readAsText(f); e.target.value='';
 };
 
 /* ---------- khởi động ---------- */
 load();
-loadCloud();
-(function(){
-  const ma=new URLSearchParams(location.search).get('ma');
-  if(!ma) return;
-  const i=ma.indexOf('.');
-  const clean=()=>{ try{ history.replaceState(history.state,'',location.pathname); }catch(_){} };
-  if(i<1){ clean(); return; }
-  const id=ma.slice(0,i), secret=ma.slice(i+1);
-  const sameTrip = cloud && cloud.id===id;
-  const hasLocal = (S.expenses&&S.expenses.length) || (S.contribs&&S.contribs.length);
-  if(hasLocal && !sameTrip &&
-     !confirm('Máy này đang có bảng chi tiêu riêng.\n\nMở link nhóm sẽ thay bằng dữ liệu của nhóm (bản cũ vẫn được sao lưu ngầm).\n\nTiếp tục?')){
-    clean(); setTimeout(()=>toast('Đã giữ nguyên bảng trên máy này'),600); return;
-  }
-  cloud={id,secret}; saveCloud(); clean();
-})();
 $('tripName').value=S.name||'';
 $('cDate').value=todayStr(); $('eDate').value=todayStr();
 renderAll();
-setSync(cloud?'wait':'off');
-if(cloud) pullCloud(true);
 
 if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
 </script>

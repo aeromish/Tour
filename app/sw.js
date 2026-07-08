@@ -4,7 +4,7 @@
    - Thư viện & icon tĩnh (lib/, assets/): cache-first.
    - Tile bản đồ (OSM) và mọi thứ khác origin: luôn lấy từ mạng, không cache. */
 
-const CACHE = 'docbo-v4';
+const CACHE = 'docbo-v7';
 const SHELL = [
   './',
   './index.html',
