@@ -71,7 +71,19 @@
   .filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
   .filters select{padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;background:#fff}
   .count{color:var(--ink-soft);font-size:13px;font-weight:600}
-  .tbl-wrap{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(26,34,70,.05)}
+  .tbl-wrap{background:#fff;border:1px solid var(--line);border-radius:14px;overflow-x:auto;overflow-y:hidden;box-shadow:0 2px 12px rgba(26,34,70,.05)}
+  .tbl-wrap table{min-width:520px}
+  /* focus rõ ràng cho bàn phím (không phá chuột) */
+  :focus{outline:none}
+  :focus-visible{outline:2.5px solid var(--coral);outline-offset:2px;border-radius:6px}
+  /* skeleton khi đang tải */
+  @keyframes shim{0%{background-position:-420px 0}100%{background-position:420px 0}}
+  .sk{background:#eef0f7;background-image:linear-gradient(90deg,#eef0f7 0px,#f7f8fc 180px,#eef0f7 360px);
+    background-size:820px 100%;animation:shim 1.15s linear infinite;border-radius:6px;height:13px}
+  @media (prefers-reduced-motion:reduce){.sk{animation:none}}
+  .sk-kpi{height:74px;border-radius:14px;border:1px solid var(--line)}
+  .empty{text-align:center;padding:40px 20px}
+  .empty p{color:var(--ink-soft);font-size:14px;margin-bottom:14px}
   .pager{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:16px;flex-wrap:wrap}
   .pager .info{font-size:13px;color:var(--ink-soft)}
   .pager .info b{color:var(--ink)}
@@ -112,6 +124,8 @@
     .main-body{padding:18px}
     .kpis{grid-template-columns:repeat(2,1fr)}
     th.hide,td.hide{display:none}
+    .icon-btn{padding:10px 12px;min-height:44px}
+    .pager .pages button{padding:11px 13px;min-height:44px}
   }
 
   /* modal */
@@ -241,7 +255,13 @@ function MapPicker({ lat, lng, onPick }) {
 // ---------------- FORM THÊM/SỬA ----------------
 const blank = { name:'',type:'view',province:'',lat:'',lng:'',note:'',tel:'',map_url:'',images:[],status:'draft' };
 
+function useEsc(onClose){
+  useEffect(()=>{ const h=e=>{ if(e.key==='Escape') onClose(); };
+    window.addEventListener('keydown',h); return ()=>window.removeEventListener('keydown',h); },[onClose]);
+}
+
 function Editor({ init, provinces, types, onClose, onSaved, toast }) {
+  useEsc(onClose);
   const [f,setF]=useState(()=>({ ...blank, ...init,
     lat: init?.lat ?? '', lng: init?.lng ?? '', images: init?.images || [] }));
   const [busy,setBusy]=useState(false); const [upBusy,setUpBusy]=useState(false);
@@ -351,6 +371,7 @@ function Editor({ init, provinces, types, onClose, onSaved, toast }) {
 // ---------------- GÓP Ý ----------------
 const KIND_LABEL={sai:'Báo sai',moi:'Điểm mới',gopy:'Góp ý'};
 function SuggestionsModal({onClose, toast}){
+  useEsc(onClose);
   const [list,setList]=useState(null);
   const load=async()=>{
     const {data,error}=await sb.from('suggestions').select('*').order('created_at',{ascending:false});
@@ -500,7 +521,23 @@ function Dashboard({ session }) {
         </div>
 
         <div className="main-body">
-          {places===null ? <div className="loading">Đang tải…</div> : (
+          {places===null ? (
+            <div aria-busy="true" aria-label="Đang tải dữ liệu">
+              <div className="kpis">
+                {[1,2,3,4,5].map(i=><div key={i} className="sk sk-kpi"></div>)}
+              </div>
+              <div className="tbl-wrap" style={{padding:'16px'}}>
+                {[1,2,3,4,5,6,7,8].map(i=>(
+                  <div key={i} style={{display:'flex',gap:16,alignItems:'center',padding:'11px 0'}}>
+                    <div className="sk" style={{flex:'2 1 0'}}></div>
+                    <div className="sk" style={{flex:'1 1 0'}}></div>
+                    <div className="sk" style={{flex:'1 1 0'}}></div>
+                    <div className="sk" style={{width:78}}></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
             <>
               <div className="kpis">
                 <div className="kpi"><div className="bar" style={{background:'var(--sea)'}}></div><div className="n">{all.length}</div><div className="l">Tổng điểm</div></div>
@@ -554,7 +591,16 @@ function Dashboard({ session }) {
                         </tr>
                       );
                     })}
-                    {filtered.length===0 && <tr><td colSpan="6" className="loading">Không có điểm nào khớp.</td></tr>}
+                    {filtered.length===0 && (
+                      <tr><td colSpan="6">
+                        <div className="empty">
+                          <p>Không có điểm nào khớp bộ lọc hiện tại.</p>
+                          <button className="icon-btn" onClick={()=>{ setQ(''); setFProv(''); setFType(''); setFStatus(''); }}>
+                            Xoá bộ lọc
+                          </button>
+                        </div>
+                      </td></tr>
+                    )}
                   </tbody>
                 </table>
               </div>

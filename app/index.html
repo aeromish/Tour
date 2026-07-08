@@ -646,6 +646,7 @@ function openFeedback(){
     </div></div>`;
   document.body.appendChild(ov);
   ov.addEventListener('mousedown',e=>{ if(e.target===ov) ov.style.display='none'; });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && ov.style.display!=='none') ov.style.display='none'; });
   ov.querySelector('#fbCancel').onclick=()=>ov.style.display='none';
   ov.querySelector('#fbSend').onclick=async()=>{
     const msg=ov.querySelector('#fbMsg').value.trim();
