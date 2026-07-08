@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0b4f5c">
-<title>Dọc Bờ — cẩm nang phượt</title>
-<meta name="description" content="Bản đồ 464 điểm cảnh đẹp, quán ăn và chỗ nghỉ dọc Việt Nam (Bắc–Trung–Nam) cho dân phượt xe máy. Miễn phí, cài được lên màn hình, chạy cả khi mất sóng.">
-<meta property="og:title" content="Dọc Bờ — cẩm nang phượt">
+<title>Lên Tour — Khám phá Việt Nam</title>
+<meta name="description" content="Hàng trăm địa điểm ăn uống, cắm trại, săn mây và check-in được chọn lọc trên một bản đồ trực quan. Google Maps cho bạn biết đường đi. Lentour cho bạn biết nơi đáng để dừng chân.">
+<meta property="og:title" content="Lên Tour — Khám phá Việt Nam">
 <meta property="og:description" content="Bản đồ điểm đến, quán ăn và chỗ nghỉ dọc Việt Nam cho dân phượt.">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Dọc Bờ">
+<meta property="og:site_name" content="Lên Tour">
 <meta property="og:url" content="https://lentour.pages.dev/app/">
 <meta property="og:locale" content="vi_VN">
 <meta property="og:image" content="https://lentour.pages.dev/og-image.png">
@@ -24,7 +24,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Dọc Bờ">
+<meta name="apple-mobile-web-app-title" content="Lên Tour">
 <link rel="stylesheet" href="lib/leaflet.css">
 <link rel="stylesheet" href="lib/MarkerCluster.css">
 <link rel="stylesheet" href="lib/MarkerCluster.Default.css">
@@ -304,7 +304,7 @@
 <header>
   <div class="brand">
     <div class="brand-txt">
-      <h1>Dọc Bờ</h1>
+      <h1>Lên Tour</h1>
       <span class="tag">Bắc · Trung · Nam — cẩm nang phượt dọc Việt Nam</span>
     </div>
     <div class="hdr-acts">
@@ -765,7 +765,7 @@ function tripMapsUrl(list){
 function tripShareUrl(){ return location.origin+location.pathname+'?cung='+trip.join(','); }
 async function shareTrip(){
   const url=tripShareUrl();
-  if(navigator.share){ try{ await navigator.share({title:'Cung đường Dọc Bờ',url}); return; }catch(_){ return; } }
+  if(navigator.share){ try{ await navigator.share({title:'Cung đường Khám phá Việt Nam',url}); return; }catch(_){ return; } }
   try{ await navigator.clipboard.writeText(url); toast('Đã chép link cung đường'); }
   catch(_){ window.prompt('Chép link cung đường:', url); }
 }
@@ -840,7 +840,7 @@ function openFeedback(){
   if(ov){ ov.style.display='grid'; return; }
   ov=document.createElement('div'); ov.id='fbOverlay'; ov.className='fb-overlay';
   ov.innerHTML=`<div class="fb-modal">
-    <h3>Góp ý cho Dọc Bờ</h3>
+    <h3>Góp ý cho Lên Tour</h3>
     <label>Loại</label>
     <select id="fbKind">
       <option value="sai">Báo điểm sai / đã đóng cửa</option>
