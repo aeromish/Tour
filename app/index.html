@@ -200,6 +200,8 @@
   .count{font-size:12.5px;color:var(--ink-soft);padding:8px 4px 4px;font-weight:600}
   .listfoot{margin:14px 4px 6px;padding-top:12px;border-top:1px solid var(--line);
     font-size:11px;line-height:1.6;color:var(--ink-soft);opacity:.85}
+  .hdr-acts{display:flex;gap:7px;flex:0 0 auto}
+  a.fbbtn.hdr{text-decoration:none;display:flex;align-items:center}
   .fbbtn.hdr{flex:0 0 auto;white-space:nowrap;background:rgba(255,255,255,.12);
     border:1.5px solid rgba(255,255,255,.35);border-radius:999px;padding:7px 15px;min-height:38px;
     font-family:inherit;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer}
@@ -286,7 +288,8 @@
     .brand h1{font-size:22px}
     .brand .tag{display:none}                 /* mô tả dài — thừa trong app, ẩn cho gọn */
     .ribbon-wrap{margin-top:9px}
-    .fbbtn.hdr{padding:7px 13px;min-height:36px;font-size:12px}
+    .fbbtn.hdr{padding:7px 11px;min-height:38px;font-size:11.5px}
+    .hdr-acts{gap:6px}
     .card{padding:13px;margin-bottom:9px;border-radius:14px}
     .card .note{margin-top:6px}
     .card .thumbs img{width:70px;height:52px}
@@ -304,7 +307,10 @@
       <h1>Dọc Bờ</h1>
       <span class="tag">Bắc · Trung · Nam — cẩm nang phượt dọc Việt Nam</span>
     </div>
-    <button type="button" class="fbbtn hdr" id="fbBtn" title="Báo điểm sai / gợi ý điểm mới">Góp ý</button>
+    <div class="hdr-acts">
+      <a class="fbbtn hdr" href="chia-tien/" title="Chia tiền nhóm sau chuyến đi">Chia tiền</a>
+      <button type="button" class="fbbtn hdr" id="fbBtn" title="Báo điểm sai / gợi ý điểm mới">Góp ý</button>
+    </div>
   </div>
   <div class="ribbon-wrap"><div class="ribbon" id="ribbon"></div></div>
 </header>

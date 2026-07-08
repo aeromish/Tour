@@ -107,6 +107,9 @@
   .done{text-align:center;padding:12px;font-size:13.5px;color:var(--moss);font-weight:600}
 
   .acts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .dot.ok{background:var(--moss)} .dot.wait{background:var(--sun)} .dot.off{background:#b9bed4} .dot.err{background:var(--coral)}
+  .lnk{border:0;background:none;color:var(--sea);font-weight:700;font-size:11.5px;text-decoration:underline;padding:6px 2px;min-height:34px}
   .foot{margin-top:18px;font-size:11px;color:var(--ink-soft);text-align:center;line-height:1.6}
 
   .toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:var(--ink);color:#fff;
@@ -124,6 +127,46 @@
   .ck.on{background:var(--sea);color:#fff;border-color:var(--sea)}
   .ck input{display:none}
   @media (max-width:420px){ .kpis{grid-template-columns:1fr} .acts{grid-template-columns:1fr} }
+
+  /* ===== Bản in / PDF ===== */
+  #printArea{display:none}
+  @media print{
+    @page{size:A4;margin:14mm}
+    body{background:#fff;color:#000}
+    body > *:not(#printArea){display:none !important}
+    #printArea{display:block}
+    .p-head{border-bottom:2.5px solid #2c3768;padding-bottom:10px;margin-bottom:14px}
+    .p-brand{font-size:9pt;font-weight:700;letter-spacing:.12em;color:#2c3768;text-transform:uppercase}
+    .p-head h1{font-size:21pt;font-weight:700;margin:5px 0 4px;color:#1a2246}
+    .p-meta{font-size:8.8pt;color:#5b6285}
+    .p-stats{display:flex;gap:8px;margin-bottom:16px}
+    .p-stat{flex:1;border:1px solid #d3d7e6;border-radius:6px;padding:8px 10px;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .p-stat .l{font-size:7.6pt;font-weight:700;color:#5b6285;text-transform:uppercase;letter-spacing:.04em}
+    .p-stat .v{font-size:13pt;font-weight:700;color:#1a2246;margin-top:2px}
+    #printArea h2{font-size:10.5pt;font-weight:700;color:#2c3768;margin:16px 0 6px;
+      padding-bottom:3px;border-bottom:1px solid #d3d7e6;page-break-after:avoid}
+    .p-tbl{width:100%;border-collapse:collapse;font-size:9pt}
+    .p-tbl th{background:#f0f1f8;text-align:left;font-size:7.8pt;text-transform:uppercase;
+      letter-spacing:.04em;color:#5b6285;padding:5px 7px;border-bottom:1px solid #d3d7e6;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .p-tbl td{padding:5px 7px;border-bottom:.6px solid #e6e8f0;vertical-align:top}
+    .p-tbl .num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+    .p-tbl tr{page-break-inside:avoid}
+    .p-tbl tr.sub td{background:#fafaff;font-weight:700;font-size:8.6pt;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .p-tbl tr.tot td{border-top:1.5px solid #2c3768;font-weight:700;border-bottom:0}
+    .p-pos{color:#1f7a45;font-weight:700}
+    .p-neg{color:#b4382c;font-weight:700}
+    .p-settle{margin-top:4px}
+    .p-srow{display:flex;align-items:center;gap:8px;font-size:10pt;padding:7px 9px;
+      border:1px solid #d3d7e6;border-radius:6px;margin-bottom:6px;page-break-inside:avoid}
+    .p-srow b{font-weight:700}
+    .p-srow .amt{margin-left:auto;font-weight:700;color:#2c3768;font-variant-numeric:tabular-nums}
+    .p-ok{font-size:10pt;color:#1f7a45;font-weight:700;padding:8px 0}
+    .p-foot{margin-top:20px;padding-top:8px;border-top:1px solid #d3d7e6;
+      font-size:7.8pt;color:#5b6285;display:flex;justify-content:space-between}
+  }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -210,17 +253,41 @@
     </div>
   </section>
 
+  <!-- Đồng bộ -->
+  <section class="card">
+    <h2>Đồng bộ <span class="n" id="syncPill"></span></h2>
+    <p class="hint">Bật đồng bộ để dữ liệu lưu trên máy chủ — đổi máy, mất điện thoại vẫn còn. Cả nhóm mở cùng một link là thấy chung một bảng.</p>
+    <div id="syncOff">
+      <button class="btn primary full" id="syncOn">Bật đồng bộ &amp; lưu lên máy chủ</button>
+    </div>
+    <div id="syncOnBox" hidden>
+      <div class="acts" style="margin-top:0">
+        <button class="btn primary" id="syncShare">Chia sẻ link nhóm</button>
+        <button class="btn ghost" id="syncPull">Tải bản mới nhất</button>
+        <button class="btn ghost" id="syncOffBtn" style="grid-column:1/-1">Ngừng đồng bộ trên máy này</button>
+      </div>
+      <p class="hint" style="margin:10px 0 0">
+        ⚠️ Ai có link này đều <b>xem và sửa được</b> — chỉ gửi cho người trong nhóm.
+        Hai người sửa cùng lúc thì bản lưu sau đè bản trước.
+      </p>
+    </div>
+  </section>
+
   <!-- Quyết toán -->
   <section class="card">
     <h2>Quyết toán</h2>
     <p class="hint">Cách trả gọn nhất — người thiếu trả thẳng người thừa, ít giao dịch nhất có thể.</p>
     <div class="settle" id="settle"></div>
     <div class="acts">
-      <button class="btn primary" id="copySum">Chép tóm tắt</button>
-      <button class="btn ghost" id="exportJson">Xuất file</button>
-      <button class="btn ghost" id="importBtn">Nhập file</button>
-      <button class="btn danger" id="resetAll">Xoá hết</button>
+      <button class="btn primary" id="exportPdf">Xuất PDF</button>
+      <button class="btn ghost" id="copySum">Chép tóm tắt</button>
+      <button class="btn danger" id="resetAll" style="grid-column:1/-1">Xoá hết</button>
     </div>
+    <p class="hint" style="margin:10px 0 0;text-align:center">
+      Sao lưu thủ công:
+      <button class="lnk" id="exportJson">xuất .json</button> ·
+      <button class="lnk" id="importBtn">nhập .json</button>
+    </p>
     <input type="file" id="importFile" accept="application/json,.json" hidden>
   </section>
 
@@ -230,6 +297,7 @@
   </p>
 </div>
 
+<div id="printArea" aria-hidden="true"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -265,7 +333,8 @@ function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('on'
 const memName=id=>{const m=S.members.find(x=>x.id===id);return m?m.name:'?';};
 const dmy=d=>{const p=String(d||'').split('-');return p.length===3?`${p[2]}/${p[1]}`:d;};
 
-function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(_){ toast('Không lưu được (bộ nhớ đầy?)'); } }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(_){ toast('Không lưu được (bộ nhớ đầy?)'); }
+  if(typeof schedulePush==='function') schedulePush(); }
 function load(){
   try{ const j=JSON.parse(localStorage.getItem(KEY)||'null');
     if(j&&Array.isArray(j.members)) S=Object.assign(S,j);
@@ -478,6 +547,157 @@ function summaryText(){
   return L.join('\n');
 }
 
+/* ---------- Đồng bộ máy chủ ---------- */
+const SB_URL='https://musbrsfduxvihlmomvvu.supabase.co';
+const SB_KEY='sb_publishable_AqpgPIy5OFrbp7o8Ix09-Q_8_0fGFOB';
+const CKEY='docbo_quy_cloud';
+let cloud=null, pushT=null, pushing=false;
+
+function loadCloud(){ try{ const c=JSON.parse(localStorage.getItem(CKEY)||'null');
+  if(c&&c.id&&c.secret) cloud=c; }catch(_){} }
+function saveCloud(){ try{ cloud? localStorage.setItem(CKEY,JSON.stringify(cloud)) : localStorage.removeItem(CKEY); }catch(_){} }
+
+async function rpc(fn,body,ms=12000){
+  const ctl=new AbortController(); const to=setTimeout(()=>ctl.abort(),ms);
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/rpc/${fn}`,{method:'POST',signal:ctl.signal,
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify(body)});
+    if(!r.ok){ let m=''; try{ m=(await r.json()).message||''; }catch(_){}
+      throw new Error(m||('HTTP '+r.status)); }
+    return await r.json();
+  } finally { clearTimeout(to); }
+}
+function setSync(state,extra){
+  const pill=$('syncPill');
+  const map={ off:['off','Chỉ lưu trong máy'], wait:['wait','Chờ lưu…'], saving:['wait','Đang lưu…'],
+              ok:['ok','Đã đồng bộ'+(extra?' · '+extra:'')], err:['err','Chưa lưu được — sẽ thử lại'],
+              bad:['err','Link nhóm không đúng'] };
+  const [d,t]=map[state]||map.off;
+  pill.innerHTML=`<span class="dot ${d}"></span>${t}`;
+  $('syncOff').hidden=!!cloud; $('syncOnBox').hidden=!cloud;
+}
+const hhmm=()=>new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
+
+function schedulePush(){
+  if(!cloud) return;
+  setSync('wait'); clearTimeout(pushT);
+  pushT=setTimeout(pushCloud,1200);
+}
+async function pushCloud(){
+  if(!cloud||pushing) return;
+  pushing=true; setSync('saving');
+  try{ await rpc('money_save',{p_id:cloud.id,p_secret:cloud.secret,p_name:S.name||'',p_data:S});
+       setSync('ok',hhmm()); }
+  catch(e){ setSync('err'); }
+  finally{ pushing=false; }
+}
+async function pullCloud(quiet){
+  if(!cloud) return;
+  setSync('saving');
+  try{
+    const data=await rpc('money_load',{p_id:cloud.id,p_secret:cloud.secret});
+    if(data&&Array.isArray(data.members)&&data.members.length){
+      try{ localStorage.setItem(KEY+'_prev', JSON.stringify(S)); }catch(_){}   // phòng khi cần lấy lại
+      S={name:data.name||'',members:data.members,treasurer:data.treasurer,
+         contribs:data.contribs||[],expenses:data.expenses||[]};
+      if(!S.members.some(m=>m.id===S.treasurer)) S.treasurer=S.members[0].id;
+      try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(_){}
+      $('tripName').value=S.name; renderAll();
+      if(!quiet) toast('Đã tải bản mới nhất');
+    }
+    setSync('ok',hhmm());
+  }catch(e){
+    const notFound=/không tìm thấy|mã không đúng/i.test(e.message||'');
+    if(notFound){                       // link/mã sai -> gỡ khỏi máy này, đừng thử lại vô ích
+      cloud=null; saveCloud(); setSync('bad');
+      toast('Link nhóm không đúng hoặc chuyến đã bị xoá');
+    }else{
+      setSync('err');
+      toast(quiet ? 'Chưa tải được dữ liệu nhóm — kiểm tra mạng' : 'Không tải được: '+e.message);
+    }
+  }
+}
+const cloudLink=()=>location.origin+location.pathname+'?ma='+cloud.id+'.'+cloud.secret;
+async function shareCloud(){
+  if(!cloud) return;
+  const url=cloudLink();
+  try{ await navigator.clipboard.writeText(url); toast('Đã chép link nhóm — gửi cho cả nhóm'); return; }catch(_){}
+  if(isTouch&&navigator.share){ try{ await navigator.share({title:'Chia tiền — '+(S.name||'Chuyến đi'),url}); return; }catch(_){ return; } }
+  window.prompt('Link nhóm:', url);
+}
+
+/* ---------- bản in / PDF ---------- */
+function dateRange(){
+  const ds=[...S.expenses.map(e=>e.date),...S.contribs.map(c=>c.date)].filter(Boolean).sort();
+  if(!ds.length) return '';
+  return ds[0]===ds[ds.length-1] ? dmyFull(ds[0]) : `${dmyFull(ds[0])} – ${dmyFull(ds[ds.length-1])}`;
+}
+const dmyFull=d=>{const p=String(d||'').split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d;};
+function splitLabel(e){
+  if(e.split.length===S.members.length) return 'cả nhóm';
+  return e.split.map(memName).join(', ');
+}
+function buildPrint(){
+  const c=compute(), tx=settle(c.bal);
+  const H=[];
+  H.push(`<div class="p-head">
+    <div class="p-brand">Dọc Bờ · Chia tiền nhóm</div>
+    <h1>${esc(S.name||'Chuyến đi')}</h1>
+    <div class="p-meta">${S.members.length} thành viên · Thủ quỹ: ${esc(memName(S.treasurer))}${dateRange()?' · '+dateRange():''} · Xuất ngày ${dmyFull(todayStr())}</div>
+  </div>`);
+  H.push(`<div class="p-stats">
+    <div class="p-stat"><div class="l">Tổng chi</div><div class="v">${fmt(c.totalSpend)}</div></div>
+    <div class="p-stat"><div class="l">Tổng góp quỹ</div><div class="v">${fmt(c.totalFund)}</div></div>
+    <div class="p-stat"><div class="l">Quỹ còn lại</div><div class="v">${fmt(c.fundLeft)}</div></div>
+  </div>`);
+
+  if(S.expenses.length){
+    H.push('<h2>1. Khoản chi theo ngày</h2>');
+    H.push('<table class="p-tbl"><thead><tr><th>Ngày</th><th>Nội dung</th><th>Người trả</th><th>Chia cho</th><th class="num">Số tiền</th></tr></thead><tbody>');
+    groupByDate(S.expenses).forEach(([d,items])=>{
+      items.forEach((e,i)=>{
+        H.push(`<tr><td>${i===0?dmyFull(d):''}</td><td>${esc(e.title)}</td>
+          <td>${esc(e.payer==='fund'?'Quỹ chung':memName(e.payer))}</td>
+          <td>${esc(splitLabel(e))}</td><td class="num">${fmt(e.amount)}</td></tr>`);
+      });
+      H.push(`<tr class="sub"><td></td><td colspan="3">Cộng ngày ${dmyFull(d)}</td><td class="num">${fmt(items.reduce((a,x)=>a+x.amount,0))}</td></tr>`);
+    });
+    H.push(`<tr class="tot"><td colspan="4">TỔNG CHI</td><td class="num">${fmt(c.totalSpend)}</td></tr>`);
+    H.push('</tbody></table>');
+  }
+
+  if(S.contribs.length){
+    H.push('<h2>2. Góp quỹ</h2>');
+    H.push('<table class="p-tbl"><thead><tr><th>Ngày</th><th>Người góp</th><th class="num">Số tiền</th></tr></thead><tbody>');
+    groupByDate(S.contribs).forEach(([d,items])=>items.forEach((x,i)=>
+      H.push(`<tr><td>${i===0?dmyFull(d):''}</td><td>${esc(memName(x.who))}</td><td class="num">${fmt(x.amount)}</td></tr>`)));
+    H.push(`<tr class="tot"><td colspan="2">TỔNG GÓP QUỸ</td><td class="num">${fmt(c.totalFund)}</td></tr>`);
+    H.push('</tbody></table>');
+  }
+
+  H.push(`<h2>${S.contribs.length?3:2}. Tổng kết theo người</h2>`);
+  H.push('<table class="p-tbl"><thead><tr><th>Người</th><th class="num">Góp quỹ</th><th class="num">Trả hộ</th><th class="num">Phải chịu</th><th class="num">Thừa / Thiếu</th></tr></thead><tbody>');
+  S.members.forEach(m=>{
+    const b=c.bal[m.id]||0;
+    H.push(`<tr><td>${esc(m.name)}${m.id===S.treasurer?' (thủ quỹ)':''}</td>
+      <td class="num">${c.gop[m.id]?fmt(c.gop[m.id]):'—'}</td>
+      <td class="num">${c.traHo[m.id]?fmt(c.traHo[m.id]):'—'}</td>
+      <td class="num">${fmt(c.phaiChiu[m.id]||0)}</td>
+      <td class="num ${b>0?'p-pos':b<0?'p-neg':''}">${b===0?'đủ':(b>0?'+':'−')+fmt(Math.abs(b))}</td></tr>`);
+  });
+  H.push('</tbody></table>');
+
+  H.push(`<h2>${S.contribs.length?4:3}. Quyết toán — ai trả ai</h2>`);
+  if(!tx.length) H.push('<div class="p-ok">Đã cân bằng — không ai nợ ai.</div>');
+  else{ H.push('<div class="p-settle">');
+    tx.forEach(t=>H.push(`<div class="p-srow"><b>${esc(memName(t.from))}</b> → <b>${esc(memName(t.to))}</b><span class="amt">${fmt(t.amount)}</span></div>`));
+    H.push('</div>'); }
+
+  H.push(`<div class="p-foot"><span>Dọc Bờ — lentour.pages.dev</span><span>Số liệu do nhóm tự ghi · Thừa (+) là được nhận lại, Thiếu (−) là phải đóng thêm</span></div>`);
+  $('printArea').innerHTML=H.join('');
+}
+
 /* ---------- sự kiện ---------- */
 $('tripName').oninput=e=>{ S.name=e.target.value.trim(); save(); };
 $('memAdd').onclick=()=>{
@@ -515,11 +735,19 @@ $('eAdd').onclick=()=>{
   else S.expenses.push(rec);
   $('eTitle').value=''; $('eAmt').value=''; save(); renderAll(); toast('Đã ghi khoản chi');
 };
+$('exportPdf').onclick=()=>{
+  if(!S.expenses.length && !S.contribs.length){ toast('Chưa có gì để xuất'); return; }
+  buildPrint();
+  toast('Chọn “Lưu dưới dạng PDF” trong hộp in');
+  setTimeout(()=>window.print(),350);
+};
+const isTouch = navigator.maxTouchPoints>0 || /Mobi|Android/i.test(navigator.userAgent);
 $('copySum').onclick=async()=>{
   const txt=summaryText();
-  if(navigator.share){ try{ await navigator.share({title:'Chia tiền — '+(S.name||'Chuyến đi'),text:txt}); return; }catch(_){ return; } }
-  try{ await navigator.clipboard.writeText(txt); toast('Đã chép tóm tắt — dán vào chat nhóm'); }
-  catch(_){ window.prompt('Chép tóm tắt:', txt); }
+  try{ await navigator.clipboard.writeText(txt); toast('Đã chép tóm tắt — dán vào chat nhóm'); return; }
+  catch(_){}
+  if(isTouch && navigator.share){ try{ await navigator.share({title:'Chia tiền — '+(S.name||'Chuyến đi'),text:txt}); return; }catch(_){ return; } }
+  window.prompt('Chép tóm tắt:', txt);
 };
 $('exportJson').onclick=()=>{
   const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});
@@ -548,11 +776,48 @@ $('resetAll').onclick=()=>{
   S.treasurer=S.members[0].id; $('tripName').value=''; save(); renderAll(); toast('Đã xoá hết');
 };
 
+$('syncOn').onclick=async()=>{
+  if(cloud){ toast('Đã bật rồi'); return; }
+  const btn=$('syncOn'); btn.disabled=true; setSync('saving');
+  try{
+    const r=await rpc('money_create',{p_name:S.name||'',p_data:S});
+    const row=Array.isArray(r)?r[0]:r;
+    if(!row||!row.trip_id) throw new Error('Máy chủ trả về dữ liệu lạ');
+    cloud={id:row.trip_id,secret:row.trip_secret}; saveCloud();
+    setSync('ok',hhmm()); toast('Đã bật đồng bộ — bấm “Chia sẻ link nhóm”');
+  }catch(e){ setSync('off'); toast('Bật không được: '+e.message); }
+  finally{ btn.disabled=false; }
+};
+$('syncShare').onclick=shareCloud;
+$('syncPull').onclick=()=>pullCloud(false);
+$('syncOffBtn').onclick=()=>{
+  if(!confirm('Ngừng đồng bộ trên máy này?\n\nDữ liệu trên máy chủ vẫn còn — mở lại bằng link nhóm là thấy. Dữ liệu trong máy này cũng giữ nguyên.')) return;
+  cloud=null; saveCloud(); setSync('off'); toast('Đã ngừng đồng bộ trên máy này');
+};
+
 /* ---------- khởi động ---------- */
 load();
+loadCloud();
+(function(){
+  const ma=new URLSearchParams(location.search).get('ma');
+  if(!ma) return;
+  const i=ma.indexOf('.');
+  const clean=()=>{ try{ history.replaceState(history.state,'',location.pathname); }catch(_){} };
+  if(i<1){ clean(); return; }
+  const id=ma.slice(0,i), secret=ma.slice(i+1);
+  const sameTrip = cloud && cloud.id===id;
+  const hasLocal = (S.expenses&&S.expenses.length) || (S.contribs&&S.contribs.length);
+  if(hasLocal && !sameTrip &&
+     !confirm('Máy này đang có bảng chi tiêu riêng.\n\nMở link nhóm sẽ thay bằng dữ liệu của nhóm (bản cũ vẫn được sao lưu ngầm).\n\nTiếp tục?')){
+    clean(); setTimeout(()=>toast('Đã giữ nguyên bảng trên máy này'),600); return;
+  }
+  cloud={id,secret}; saveCloud(); clean();
+})();
 $('tripName').value=S.name||'';
 $('cDate').value=todayStr(); $('eDate').value=todayStr();
 renderAll();
+setSync(cloud?'wait':'off');
+if(cloud) pullCloud(true);
 
 if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
 </script>
