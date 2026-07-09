@@ -802,9 +802,27 @@ function exportGPX(list){
 }
 async function shareTrip(){
   const url=tripShareUrl();
-  if(navigator.share){ try{ await navigator.share({title:'Cung đường Khám phá Việt Nam',url}); return; }catch(_){ return; } }
-  try{ await navigator.clipboard.writeText(url); toast('Đã chép link cung đường'); }
-  catch(_){ window.prompt('Chép link cung đường:', url); }
+  // 1) Thử share gốc (điện thoại). Nếu user tự huỷ thì thôi, không báo lỗi.
+  if(navigator.share){
+    try{ await navigator.share({title:'Cung đường Dọc Bờ',url}); return; }
+    catch(err){ if(err && err.name==='AbortError') return; /* lỗi khác -> rơi xuống chép link */ }
+  }
+  // 2) Chép vào clipboard (desktop / trình duyệt không có share)
+  try{
+    await navigator.clipboard.writeText(url);
+    toast('Đã chép link cung đường — dán vào chat để gửi');
+    return;
+  }catch(_){}
+  // 3) Chép kiểu cũ (fallback cho trình duyệt/ngữ cảnh không cho clipboard API)
+  try{
+    const ta=document.createElement('textarea');
+    ta.value=url; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    const ok=document.execCommand('copy'); document.body.removeChild(ta);
+    if(ok){ toast('Đã chép link cung đường — dán vào chat để gửi'); return; }
+  }catch(_){}
+  // 4) Cùng đường: hiện link ra cho copy tay
+  window.prompt('Chép link cung đường:', url);
 }
 
 function renderTripPanel(ov){
