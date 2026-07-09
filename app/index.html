@@ -800,7 +800,8 @@ function exportGPX(list){
   a.click(); URL.revokeObjectURL(a.href);
   toast('Đã xuất GPX — mở bằng Maps.me, OsmAnd hay Google Earth');
 }
-async function shareTrip(){
+function tripShareUrl(){ return location.origin+location.pathname+'?cung='+trip.join(','); }
+  async function shareTrip(){
   const url=tripShareUrl();
   // 1) Thử share gốc (điện thoại). Nếu user tự huỷ thì thôi, không báo lỗi.
   if(navigator.share){
