@@ -4,7 +4,8 @@
    - Thư viện & icon tĩnh (lib/, assets/): cache-first.
    - Tile bản đồ (OSM) và mọi thứ khác origin: luôn lấy từ mạng, không cache. */
 
-const CACHE = 'docbo-v7';
+const CACHE = 'docbo-v8';
+const TILE_CACHE = 'docbo-tiles-v1';
 const SHELL = [
   './',
   './index.html',
@@ -43,7 +44,21 @@ self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  if (url.origin !== self.location.origin) return; // tile OSM + fonts: qua mạng
+
+  // Tile bản đồ OSM: dùng cache nếu đã tải trước (offline), không thì lấy mạng.
+  if (/\.tile\.openstreetmap\.org$/.test(url.hostname)) {
+    e.respondWith(
+      caches.open(TILE_CACHE).then(cache =>
+        cache.match(req).then(hit => hit || fetch(req).then(res => {
+          if (res && res.status === 200) cache.put(req, res.clone());
+          return res;
+        }).catch(() => hit))
+      )
+    );
+    return;
+  }
+
+  if (url.origin !== self.location.origin) return; // fonts và mọi thứ khác: qua mạng
 
   if (isFresh(url)) {
     // stale-while-revalidate
