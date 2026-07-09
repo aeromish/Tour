@@ -271,17 +271,14 @@
     <div class="acts">
       <button class="btn primary" id="exportPdf">Xuất PDF tổng kết</button>
       <button class="btn ghost" id="copySum">Chép tóm tắt</button>
-      <button class="btn ghost" id="exportJson">Sao lưu ra file</button>
-      <button class="btn ghost" id="importBtn">Khôi phục từ file</button>
       <button class="btn danger" id="resetAll" style="grid-column:1/-1">Xoá hết</button>
     </div>
     <input type="file" id="importFile" accept="application/json,.json" hidden>
   </section>
 
   <p class="foot">
-    Mọi số liệu <b>chỉ nằm trong máy bạn</b> — không tài khoản, không gửi đi đâu.<br>
-    Nhưng xoá dữ liệu trình duyệt, hỏng máy hay mất điện thoại là <b>mất sạch</b>.<br>
-    Đi tour dài, mỗi tối bấm <b>Sao lưu ra file</b> một lần rồi gửi file vào chat nhóm hoặc email cho chính mình.<br>
+    Dữ liệu tự lưu và đồng bộ theo đúng trình duyệt/máy này — mở lại là có ngay, không cần đăng nhập.<br>
+    Đổi điện thoại hay trình duyệt khác sẽ không thấy lại được (không gắn email nào cả).<br>
     Chốt tour xong: <b>Xuất PDF tổng kết</b> gửi cả nhóm là xong.
   </p>
 </div>
@@ -737,58 +734,10 @@ $('copySum').onclick=async()=>{
   if(isTouch && navigator.share){ try{ await navigator.share({title:'Chia tiền — '+(S.name||'Chuyến đi'),text:txt}); return; }catch(_){ return; } }
   window.prompt('Chép tóm tắt:', txt);
 };
-$('exportJson').onclick=()=>{
-  const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=`chia-tien-${(S.name||'chuyen').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').toLowerCase()}.json`;
-  a.click(); URL.revokeObjectURL(a.href); toast('Đã xuất file');
-};
-$('importBtn').onclick=()=>$('importFile').click();
-$('importFile').onchange=e=>{
-  const f=e.target.files[0]; if(!f) return;
-  const r=new FileReader();
-  r.onload=()=>{ try{
-      const j=JSON.parse(r.result);
-      if(!j||!Array.isArray(j.members)||!j.members.length) throw 0;
-      if(!confirm('Nhập file này sẽ thay toàn bộ dữ liệu hiện tại. Tiếp tục?')) return;
-      S={name:j.name||'',members:j.members,treasurer:j.treasurer,contribs:j.contribs||[],expenses:j.expenses||[]};
-      if(!S.members.some(m=>m.id===S.treasurer)) S.treasurer=S.members[0].id;
-      $('tripName').value=S.name; save(); renderAll(); toast('Đã nhập dữ liệu');
-    }catch(_){ toast('File không hợp lệ'); } };
-  r.readAsText(f); e.target.value='';
-};
 $('resetAll').onclick=()=>{
-  if(!confirm('Xoá toàn bộ thành viên, quỹ và khoản chi?\n\nNên bấm “Sao lưu ra file” trước.')) return;
+  if(!confirm('Xoá toàn bộ thành viên, quỹ và khoản chi?')) return;
   S={name:'',members:[{id:uid(),name:'Tôi'}],treasurer:null,contribs:[],expenses:[]};
   S.treasurer=S.members[0].id; $('tripName').value=''; save(); renderAll(); toast('Đã xoá hết');
-};
-
-$('exportJson').onclick=()=>{
-  if(!S.expenses.length && !S.contribs.length && S.members.length<2){ toast('Chưa có gì để sao lưu'); return; }
-  const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  const slug=(S.name||'chuyen').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-    .replace(/[đĐ]/g,'d').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-+|-+$/g,'').toLowerCase();
-  a.download=`chia-tien-${slug||'chuyen'}-${todayStr()}.json`;
-  a.click(); URL.revokeObjectURL(a.href);
-  toast('Đã sao lưu ra file — gửi vào chat nhóm cho chắc');
-};
-$('importBtn').onclick=()=>$('importFile').click();
-$('importFile').onchange=e=>{
-  const f=e.target.files[0]; if(!f) return;
-  const r=new FileReader();
-  r.onload=()=>{ try{
-      const j=JSON.parse(r.result);
-      if(!j||!Array.isArray(j.members)||!j.members.length) throw 0;
-      if(!confirm('Khôi phục từ file này sẽ thay toàn bộ bảng hiện tại. Tiếp tục?')) return;
-      try{ localStorage.setItem(KEY+'_prev', JSON.stringify(S)); }catch(_){}
-      S={name:j.name||'',members:j.members,treasurer:j.treasurer,contribs:j.contribs||[],expenses:j.expenses||[]};
-      if(!S.members.some(m=>m.id===S.treasurer)) S.treasurer=S.members[0].id;
-      $('tripName').value=S.name; save(); renderAll(); toast('Đã khôi phục từ file');
-    }catch(_){ toast('File không hợp lệ'); } };
-  r.readAsText(f); e.target.value='';
 };
 
 /* ---------- khởi động ---------- */
