@@ -30,6 +30,9 @@
 <link rel="stylesheet" href="lib/MarkerCluster.Default.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://a.tile.openstreetmap.org">
+<link rel="preconnect" href="https://b.tile.openstreetmap.org">
+<link rel="preconnect" href="https://c.tile.openstreetmap.org">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@8..144,400..700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@8..144,400..700&display=swap"></noscript>
 <style>
@@ -370,6 +373,12 @@ try{
   if(typeof L==='undefined') throw new Error('Leaflet chưa tải');
   map = L.map('map',{zoomControl:false}).setView(HOME_VIEW[0],HOME_VIEW[1]);
   L.control.zoom({position:'topleft'}).addTo(map);
+  const _origCreateTile = L.TileLayer.prototype.createTile;
+  L.TileLayer.prototype.createTile = function(coords, done){
+    const tile = _origCreateTile.call(this, coords, done);
+    tile.setAttribute('fetchpriority','high');
+    return tile;
+  };
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     maxZoom:19, attribution:'© OpenStreetMap'
   }).addTo(map);
