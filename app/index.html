@@ -774,7 +774,32 @@ function tripMapsUrl(list){
   if(wp) u+='&waypoints='+encodeURIComponent(wp);
   return u;
 }
-function tripShareUrl(){ return location.origin+location.pathname+'?cung='+trip.join(','); }
+function exportGPX(list){
+  if(!list.length) return;
+  const xmlEsc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+  const tripName=trip.length?('Cung đường Dọc Bờ ('+list.length+' điểm)'):'Cung đường Dọc Bờ';
+  const wpts=list.map(p=>
+    `  <wpt lat="${p.ll[0]}" lon="${p.ll[1]}">\n`+
+    `    <name>${xmlEsc(p.n)}</name>\n`+
+    `    <desc>${xmlEsc(provName(p.p)+(p.note?' — '+p.note:''))}</desc>\n`+
+    `  </wpt>`).join('\n');
+  const rtepts=list.map(p=>
+    `    <rtept lat="${p.ll[0]}" lon="${p.ll[1]}"><name>${xmlEsc(p.n)}</name></rtept>`).join('\n');
+  const gpx=`<?xml version="1.0" encoding="UTF-8"?>\n`+
+    `<gpx version="1.1" creator="Dọc Bờ — lentour.pages.dev" xmlns="http://www.topografix.com/GPX/1/1">\n`+
+    `  <metadata><name>${xmlEsc(tripName)}</name></metadata>\n`+
+    wpts+`\n`+
+    `  <rte>\n    <name>${xmlEsc(tripName)}</name>\n`+rtepts+`\n  </rte>\n`+
+    `</gpx>\n`;
+  const slug=tripName.normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[đĐ]/g,'d').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-+|-+$/g,'').toLowerCase();
+  const blob=new Blob([gpx],{type:'application/gpx+xml'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(slug||'cung-duong')+'.gpx';
+  a.click(); URL.revokeObjectURL(a.href);
+  toast('Đã xuất GPX — mở bằng Maps.me, OsmAnd hay Google Earth');
+}
 async function shareTrip(){
   const url=tripShareUrl();
   if(navigator.share){ try{ await navigator.share({title:'Cung đường Khám phá Việt Nam',url}); return; }catch(_){ return; } }
@@ -802,6 +827,7 @@ function renderTripPanel(ov){
       <button type="button" class="tact" id="tSort">Sắp Bắc → Nam</button>
       <button type="button" class="tact" id="tShare">Chia sẻ cung</button>
       <button type="button" class="tact primary" id="tMaps" ${n<2?'disabled':''}>Mở Google Maps</button>
+      <button type="button" class="tact" id="tGpx">Xuất GPX</button>
       <button type="button" class="tact danger" id="tClear">Xoá cung</button>
       <a class="tact" href="chia-tien/" style="grid-column:1/-1;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center">Chia tiền cho chuyến này →</a>
     </div>`:''}
@@ -816,6 +842,7 @@ function renderTripPanel(ov){
   const bm=ov.querySelector('#tMaps');  if(bm) bm.onclick=()=>{ const u=tripMapsUrl(tripPlaces()); if(!u) return;
     if(tripPlaces().length>GMAPS_MAX) toast('Google Maps chỉ nhận '+GMAPS_MAX+' chặng — mở '+GMAPS_MAX+' điểm đầu.');
     window.open(u,'_blank','noopener'); };
+  const bg=ov.querySelector('#tGpx'); if(bg) bg.onclick=()=>exportGPX(tripPlaces());
   const bc=ov.querySelector('#tClear'); if(bc) bc.onclick=()=>{ if(confirm('Xoá toàn bộ cung đường?')){ trip=[]; saveTrip(); paintTrip(); renderTripPanel(ov); } };
 }
 function openTrip(){
