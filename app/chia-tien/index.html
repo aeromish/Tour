@@ -11,7 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@8..144,400..700&display=swap" rel="stylesheet">
-<style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
   :root{
     --sea:#2c3768; --coral:#f2685c; --sun:#e0a12e; --moss:#2f9e5f;
     --ink:#1a2246; --ink-soft:#5b6285; --paper:#f4f5fb; --card:#fff; --line:#e6e8f0;
@@ -31,7 +32,9 @@
   header h1 svg{width:19px;height:19px;color:var(--sun);flex:none}
   .back{color:#fff;text-decoration:none;font-size:12.5px;font-weight:600;border:1.5px solid rgba(255,255,255,.32);
     background:rgba(255,255,255,.1);border-radius:999px;padding:9px 15px;white-space:nowrap;min-height:44px;display:flex;align-items:center}
-
+  .sync-status{font-size:11.5px;color:rgba(255,255,255,.75);white-space:nowrap}
+  .sync-status.err{color:#ffb3ac}
+    
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px;box-shadow:var(--shadow)}
   .card > h2{font-size:15px;font-weight:700;margin-bottom:3px;display:flex;align-items:center;gap:8px}
   .card > h2 .n{margin-left:auto;font-size:12.5px;font-weight:600;color:var(--ink-soft)}
@@ -176,6 +179,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>
       Chia tiền nhóm
     </h1>
+    <span id="syncStatus" class="sync-status"></span>
     <a class="back" href="../">← Bản đồ</a>
   </div>
 </header>
@@ -322,6 +326,82 @@ const dmy=d=>{const p=String(d||'').split('-');return p.length===3?`${p[2]}/${p[
 // chỉ cần gọi thêm hàm đẩy dữ liệu ở đây (xem 08_money_sync.sql).
 function save(){
   try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(_){ toast('Không lưu được (bộ nhớ đầy?)'); }
+  scheduleSync();
+}
+
+/* ---------- đồng bộ Supabase (đăng nhập ẩn danh, không cần email) ---------- */
+const SB_URL='https://musbrsfduxvihlmomvvu.supabase.co';
+const SB_KEY='sb_publishable_AqpgPIy5OFrbp7o8Ix09-Q_8_0fGFOB';
+const sb = window.supabase ? supabase.createClient(SB_URL, SB_KEY) : null;
+const TRIP_KEY = KEY+'_tripid';
+const SYNCED_KEY = KEY+'_syncedat';
+let tripId = localStorage.getItem(TRIP_KEY) || null;
+let syncTimer = null, syncing = false;
+
+function setSyncStatus(state){
+  const el = $('syncStatus'); if(!el) return;
+  const map = { ok:'☁ Đã đồng bộ', wait:'☁ Đang lưu…', off:'☁ Ngoại tuyến', err:'☁ Lỗi đồng bộ' };
+  el.textContent = map[state] || map.off;
+  el.className = 'sync-status' + (state==='err' ? ' err' : '');
+}
+
+async function initSync(){
+  if(!sb){ setSyncStatus('off'); return; }
+  try{
+    const { data:{ session } } = await sb.auth.getSession();
+    if(!session) await sb.auth.signInAnonymously();
+  }catch(_){ setSyncStatus('err'); return; }
+
+  if(tripId){
+    try{
+      const { data, error } = await sb.from('money_trips')
+        .select('data,updated_at').eq('id', tripId).maybeSingle();
+      if(!error && data){
+        const lastPush = localStorage.getItem(SYNCED_KEY) || '';
+        if(data.updated_at > lastPush){
+          S = Object.assign(S, data.data);
+          if(!S.members.some(m=>m.id===S.treasurer)) S.treasurer = S.members[0]?.id;
+          localStorage.setItem(SYNCED_KEY, data.updated_at);
+          try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(_){}
+          $('tripName').value = S.name||'';
+          renderAll();
+        }
+        setSyncStatus('ok');
+      } else if(error){ setSyncStatus('err'); }
+    }catch(_){ setSyncStatus('off'); }
+  } else {
+    setSyncStatus('ok');
+  }
+}
+
+function scheduleSync(){
+  if(!sb) return;
+  setSyncStatus('wait');
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(pushToServer, 2500);
+}
+
+async function pushToServer(){
+  if(!sb || syncing) return;
+  syncing = true;
+  try{
+    const { data:{ session } } = await sb.auth.getSession();
+    if(!session){ setSyncStatus('off'); syncing=false; return; }
+    if(!tripId){
+      const { data, error } = await sb.from('money_trips')
+        .insert({ owner: session.user.id, name: S.name||'', data: S }).select('id,updated_at').single();
+      if(error){ setSyncStatus('err'); syncing=false; return; }
+      tripId = data.id; localStorage.setItem(TRIP_KEY, tripId);
+      localStorage.setItem(SYNCED_KEY, data.updated_at);
+    } else {
+      const { data, error } = await sb.from('money_trips')
+        .update({ name: S.name||'', data: S }).eq('id', tripId).select('updated_at').single();
+      if(error){ setSyncStatus('err'); syncing=false; return; }
+      localStorage.setItem(SYNCED_KEY, data.updated_at);
+    }
+    setSyncStatus('ok');
+  }catch(_){ setSyncStatus('off'); }
+  syncing = false;
 }
 function load(){
   try{ const j=JSON.parse(localStorage.getItem(KEY)||'null');
@@ -716,6 +796,7 @@ load();
 $('tripName').value=S.name||'';
 $('cDate').value=todayStr(); $('eDate').value=todayStr();
 renderAll();
+initSync();
 
 if('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(()=>{});
 </script>
