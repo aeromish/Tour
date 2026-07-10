@@ -179,6 +179,33 @@
   .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
   .reveal.in{opacity:1;transform:none}
 
+  /* xuất hiện tuần tự cho lưới feature / step / stat */
+  .grid .feat:nth-child(1){transition-delay:0ms} .grid .feat:nth-child(2){transition-delay:70ms}
+  .grid .feat:nth-child(3){transition-delay:140ms} .grid .feat:nth-child(4){transition-delay:210ms}
+  .steps .step:nth-child(1){transition-delay:0ms} .steps .step:nth-child(2){transition-delay:90ms}
+  .steps .step:nth-child(3){transition-delay:180ms}
+  .stats .stat:nth-child(1){transition-delay:0ms} .stats .stat:nth-child(2){transition-delay:80ms}
+  .stats .stat:nth-child(3){transition-delay:160ms} .stats .stat:nth-child(4){transition-delay:240ms}
+
+  /* tuyến đường trên bản đồ hero — chảy nhẹ dọc tuyến, gợi cảm giác di chuyển */
+  .panel .rd{animation:rd-flow 16s linear infinite}
+  @keyframes rd-flow{to{stroke-dashoffset:-110}}
+
+  /* điểm trên bản đồ hero — xuất hiện tuần tự + nhịp định vị sống */
+  .panel .dotm{animation:dot-in .45s cubic-bezier(.34,1.56,.64,1) both;animation-delay:var(--d,0s)}
+  .panel .dotm::after{content:"";position:absolute;inset:0;border-radius:50%;background-color:inherit;opacity:.55;
+    animation:dot-ping 2.4s ease-out infinite;animation-delay:calc(var(--d,0s) + 1s)}
+  @keyframes dot-in{from{transform:translate(-50%,-50%) scale(0)}to{transform:translate(-50%,-50%) scale(1)}}
+  @keyframes dot-ping{0%{transform:scale(.6);opacity:.55}100%{transform:scale(2.2);opacity:0}}
+
+  /* icon feature nảy nhẹ khi hover */
+  .feat .ic{transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+  .feat:hover .ic{transform:scale(1.08) rotate(-4deg)}
+
+  /* nav nổi nhẹ khi cuộn */
+  .nav{transition:box-shadow .25s ease}
+  .nav.scrolled{box-shadow:0 2px 10px -4px rgba(26,34,70,.15)}
+
   @media (max-width:860px){
     .hero .wrap{grid-template-columns:1fr;gap:30px;padding-top:44px;padding-bottom:56px}
     .panel{max-width:400px;margin:0 auto;width:100%}
@@ -192,7 +219,11 @@
     .nav .mono{display:none}
   }
   @media (min-width:1000px){ .nav .mono{display:block} }
-  @media (prefers-reduced-motion:reduce){ .reveal{opacity:1;transform:none;transition:none} *{scroll-behavior:auto} }
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    .panel .rd,.panel .dotm,.panel .dotm::after{animation:none}
+    *{scroll-behavior:auto}
+  }
 </style>
 </head>
 <body>
@@ -235,13 +266,13 @@
         <path class="rd" d="M170 26 C140 66 166 100 138 138 C114 172 138 206 114 242 C98 270 108 300 84 322"/>
       </svg>
       <div class="compass">N</div>
-      <div class="dotm" style="left:56.6%;top:8%;background:var(--teal)"></div>
+      <div class="dotm" style="left:56.6%;top:8%;background:var(--teal);--d:.15s"></div>
       <div class="tag" style="left:56.6%;top:8%">HÀ GIANG · 23.39°N</div>
-      <div class="dotm" style="left:46%;top:42%;background:var(--ember)"></div>
+      <div class="dotm" style="left:46%;top:42%;background:var(--ember);--d:.4s"></div>
       <div class="tag t2" style="left:46%;top:42%">ĐÀ NẴNG · 16.05°N</div>
-      <div class="dotm" style="left:38%;top:74%;background:var(--moss)"></div>
+      <div class="dotm" style="left:38%;top:74%;background:var(--moss);--d:.65s"></div>
       <div class="tag t3" style="left:38%;top:74%">NHA TRANG · 12.24°N</div>
-      <div class="dotm" style="left:28%;top:97%;background:var(--teal)"></div>
+      <div class="dotm" style="left:28%;top:97%;background:var(--teal);--d:.9s"></div>
       <div class="readout">LAT 10.35°N · LNG 107.08°E<br>464 điểm · 23 tỉnh</div>
     </div>
   </div>
@@ -256,9 +287,9 @@
 
 <div class="stats">
   <div class="wrap">
-    <div class="stat reveal"><div class="n">464</div><div class="l">điểm đến</div></div>
-    <div class="stat reveal"><div class="n">23</div><div class="l">tỉnh &amp; thành</div></div>
-    <div class="stat reveal"><div class="n">3</div><div class="l">miền B–T–N</div></div>
+    <div class="stat reveal"><div class="n" data-count="464">464</div><div class="l">điểm đến</div></div>
+    <div class="stat reveal"><div class="n" data-count="23">23</div><div class="l">tỉnh &amp; thành</div></div>
+    <div class="stat reveal"><div class="n" data-count="3">3</div><div class="l">miền B–T–N</div></div>
     <div class="stat reveal"><div class="n">0đ</div><div class="l">miễn phí</div></div>
   </div>
 </div>
@@ -367,11 +398,41 @@
   (function(){
     var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var els = document.querySelectorAll('.reveal');
-    if(rm || !('IntersectionObserver' in window)){ els.forEach(function(e){e.classList.add('in');}); return; }
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, {threshold:0.14, rootMargin:'0px 0px -40px 0px'});
-    els.forEach(function(e){ io.observe(e); });
+
+    function countUp(el){
+      var target = parseInt(el.getAttribute('data-count'), 10);
+      if(isNaN(target)) return;
+      var t0 = null, dur = 1100;
+      function tick(ts){
+        if(!t0) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+        if(p < 1) requestAnimationFrame(tick); else el.textContent = target;
+      }
+      requestAnimationFrame(tick);
+    }
+
+    if(rm || !('IntersectionObserver' in window)){
+      els.forEach(function(e){ e.classList.add('in'); });
+    } else {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(!en.isIntersecting) return;
+          en.target.classList.add('in');
+          var n = en.target.querySelector('.n[data-count]');
+          if(n) countUp(n);
+          io.unobserve(en.target);
+        });
+      }, {threshold:0.14, rootMargin:'0px 0px -40px 0px'});
+      els.forEach(function(e){ io.observe(e); });
+    }
+
+    var navEl = document.querySelector('.nav');
+    if(navEl){
+      var onScroll = function(){ navEl.classList.toggle('scrolled', window.scrollY > 8); };
+      onScroll();
+      window.addEventListener('scroll', onScroll, {passive:true});
+    }
   })();
 </script>
 </body>
