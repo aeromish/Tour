@@ -704,18 +704,36 @@ function saveTrip(){ try{ localStorage.setItem(TRIP_KEY,JSON.stringify(trip)); }
 function loadTrip(){ try{ const t=JSON.parse(localStorage.getItem(TRIP_KEY)||'[]'); if(Array.isArray(t)) trip=t.filter(x=>typeof x==='string'); }catch(_){} }
 function pruneTrip(){ const n=trip.length; trip=trip.filter(sl=>{const p=placeBySlug(sl); return p&&p.ll;}); if(trip.length!==n) saveTrip(); }
 
+// Ghi log ẩn danh mỗi lần thêm/bớt điểm — chỉ để thống kê (tuyến hay đi, điểm hay chọn), không gắn danh tính
+const CUNG_SID_KEY='docbo_cung_sid';
+function cungSessionId(){
+  try{
+    let sid=sessionStorage.getItem(CUNG_SID_KEY);
+    if(!sid){ sid=crypto.randomUUID(); sessionStorage.setItem(CUNG_SID_KEY,sid); }
+    return sid;
+  }catch(_){ return null; }
+}
+function logCungEvent(action, place, routeOverride){
+  try{
+    if(!sbClient) return;
+    const sid=cungSessionId(); if(!sid) return;
+    sbClient.from('cung_logs').insert({
+      session_id: sid, action, place: place||null,
+      route: (routeOverride||trip).slice(0,TRIP_MAX)
+    }).then(()=>{}, ()=>{});
+  }catch(_){}
+}
+
 function tripDist(list){ let d=0; for(let i=1;i<list.length;i++) d+=haversine(list[i-1].ll,list[i].ll); return d; }
 
 function toggleTripBySlug(sl){
   const p=placeBySlug(sl); if(!p) return;
   if(!p.ll){ toast('Điểm chưa có toạ độ — chưa thêm vào cung được.'); return; }
   const i=trip.indexOf(sl);
-  if(i>=0){ trip.splice(i,1); toast('Đã bỏ khỏi cung'); }
-  else{
-    if(trip.length>=TRIP_MAX){ toast('Cung tối đa '+TRIP_MAX+' điểm.'); return; }
-    trip.push(sl); toast('Đã thêm vào cung · '+trip.length+' điểm');
-  }
-  saveTrip(); paintTrip();
+  if(i>=0){ trip.splice(i,1); toast('Đã bỏ khỏi cung'); saveTrip(); paintTrip(); logCungEvent('remove', sl); return; }
+  if(trip.length>=TRIP_MAX){ toast('Cung tối đa '+TRIP_MAX+' điểm.'); return; }
+  trip.push(sl); toast('Đã thêm vào cung · '+trip.length+' điểm');
+  saveTrip(); paintTrip(); logCungEvent('add', sl);
 }
 
 function syncTripButtons(){
@@ -850,19 +868,19 @@ function renderTripPanel(ov){
       <button type="button" class="tact danger" id="tClear">Xoá cung</button>
       <a class="tact" href="chia-tien/" style="grid-column:1/-1;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center">Chia tiền cho chuyến này →</a>
     </div>`:''}
-    <p class="tnote">Khoảng cách là đường chim bay — chỉ để ước lượng, quãng chạy thật sẽ dài hơn. Google Maps nhận tối đa ${GMAPS_MAX} chặng. Cung lưu trong máy bạn, không gửi đi đâu.</p>
+    <p class="tnote">Khoảng cách là đường chim bay — chỉ để ước lượng, quãng chạy thật sẽ dài hơn. Google Maps nhận tối đa ${GMAPS_MAX} chặng. Cung lưu trong máy bạn; mình ghi nhận ẩn danh các điểm bạn thêm/bớt để thống kê, không gắn với danh tính bạn.</p>
     <div class="fb-foot"><button type="button" class="fb-btn ghost" id="tClose">Đóng</button></div>
   </div>`;
   ov.querySelector('#tClose').onclick=()=>{ ov.style.display='none'; };
   ov.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>{ moveStop(+b.dataset.i, b.dataset.mv==='up'?-1:1); renderTripPanel(ov); });
-  ov.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{ trip.splice(+b.dataset.rm,1); saveTrip(); paintTrip(); renderTripPanel(ov); });
+  ov.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{ const rmSl=trip[+b.dataset.rm]; trip.splice(+b.dataset.rm,1); saveTrip(); paintTrip(); renderTripPanel(ov); logCungEvent('remove', rmSl); });
   const bs=ov.querySelector('#tSort');  if(bs) bs.onclick=()=>{ sortTripNS(); renderTripPanel(ov); };
   const bh=ov.querySelector('#tShare'); if(bh) bh.onclick=shareTrip;
   const bm=ov.querySelector('#tMaps');  if(bm) bm.onclick=()=>{ const u=tripMapsUrl(tripPlaces()); if(!u) return;
     if(tripPlaces().length>GMAPS_MAX) toast('Google Maps chỉ nhận '+GMAPS_MAX+' chặng — mở '+GMAPS_MAX+' điểm đầu.');
     window.open(u,'_blank','noopener'); };
   const bg=ov.querySelector('#tGpx'); if(bg) bg.onclick=()=>exportGPX(tripPlaces());
-  const bc=ov.querySelector('#tClear'); if(bc) bc.onclick=()=>{ if(confirm('Xoá toàn bộ cung đường?')){ trip=[]; saveTrip(); paintTrip(); renderTripPanel(ov); } };
+  const bc=ov.querySelector('#tClear'); if(bc) bc.onclick=()=>{ if(confirm('Xoá toàn bộ cung đường?')){ const old=trip.slice(); trip=[]; saveTrip(); paintTrip(); renderTripPanel(ov); logCungEvent('clear', null, old); } };
 }
 function openTrip(){
   let ov=document.getElementById('tripOverlay');
