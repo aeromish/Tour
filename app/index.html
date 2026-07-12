@@ -720,7 +720,7 @@ function logCungEvent(action, place, routeOverride){
     sbClient.from('cung_logs').insert({
       session_id: sid, action, place: place||null,
       route: (routeOverride||trip).slice(0,TRIP_MAX)
-    }).then(()=>{}, ()=>{});
+    }).then(r=>{ if(r && r.error) console.warn('[cung_logs] insert lỗi:', r.error.message); }, ()=>{});
   }catch(_){}
 }
 
