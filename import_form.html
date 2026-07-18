@@ -1,0 +1,552 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root{
+    --ink:#1a1d29; --ink-soft:#5a5f73; --line:#e3e5ec;
+    --bg:#f7f7fa; --panel:#ffffff; --accent:#3454d1; --accent-soft:#e8ecfc;
+    --good:#1c8a52; --warn:#c05621; --danger:#c0392b;
+    --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:0;}
+  .wrap{max-width:1180px;margin:0 auto;padding:20px;}
+  h1{font-size:19px;font-weight:700;margin:0 0 4px;}
+  .sub{color:var(--ink-soft);font-size:13px;margin:0 0 18px;}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:8px 14px;border-radius:var(--radius);font-size:13px;font-weight:600;cursor:pointer;transition:.15s;}
+  .btn:hover{border-color:var(--accent);color:var(--accent);}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .btn.primary:hover{background:#2a44b3;color:#fff;}
+  .btn.ghost{background:transparent;}
+  .btn.danger{color:var(--danger);}
+  .btn.danger:hover{border-color:var(--danger);}
+  input[type=file]{display:none;}
+  .tabs{display:flex;gap:4px;border-bottom:2px solid var(--line);margin-bottom:18px;flex-wrap:wrap;}
+  .tab{padding:9px 14px;font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;}
+  .tab.active{color:var(--accent);border-color:var(--accent);}
+  .tab .count{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:99px;font-size:11px;padding:1px 7px;margin-left:6px;font-weight:700;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:16px;}
+  .card h3{font-size:14px;margin:0 0 14px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;}
+  .field{display:flex;flex-direction:column;gap:4px;}
+  .field.full{grid-column:1/-1;}
+  label{font-size:12px;font-weight:600;color:var(--ink-soft);}
+  label .req{color:var(--danger);}
+  label .hint{font-weight:400;color:#9096a8;}
+  input[type=text],input[type=number],input[type=datetime-local],select,textarea{
+    border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:13px;font-family:inherit;color:var(--ink);background:#fff;
+  }
+  textarea{resize:vertical;min-height:56px;}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+  .day-row,.chip-row{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start;}
+  .day-row .lbl{font-size:12px;color:var(--ink-soft);padding-top:9px;width:44px;flex-shrink:0;}
+  .day-row textarea, .chip-row input{flex:1;}
+  .rm{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:16px;padding:6px;line-height:1;}
+  .rm:hover{color:var(--danger);}
+  .add-line{font-size:12px;color:var(--accent);cursor:pointer;font-weight:600;background:none;border:none;padding:2px 0;}
+  .actions{display:flex;gap:8px;margin-top:14px;}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th{text-align:left;padding:8px 10px;color:var(--ink-soft);font-weight:600;border-bottom:1px solid var(--line);white-space:nowrap;}
+  td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  tr:hover td{background:#fafbfe;}
+  .empty{color:#9096a8;font-size:13px;padding:24px;text-align:center;}
+  .row-actions{display:flex;gap:6px;}
+  .row-actions button{border:none;background:none;cursor:pointer;font-size:12px;font-weight:600;}
+  .row-actions .edit{color:var(--accent);}
+  .row-actions .del{color:var(--danger);}
+  .badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;}
+  .badge.APPROVED,.badge.PUBLISHED{background:#e3f5ea;color:var(--good);}
+  .badge.PENDING,.badge.DRAFT{background:#fdf1e3;color:var(--warn);}
+  .badge.REJECTED,.badge.ARCHIVED{background:#fbe9e7;color:var(--danger);}
+  .note{font-size:12px;color:var(--ink-soft);background:var(--accent-soft);border-radius:6px;padding:8px 12px;margin-bottom:14px;}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:50;}
+  .toast.show{opacity:1;transform:translate(-50%,-6px);}
+  .status-line{font-size:12px;color:var(--ink-soft);margin-top:-8px;margin-bottom:14px;}
+</style>
+
+<div class="wrap">
+  <h1>Nhập liệu import — Dọc Bờ</h1>
+  <p class="sub">Form nhập cho 5 bảng import. Các trường tham chiếu (tên tour/trip/địa điểm) là dropdown lấy từ dữ liệu đã nhập — tránh lệch tên khi export. Dữ liệu tự lưu theo trình duyệt.</p>
+
+  <div class="toolbar">
+    <label class="btn primary" for="importFile">↥ Import file .xlsx có sẵn</label>
+    <input type="file" id="importFile" accept=".xlsx" multiple>
+    <button class="btn" id="exportAllBtn">↧ Export tất cả (5 file)</button>
+    <button class="btn ghost danger" id="resetBtn">Xoá hết dữ liệu</button>
+    <span id="statusMsg" style="align-self:center;font-size:12px;color:var(--ink-soft);"></span>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="panels"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+
+const ENTITIES = {
+  places: {
+    label:'Địa điểm', file:'places_template.xlsx', sheet:'Places',
+    headers:['name','description','address','latitude','longitude','category','images','status'],
+    display:['name','category','status'],
+    fields:[
+      {k:'name',t:'text',label:'Tên địa điểm',req:1,full:1},
+      {k:'description',t:'textarea',label:'Mô tả',full:1},
+      {k:'address',t:'text',label:'Địa chỉ',full:1},
+      {k:'latitude',t:'text',label:'Vĩ độ (lat)'},
+      {k:'longitude',t:'text',label:'Kinh độ (lng)'},
+      {k:'category',t:'select',label:'Danh mục',options:['ATTRACTION','RESTAURANT','HOTEL','CAFE','VIEWPOINT','CAMPSITE','OTHER'],req:1},
+      {k:'status',t:'select',label:'Trạng thái',options:['PENDING','APPROVED','REJECTED'],req:1},
+      {k:'images',t:'list',label:'Ảnh (mỗi dòng 1 URL)',full:1},
+    ]
+  },
+  tours: {
+    label:'Tours', file:'tours_template.xlsx', sheet:'Tours',
+    headers:['title','description','destination','durationDays','basePrice','maxParticipants','itinerary','inclusions','exclusions','status','latitude','longitude','createdByEmail'],
+    display:['title','destination','status'],
+    fields:[
+      {k:'title',t:'text',label:'Tên tour',req:1,full:1},
+      {k:'description',t:'textarea',label:'Mô tả',full:1},
+      {k:'destination',t:'text',label:'Điểm đến'},
+      {k:'durationDays',t:'number',label:'Số ngày'},
+      {k:'basePrice',t:'number',label:'Giá cơ bản'},
+      {k:'maxParticipants',t:'number',label:'Số khách tối đa'},
+      {k:'status',t:'select',label:'Trạng thái',options:['DRAFT','PUBLISHED','ARCHIVED']},
+      {k:'latitude',t:'text',label:'Vĩ độ (lat)'},
+      {k:'longitude',t:'text',label:'Kinh độ (lng)'},
+      {k:'createdByEmail',t:'text',label:'Email người tạo',full:1},
+      {k:'itinerary',t:'days',label:'Lịch trình theo ngày (itinerary)',full:1},
+      {k:'inclusions',t:'list',label:'Bao gồm (mỗi dòng 1 mục)',full:1},
+      {k:'exclusions',t:'list',label:'Không bao gồm (mỗi dòng 1 mục)',full:1},
+    ]
+  },
+  tourDates: {
+    label:'Ngày khởi hành', file:'tour_dates_template.xlsx', sheet:'TourDates',
+    headers:['tourTitle','startDate','endDate','availableSlots','price'],
+    display:['tourTitle','startDate','availableSlots'],
+    fields:[
+      {k:'tourTitle',t:'ref',ref:'tours',refKey:'title',label:'Tour',req:1,full:1},
+      {k:'startDate',t:'datetime',label:'Ngày bắt đầu',req:1},
+      {k:'endDate',t:'datetime',label:'Ngày kết thúc',req:1},
+      {k:'availableSlots',t:'number',label:'Số chỗ'},
+      {k:'price',t:'number',label:'Giá'},
+    ]
+  },
+  tourGuides: {
+    label:'Hướng dẫn viên', file:'tour_guides_template.xlsx', sheet:'TourGuides',
+    headers:['userEmail','bio','languages','specialties','certifications','hourlyRate','dailyRate','status','coverageArea','baseLatitude','baseLongitude'],
+    display:['userEmail','coverageArea','status'],
+    fields:[
+      {k:'userEmail',t:'text',label:'Email tài khoản',req:1,full:1},
+      {k:'bio',t:'textarea',label:'Giới thiệu',full:1},
+      {k:'languages',t:'list',label:'Ngôn ngữ (mỗi dòng 1 mục)'},
+      {k:'specialties',t:'list',label:'Chuyên môn (mỗi dòng 1 mục)'},
+      {k:'certifications',t:'list',label:'Chứng chỉ (mỗi dòng 1 mục)'},
+      {k:'hourlyRate',t:'number',label:'Giá/giờ'},
+      {k:'dailyRate',t:'number',label:'Giá/ngày'},
+      {k:'status',t:'select',label:'Trạng thái',options:['PENDING','APPROVED','REJECTED']},
+      {k:'coverageArea',t:'text',label:'Khu vực hoạt động',full:1},
+      {k:'baseLatitude',t:'text',label:'Vĩ độ gốc'},
+      {k:'baseLongitude',t:'text',label:'Kinh độ gốc'},
+    ]
+  },
+  trips: {
+    label:'Trips', file:'trips_with_stops_template.xlsx', sheet:'Trips',
+    headers:['title','description','coverImage','images','durationDays','vehicleMode','tripType','isPublic','startDate','endDate','status'],
+    display:['title','vehicleMode','status'],
+    fields:[
+      {k:'title',t:'text',label:'Tên trip',req:1,full:1},
+      {k:'description',t:'textarea',label:'Mô tả',full:1},
+      {k:'coverImage',t:'text',label:'Ảnh bìa (URL)',full:1},
+      {k:'durationDays',t:'number',label:'Số ngày'},
+      {k:'vehicleMode',t:'select',label:'Phương tiện',options:['driving','motorcycling','walking','bicycling']},
+      {k:'tripType',t:'select',label:'Loại trip',options:['public','private']},
+      {k:'isPublic',t:'select',label:'Công khai?',options:['1','0']},
+      {k:'startDate',t:'datetime',label:'Ngày bắt đầu'},
+      {k:'endDate',t:'datetime',label:'Ngày kết thúc'},
+      {k:'status',t:'select',label:'Trạng thái',options:['PENDING','APPROVED','REJECTED']},
+      {k:'images',t:'list',label:'Ảnh (mỗi dòng 1 URL)',full:1},
+    ]
+  },
+  tripStops: {
+    label:'Điểm dừng (Trip Stops)', file:null, sheet:'Trip Stops',
+    headers:['tripTitle','stopNumber','stopType','entityName','notes','stayDuration','arrivalDatetime','departureDatetime'],
+    display:['tripTitle','stopNumber','entityName'],
+    fields:[
+      {k:'tripTitle',t:'ref',ref:'trips',refKey:'title',label:'Trip',req:1},
+      {k:'stopNumber',t:'number',label:'Thứ tự điểm dừng',req:1},
+      {k:'stopType',t:'select',label:'Loại điểm dừng',options:['place','hotel','homestay','checkpoint'],req:1},
+      {k:'entityName',t:'refplace',ref:'places',refKey:'name',label:'Địa điểm / tên thực thể',full:1},
+      {k:'notes',t:'text',label:'Ghi chú',full:1},
+      {k:'stayDuration',t:'number',label:'Thời gian dừng (phút)'},
+      {k:'arrivalDatetime',t:'datetime',label:'Giờ đến'},
+      {k:'departureDatetime',t:'datetime',label:'Giờ đi'},
+    ]
+  }
+};
+const ORDER = ['places','tours','tourDates','tourGuides','trips','tripStops'];
+const STORAGE_KEY = 'import-form-state-v1';
+
+let state = {};
+ORDER.forEach(k=>state[k]=[]);
+let activeTab = 'places';
+let editingId = null;
+
+function uid(){ return 'r'+Math.random().toString(36).slice(2,10); }
+
+// ---------- storage ----------
+async function loadState(){
+  try{
+    const res = await window.storage.get(STORAGE_KEY, false);
+    if(res && res.value){ state = JSON.parse(res.value); ORDER.forEach(k=>{ if(!state[k]) state[k]=[]; }); }
+  }catch(e){ /* no saved state yet */ }
+}
+async function saveState(){
+  try{ await window.storage.set(STORAGE_KEY, JSON.stringify(state), false); }
+  catch(e){ console.error('save failed', e); }
+}
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+// ---------- tabs ----------
+function renderTabs(){
+  const tabs = document.getElementById('tabs');
+  tabs.innerHTML = ORDER.map(k=>{
+    const e = ENTITIES[k];
+    return `<div class="tab ${k===activeTab?'active':''}" data-tab="${k}">${e.label}<span class="count">${state[k].length}</span></div>`;
+  }).join('');
+  tabs.querySelectorAll('.tab').forEach(el=>{
+    el.addEventListener('click', ()=>{ activeTab = el.dataset.tab; editingId=null; renderAll(); });
+  });
+}
+
+// ---------- form field rendering ----------
+function fieldHTML(entityKey, f, val){
+  val = val===undefined||val===null ? '' : val;
+  const cls = f.full ? 'field full' : 'field';
+  const reqStar = f.req ? '<span class="req"> *</span>' : '';
+  let inner = '';
+  if(f.t==='text'){
+    inner = `<input type="text" data-k="${f.k}" value="${escapeAttr(val)}">`;
+  } else if(f.t==='number'){
+    inner = `<input type="number" step="any" data-k="${f.k}" value="${escapeAttr(val)}">`;
+  } else if(f.t==='textarea'){
+    inner = `<textarea data-k="${f.k}">${escapeHtml(val)}</textarea>`;
+  } else if(f.t==='datetime'){
+    inner = `<input type="datetime-local" data-k="${f.k}" value="${escapeAttr(val)}">`;
+  } else if(f.t==='select'){
+    inner = `<select data-k="${f.k}"><option value="">—</option>` +
+      f.options.map(o=>`<option value="${o}" ${o===val?'selected':''}>${o}</option>`).join('') + `</select>`;
+  } else if(f.t==='ref'){
+    const opts = state[f.ref].map(r=>r[f.refKey]).filter(Boolean);
+    inner = `<select data-k="${f.k}"><option value="">— chọn ${ENTITIES[f.ref].label.toLowerCase()} —</option>` +
+      opts.map(o=>`<option value="${escapeAttr(o)}" ${o===val?'selected':''}>${escapeHtml(o)}</option>`).join('') + `</select>`;
+    if(opts.length===0) inner += `<span style="font-size:11px;color:var(--warn)">Chưa có ${ENTITIES[f.ref].label.toLowerCase()} nào — thêm ở tab tương ứng trước.</span>`;
+  } else if(f.t==='refplace'){
+    const opts = state.places.map(r=>r.name).filter(Boolean);
+    inner = `<input list="dl-places" data-k="${f.k}" value="${escapeAttr(val)}" placeholder="Chọn từ danh sách địa điểm, hoặc gõ tên thực thể khác">
+      <datalist id="dl-places">${opts.map(o=>`<option value="${escapeAttr(o)}">`).join('')}</datalist>`;
+  } else if(f.t==='list'){
+    inner = `<textarea data-k="${f.k}" data-type="list" placeholder="mỗi dòng 1 mục">${escapeHtml((Array.isArray(val)?val.join('\n'):val))}</textarea>`;
+  } else if(f.t==='days'){
+    inner = `<div data-k="${f.k}" data-type="days" class="days-editor">` + daysRowsHTML(Array.isArray(val)?val:[]) + `</div>
+      <button type="button" class="add-line" onclick="window.__addDay(this)">+ thêm ngày</button>`;
+  }
+  return `<div class="${cls}"><label>${f.label}${reqStar}</label>${inner}</div>`;
+}
+function daysRowsHTML(days){
+  if(days.length===0) days=[''];
+  return days.map((d,i)=>`<div class="day-row"><div class="lbl">Ngày ${i+1}</div><textarea rows="1">${escapeHtml(d)}</textarea><button type="button" class="rm" onclick="this.parentElement.remove()">✕</button></div>`).join('');
+}
+window.__addDay = function(btn){
+  const editor = btn.previousElementSibling;
+  const n = editor.children.length+1;
+  const row = document.createElement('div');
+  row.className='day-row';
+  row.innerHTML = `<div class="lbl">Ngày ${n}</div><textarea rows="1"></textarea><button type="button" class="rm" onclick="this.parentElement.remove()">✕</button>`;
+  editor.appendChild(row);
+};
+
+function escapeHtml(s){ return String(s).replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
+
+// ---------- panel (form + table) ----------
+function renderPanels(){
+  const wrap = document.getElementById('panels');
+  wrap.innerHTML = ORDER.map(k=>`<div class="panel ${k===activeTab?'active':''}" id="panel-${k}"></div>`).join('');
+  ORDER.forEach(k=>renderPanel(k));
+}
+
+function renderPanel(key){
+  const panel = document.getElementById('panel-'+key);
+  const ent = ENTITIES[key];
+  const editing = editingId && state[key].find(r=>r._id===editingId);
+  const data = editing || {};
+
+  panel.innerHTML = `
+    <div class="card">
+      <h3>${editing?'Sửa mục':'Thêm mới'} — ${ent.label}</h3>
+      <div class="grid" id="form-${key}">
+        ${ent.fields.map(f=>fieldHTML(key,f,data[f.k])).join('')}
+      </div>
+      <div class="actions">
+        <button class="btn primary" id="save-${key}">${editing?'Lưu thay đổi':'+ Thêm vào danh sách'}</button>
+        ${editing?`<button class="btn ghost" id="cancel-${key}">Huỷ</button>`:''}
+      </div>
+    </div>
+    <div class="card">
+      <h3>Danh sách đã nhập (${state[key].length})</h3>
+      ${renderTable(key)}
+    </div>
+  `;
+
+  document.getElementById('save-'+key).addEventListener('click', ()=>saveRow(key));
+  const cancelBtn = document.getElementById('cancel-'+key);
+  if(cancelBtn) cancelBtn.addEventListener('click', ()=>{ editingId=null; renderPanel(key); });
+
+  panel.querySelectorAll('.row-actions .edit').forEach(b=>b.addEventListener('click', ()=>{ editingId=b.dataset.id; renderPanel(key); }));
+  panel.querySelectorAll('.row-actions .del').forEach(b=>b.addEventListener('click', ()=>{
+    state[key] = state[key].filter(r=>r._id!==b.dataset.id);
+    saveState(); renderTabs(); renderPanel(key);
+  }));
+}
+
+function renderTable(key){
+  const rows = state[key];
+  const ent = ENTITIES[key];
+  if(rows.length===0) return `<div class="empty">Chưa có dữ liệu nào trong bảng này.</div>`;
+  return `<table><thead><tr>${ent.display.map(d=>`<th>${d}</th>`).join('')}<th></th></tr></thead><tbody>
+    ${rows.map(r=>`<tr>${ent.display.map(d=>{
+      const v = r[d];
+      if(d==='status') return `<td><span class="badge ${v}">${v||''}</span></td>`;
+      return `<td>${escapeHtml(v||'')}</td>`;
+    }).join('')}<td class="row-actions">
+      <button class="edit" data-id="${r._id}">Sửa</button>
+      <button class="del" data-id="${r._id}">Xoá</button>
+    </td></tr>`).join('')}
+  </tbody></table>`;
+}
+
+function saveRow(key){
+  const ent = ENTITIES[key];
+  const form = document.getElementById('form-'+key);
+  const row = editingId ? {...state[key].find(r=>r._id===editingId)} : {_id: uid()};
+
+  let missingReq = null;
+  ent.fields.forEach(f=>{
+    if(f.t==='days'){
+      const editor = form.querySelector(`[data-k="${f.k}"]`);
+      const vals = Array.from(editor.querySelectorAll('textarea')).map(t=>t.value.trim()).filter(Boolean);
+      row[f.k] = vals;
+    } else if(f.t==='list'){
+      const el = form.querySelector(`[data-k="${f.k}"]`);
+      row[f.k] = el.value.split('\n').map(s=>s.trim()).filter(Boolean);
+    } else {
+      const el = form.querySelector(`[data-k="${f.k}"]`);
+      row[f.k] = el.value.trim();
+      if(f.req && !row[f.k]) missingReq = f.label;
+    }
+  });
+  if(missingReq){ toast(`Thiếu trường bắt buộc: ${missingReq}`); return; }
+
+  if(editingId){
+    const idx = state[key].findIndex(r=>r._id===editingId);
+    state[key][idx] = row;
+    toast('Đã lưu thay đổi.');
+  } else {
+    state[key].push(row);
+    toast('Đã thêm vào danh sách.');
+  }
+  editingId = null;
+  saveState();
+  renderTabs();
+  renderAll();
+}
+
+function renderAll(){ renderTabs(); renderPanels(); }
+
+// ---------- export ----------
+function toISO(dtLocal){
+  if(!dtLocal) return '';
+  const d = new Date(dtLocal);
+  if(isNaN(d.getTime())) return dtLocal;
+  return d.toISOString().replace(/\.\d{3}Z$/, 'Z');
+}
+function rowsToAOA(headers, rows, transform){
+  return [headers, ...rows.map(r=>headers.map(h=>{
+    let v = r[h];
+    if(transform && transform[h]) v = transform[h](v, r);
+    return v===undefined||v===null ? '' : v;
+  }))];
+}
+function downloadWB(wb, filename){
+  XLSX.writeFile(wb, filename);
+}
+
+function exportAll(){
+  const missing = [];
+
+  // Places
+  {
+    const ent = ENTITIES.places;
+    const wb = XLSX.utils.book_new();
+    const aoa = rowsToAOA(ent.headers, state.places, {images: v=>JSON.stringify(v||[])});
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), ent.sheet);
+    if(state.places.length) downloadWB(wb, ent.file); else missing.push(ent.label);
+  }
+  // Tours
+  {
+    const ent = ENTITIES.tours;
+    const wb = XLSX.utils.book_new();
+    const aoa = rowsToAOA(ent.headers, state.tours, {
+      itinerary: v=>{ const o={}; (v||[]).forEach((d,i)=>o['day'+(i+1)]=d); return JSON.stringify(o); },
+      inclusions: v=>JSON.stringify(v||[]),
+      exclusions: v=>JSON.stringify(v||[]),
+    });
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), ent.sheet);
+    if(state.tours.length) downloadWB(wb, ent.file); else missing.push(ent.label);
+  }
+  // TourDates
+  {
+    const ent = ENTITIES.tourDates;
+    const wb = XLSX.utils.book_new();
+    const aoa = rowsToAOA(ent.headers, state.tourDates, {startDate:toISO, endDate:toISO});
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), ent.sheet);
+    if(state.tourDates.length) downloadWB(wb, ent.file); else missing.push(ent.label);
+  }
+  // TourGuides
+  {
+    const ent = ENTITIES.tourGuides;
+    const wb = XLSX.utils.book_new();
+    const aoa = rowsToAOA(ent.headers, state.tourGuides, {
+      languages: v=>JSON.stringify(v||[]), specialties: v=>JSON.stringify(v||[]), certifications: v=>JSON.stringify(v||[]),
+    });
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), ent.sheet);
+    if(state.tourGuides.length) downloadWB(wb, ent.file); else missing.push(ent.label);
+  }
+  // Trips + Trip Stops (single workbook, 2 sheets, like original template)
+  {
+    const entT = ENTITIES.trips, entS = ENTITIES.tripStops;
+    const wb = XLSX.utils.book_new();
+    const aoaT = rowsToAOA(entT.headers, state.trips, {
+      images: v=>JSON.stringify(v||[]), startDate:toISO, endDate:toISO,
+    });
+    const aoaS = rowsToAOA(entS.headers, state.tripStops, {
+      arrivalDatetime:toISO, departureDatetime:toISO,
+    });
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoaT), 'Trips');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoaS), 'Trip Stops');
+    const instr = [
+      ['INSTRUCTIONS: This file has 2 sheets - "Trips" for trip details, "Trip Stops" for stops'],
+      ['Fill "Trips" sheet first, then "Trip Stops" sheet. The tripTitle must match exactly!'],
+      ['Stop types: place, hotel, homestay, checkpoint'],
+      ['Vehicle modes: driving, motorcycling, walking, bicycling'],
+      ['Status: PENDING, APPROVED, REJECTED'],
+    ];
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(instr), 'Instructions');
+    if(state.trips.length || state.tripStops.length) downloadWB(wb, 'trips_with_stops_template.xlsx');
+    else missing.push(entT.label);
+  }
+
+  toast(missing.length ? `Đã export. Bỏ qua (rỗng): ${missing.join(', ')}` : 'Đã export đủ 5 file.');
+}
+
+// ---------- import existing xlsx ----------
+function sheetToObjects(ws, headers){
+  const aoa = XLSX.utils.sheet_to_json(ws, {header:1, raw:false, defval:''});
+  const fileHeaders = aoa[0] || [];
+  const rows = aoa.slice(1).filter(r=>r.some(c=>String(c).trim()!==''));
+  return rows.map(r=>{
+    const obj = {_id: uid()};
+    fileHeaders.forEach((h,i)=>{ obj[h]=r[i]!==undefined?r[i]:''; });
+    return obj;
+  });
+}
+function tryParseArr(v){
+  if(Array.isArray(v)) return v;
+  if(!v) return [];
+  try{ const p = JSON.parse(v); return Array.isArray(p)?p:[]; }catch(e){ return String(v).split(',').map(s=>s.trim()).filter(Boolean); }
+}
+function tryParseItinerary(v){
+  if(Array.isArray(v)) return v;
+  if(!v) return [];
+  try{
+    const o = JSON.parse(v);
+    return Object.keys(o).sort().map(k=>o[k]);
+  }catch(e){ return []; }
+}
+function fromISOtoLocal(v){
+  if(!v) return '';
+  const d = new Date(v);
+  if(isNaN(d.getTime())) return v;
+  const pad=n=>String(n).padStart(2,'0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function importFiles(fileList){
+  let count = 0;
+  const proms = Array.from(fileList).map(file=>new Promise(resolve=>{
+    const reader = new FileReader();
+    reader.onload = e=>{
+      try{
+        const wb = XLSX.read(e.target.result, {type:'array'});
+        wb.SheetNames.forEach(sn=>{
+          if(sn==='Instructions') return;
+          const ws = wb.Sheets[sn];
+          if(sn==='Places'){
+            const rows = sheetToObjects(ws).map(r=>({...r, images: tryParseArr(r.images)}));
+            state.places.push(...rows); count+=rows.length;
+          } else if(sn==='Tours'){
+            const rows = sheetToObjects(ws).map(r=>({...r, itinerary: tryParseItinerary(r.itinerary), inclusions: tryParseArr(r.inclusions), exclusions: tryParseArr(r.exclusions)}));
+            state.tours.push(...rows); count+=rows.length;
+          } else if(sn==='TourDates'){
+            const rows = sheetToObjects(ws).map(r=>({...r, startDate: fromISOtoLocal(r.startDate), endDate: fromISOtoLocal(r.endDate)}));
+            state.tourDates.push(...rows); count+=rows.length;
+          } else if(sn==='TourGuides'){
+            const rows = sheetToObjects(ws).map(r=>({...r, languages: tryParseArr(r.languages), specialties: tryParseArr(r.specialties), certifications: tryParseArr(r.certifications)}));
+            state.tourGuides.push(...rows); count+=rows.length;
+          } else if(sn==='Trips'){
+            const rows = sheetToObjects(ws).map(r=>({...r, images: tryParseArr(r.images), startDate: fromISOtoLocal(r.startDate), endDate: fromISOtoLocal(r.endDate)}));
+            state.trips.push(...rows); count+=rows.length;
+          } else if(sn==='Trip Stops'){
+            const rows = sheetToObjects(ws).map(r=>({...r, arrivalDatetime: fromISOtoLocal(r.arrivalDatetime), departureDatetime: fromISOtoLocal(r.departureDatetime)}));
+            state.tripStops.push(...rows); count+=rows.length;
+          }
+        });
+      }catch(err){ console.error(err); }
+      resolve();
+    };
+    reader.readAsArrayBuffer(file);
+  }));
+  Promise.all(proms).then(()=>{
+    saveState(); renderAll();
+    toast(`Đã import ${count} dòng.`);
+  });
+}
+
+// ---------- init ----------
+document.getElementById('exportAllBtn').addEventListener('click', exportAll);
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(!confirm('Xoá toàn bộ dữ liệu đã nhập trong tool này?')) return;
+  ORDER.forEach(k=>state[k]=[]);
+  saveState(); renderAll(); toast('Đã xoá hết.');
+});
+document.getElementById('importFile').addEventListener('change', e=>{
+  if(e.target.files.length) importFiles(e.target.files);
+  e.target.value = '';
+});
+
+loadState().then(()=>{
+  document.getElementById('statusMsg').textContent = '';
+  renderAll();
+});
+
+})();
+</script>
